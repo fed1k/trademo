@@ -12,7 +12,7 @@ const FinancesPage = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
     return (
-        <div>
+        <div className='pb-10'>
             <p className={`${inter.className} text-[24px] text-[#002269] leading-6 mb-[30px] `}>Финансы</p>
             <div className='w-full flex gap-2 items-center mb-6'>
                 <button className='flex gap-[10px] border px-5 py-[10px] w-[50%] bg-[#f9fafb] items-center rounded-[6px]'>

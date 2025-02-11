@@ -10,7 +10,7 @@ export const inter = Inter({
 const DisputesPage = () => {
     const [query, setQuery] = useState("");
     return (
-        <div>
+        <div className='pb-28'>
             <p className={`${inter.className} text-[24px] text-[#002269] leading-6 my-[30px]`}>Споры по сделкам</p>
 
             <div className="bg-[#fbfcfe] rounded-2xl space-y-4 border border-[#eef2f9] p-[13px_20px_15px]">
