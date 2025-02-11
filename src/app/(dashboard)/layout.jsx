@@ -26,7 +26,7 @@ const DashboardLayout = ({ children }) => {
 
 
       {/* chapdagi */}
-      <nav>
+      <nav className='hidden lg:block'>
         <div>
           <p className='text-[#c2cde2] mb-2.5'>Навигация</p>
           {routes.map((route, index) => (
