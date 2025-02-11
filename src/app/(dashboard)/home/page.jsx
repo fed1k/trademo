@@ -13,7 +13,7 @@ const HomePage = () => {
   const [selectedPeriod, setSelectedPeriod] = useState(periods[0]);
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className={`flex flex-col gap-7 ${inter.className}`}>
+    <div className={`flex pb-28 flex-col gap-7 ${inter.className}`}>
       <div className="flex justify-between mb-5 items-center">
         <p className={`${inter.className} text-[16px] text-[#002269]`}>Финансы</p>
         <div className="relative inline-block">
