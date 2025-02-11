@@ -17,10 +17,11 @@ const inter = Inter({
 const LoginPage = () => {
     const router = useRouter()
     const [token, setToken] = useState("")
-    const {login} = useAuth
+    const {login} = useAuth()
 
     const handleAuth = () => {
         login(token)
+        
     }
 
     return (

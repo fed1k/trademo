@@ -1,5 +1,6 @@
 "use client";
 
+import { redirect } from "next/navigation";
 import { createContext, useContext, useState, useEffect } from "react";
 
 // Create context
@@ -26,11 +27,13 @@ export const AuthProvider = ({ children }) => {
   const login = (userData) => {
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData)); // Store user data in localStorage
+    redirect("/home")
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user"); // Remove user data from localStorage
+    redirect("/login")
   };
 
   const value = {

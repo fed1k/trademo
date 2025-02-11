@@ -1,11 +1,9 @@
-// "use client";
+"use client";
 
-// import { useEffect, useState } from "react";
-// import LoginPage from "./login/page";
-// import { redirect } from "next/navigation"; 
-// import { useAuth } from "@/components/AuthProvider";
+import { redirect } from "next/navigation";
+
 
 export default function Home() {
   
-  
+  redirect("/login")
 }
