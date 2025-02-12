@@ -1,4 +1,16 @@
+'use client'
+import { Inter } from 'next/font/google';
+import { useState } from 'react';
+import { CiSearch } from "react-icons/ci";
+import { HiXMark } from "react-icons/hi2";
+export const inter = Inter({
+    weight: ['400'],
+    subsets: ['latin'],
+  });
+  import { FaAngleDown } from "react-icons/fa";
 const WithDrawalsPage = () => {
+    const [query, setQuery] = useState("");
+    const [isExpanded, setIsExpanded] = useState(false);
     return (
         <div>
             <p className={`${inter.className} text-[24px] text-[#002269] leading-6 mb-6`}>Выплаты</p>
@@ -39,7 +51,7 @@ const WithDrawalsPage = () => {
 
           <button className="flex items-center justify-between bg-[#fbfcfe] px-4 py-2 rounded-lg shadow w-full mt-2">
             <span className="flex items-center w-full text-[12px] gap-1 text-[#002269] font-medium">
-            <svg _ngcontent-ng-c3225173330="" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3225173330="" d="M14.167 3.333v13.334m0 0-3.334-3.334m3.334 3.334 3.333-3.334M5.833 16.667V3.333m0 0L2.5 6.667m3.333-3.334 3.334 3.334" stroke="#0052FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <svg _ngcontent-ng-c3225173330="" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3225173330="" d="M14.167 3.333v13.334m0 0-3.334-3.334m3.334 3.334 3.333-3.334M5.833 16.667V3.333m0 0L2.5 6.667m3.333-3.334 3.334 3.334" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
             <select className="bg-[#fbfcfe] p-2 border-none w-full">
                 <option className="text-blue-600 font-medium"> Сначала новые</option>
           </select>
@@ -53,7 +65,7 @@ const WithDrawalsPage = () => {
                 <FaAngleDown className={`text-gray-600 transform transition-transform ${isExpanded ? "rotate-180" : ""}`} />
             </div>
 
-          <div className="flex justify-center border rounded-2xl border-[#eef2f9] items-center h-32 bg-[#fbfcfe] mt-5">
+          <div className="flex justify-center border rounded-2xl border-[#eef2f9] items-center h-32 bg-[#fbfcfe] mt-5 mb-32">
           <p className={`text-[18px] text-[#8091b5] font-medium ${inter.className} leading-5 font-serif`}>Выплаты не найдены</p>
         </div>
         </div>
