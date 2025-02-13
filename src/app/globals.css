@@ -5,3 +5,7 @@
 .login-page {
   background: linear-gradient(180deg,#ecf2ff 0, #fbfcfe 100%)
 }
+
+.bg-linear {
+  background: linear-gradient(180deg,#ecf2ff,#fbfcfe);
+}
