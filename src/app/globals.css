@@ -19,3 +19,7 @@
 .link-bg-animation:hover {
   background-position: right;
 }
+
+.active-link {
+  background-position: right;
+}

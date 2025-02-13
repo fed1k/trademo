@@ -20,6 +20,10 @@ const DashboardLayout = ({ children }) => {
   const [openNavbar, setOpenNavbar] = useState(false);
   const pathname = usePathname();
 
+  // console.log(pathname)
+
+  const isActive = (path) => pathname === path ? 'active-link' : ''
+
   return (
     <div className="flex lg:px-20 xl:px-0 xl:justify-center flex-col lg:flex-row">
       {/* telefon uchun */}
@@ -118,21 +122,21 @@ const DashboardLayout = ({ children }) => {
       {/* chapdagi */}
       <nav className="hidden lg:block pt-20">
         <div>
-          <p className="text-[#c2cde2] mb-2.5">Навигация</p>
+          <p className="text-[#c2cde2] ml-8 font-medium mb-2.5">Навигация</p>
           <div className="space-y-[6px]">
             {routes.map((route, index) => (
               <div
-                className={`px-7  link-bg-animation flex gap-2.5 items-center text-[#002269FF] py-1 ${inter.className}`}
+                className={`px-7 ${isActive(route.href)}  link-bg-animation  flex gap-2.5 items-center text-[#002269FF] py-1 ${inter.className}`}
                 key={index}
               >
                 {route.icon}
-                <Link href={route.href}>{route.text}</Link>
+                <Link className=" text-sm font-medium" href={route.href}>{route.text}</Link>
               </div>
             ))}
           </div>
 
           <div className="px-5">
-            <p className={`text-[#c2cde2] text-sm mb-2.5 mt-5`}>
+            <p className={`text-[#c2cde2] font-medium text-sm mb-2.5 mt-5`}>
               Финансы
             </p>
 
@@ -206,7 +210,7 @@ const DashboardLayout = ({ children }) => {
                   viewBox="0 0 36 36"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  class="styles_icon__R_UZa"
+                  className="styles_icon__R_UZa"
                 >
                   <circle
                     _ngcontent-ng-c394174421=""
@@ -217,8 +221,8 @@ const DashboardLayout = ({ children }) => {
                   ></circle>
                   <path
                     _ngcontent-ng-c394174421=""
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M20.156 19.16c-.117.009-.725.044-2.08.044-1.079 0-1.845-.032-2.113-.044-4.167-.182-7.277-.9-7.277-1.762 0-.86 3.11-1.579 7.277-1.763v2.809c.272.02 1.053.065 2.13.065 1.295 0 1.942-.054 2.06-.064v-2.808c4.157.183 7.26.902 7.26 1.761 0 .86-3.102 1.578-7.26 1.76l.003.002Zm0-3.814v-2.513h5.803V9H10.16v3.833h5.802v2.512c-4.716.215-8.262 1.141-8.262 2.25 0 1.11 3.546 2.035 8.262 2.25V27.9h4.193v-8.057c4.705-.215 8.245-1.14 8.245-2.248 0-1.109-3.537-2.034-8.245-2.25l.001.001Z"
                     fill="#fff"
                   ></path>
@@ -262,11 +266,11 @@ const DashboardLayout = ({ children }) => {
                   height="16"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  class="styles_icon__R_UZa"
+                  className="styles_icon__R_UZa"
                 >
                   <g
                     _ngcontent-ng-c394174421=""
-                    clip-path="url(#android_svg__a)"
+                    clipPath="url(#android_svg__a)"
                   >
                     <path
                       _ngcontent-ng-c394174421=""
@@ -296,7 +300,7 @@ const DashboardLayout = ({ children }) => {
       </nav>
 
       {/* komp uchun */}
-      <div className="border-x-[1px_solid_#eef2f9] pt-20 flex-[0.7] border">
+      <div className="border-x-[1px_solid_#eef2f9] pt-20 flex-[0.8] border">
         {/* <nav></nav> */}
         <main className="px-4">{children}</main>
         <nav className="fixed lg:hidden bg-white border-t border-[#eef2f9] bottom-0 left-0 right-0  flex justify-between items-center p-5">

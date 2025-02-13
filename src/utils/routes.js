@@ -9,49 +9,49 @@ import {LuMessageCircleMore} from "react-icons/lu"
 export const routes = [
   {
     text: "Главная",
-    icon: <GoHome />,
+    icon: <GoHome className="text-[#0052ff]" />,
     href: "/home",
   },
   {
     text: "Сделки",
-    icon: <RxCounterClockwiseClock />,
+    icon: <RxCounterClockwiseClock className="text-[#0052ff]" />,
     href: "/deals",
   },
   {
     text: "Выплаты",
-    icon: <PiHandWithdrawThin />,
+    icon: <PiHandWithdrawThin className="text-[#0052ff]" />,
     href: "/withdrawals",
   },
   {
     text: "Споры",
-    icon: <AiOutlineExclamationCircle />,
+    icon: <AiOutlineExclamationCircle className="text-[#0052ff]" />,
     href: "/disputes",
   },
   {
     text: "Профили",
-    icon: <HiUsers />,
+    icon: <HiUsers className="text-[#0052ff]" />,
     href: "/bank-profiles",
   },
   {
     text: "Реквизиты",
-    icon: <BiSolidWallet />
+    icon: <BiSolidWallet className="text-[#0052ff]" />
     ,
     href: "/requisites",
   },
   {
     text: "Устройства",
-    icon: <GiAerialSignal />
+    icon: <GiAerialSignal  className="text-[#0052ff]" />
     ,
     href: "/devices",
   },
   {
     text: "Финансы",
-    icon: <BiSolidWallet />,
+    icon: <BiSolidWallet className="text-[#0052ff]" />,
     href: "/finances",
   },
   {
     text: "Сообщения",
-    icon: <LuMessageCircleMore />    ,
+    icon: <LuMessageCircleMore className="text-[#0052ff]" />    ,
     href: "/messages",
   },
 ];
