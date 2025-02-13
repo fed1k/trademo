@@ -3,9 +3,19 @@
 @tailwind utilities;
 
 .login-page {
-  background: linear-gradient(180deg,#ecf2ff 0, #fbfcfe 100%)
+  background: linear-gradient(180deg, #ecf2ff 0, #fbfcfe 100%);
 }
 
 .bg-linear {
-  background: linear-gradient(180deg,#ecf2ff,#fbfcfe);
+  background: linear-gradient(180deg, #ecf2ff, #fbfcfe);
+}
+
+.link-bg-animation {
+  background: linear-gradient(to right, transparent 50%, #eef2f9ff 50%) left;
+  border-radius: 12px 0 0 12px;
+  background-size: 200%;
+  transition: 0.3s ease-out;
+}
+.link-bg-animation:hover {
+  background-position: right;
 }
