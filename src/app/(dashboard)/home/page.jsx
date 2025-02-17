@@ -151,7 +151,7 @@ const HomePage = () => {
       <div className="flex flex-col">
         <div className="flex justify-between items-center">
           <p className={`pb-5 text-[16px] md:text-[20px] text-[#002269] ${inter.className}`}>Открытые споры</p>
-          <button className="flex gap-2 items-center px-3 py-1 text-sm bg-[#E6EEFF] mb-6 md:mb-3 cursor-pointer px-2 py-1 rounded-md">
+          <button className="flex gap-2 items-center  text-sm bg-[#E6EEFF] mb-6 md:mb-3 cursor-pointer px-2 py-1 rounded-md">
             <span className="text-[#0052ff]  text-sm md:text-[#002269]"> Показать все</span>
             <div><GoArrowRight className="text-blue-700 border-1 border-[#0052ff]-700" /></div>
           </button>

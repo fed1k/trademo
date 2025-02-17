@@ -20,8 +20,7 @@ const LoginPage = () => {
     const {login} = useAuth()
 
     const handleAuth = () => {
-        login(token)
-        
+        login(token)     
     }
 
     return (

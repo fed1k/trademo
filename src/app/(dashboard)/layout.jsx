@@ -19,7 +19,7 @@ const mont = Montserrat({
 const DashboardLayout = ({ children }) => {
   const [openNavbar, setOpenNavbar] = useState(false);
   const pathname = usePathname();
-
+  const [query, setQuery] = useState("");
   // console.log(pathname)
 
   const isActive = (path) => pathname === path ? 'active-link' : ''
@@ -134,7 +134,6 @@ const DashboardLayout = ({ children }) => {
               </div>
             ))}
           </div>
-
           <div className="px-5">
             <p className={`text-[#c2cde2] font-medium text-sm mb-2.5 mt-5`}>
               Финансы
@@ -300,24 +299,10 @@ const DashboardLayout = ({ children }) => {
       </nav>
 
       {/* komp uchun */}
-      <div className="border-x-[1px_solid_#eef2f9] pt-20 flex-[0.8] border">
+      <div className="border-x-[1px_solid_#eef2f9] pt-10 flex-[0.8] border">
         {/* <nav></nav> */}
 
-         <div className='mb-[35px] px-5 flex justify-between items-center'>
-            <div>
-                <div className="relative flex items-center border border-gray-300 rounded-lg p-2 w-full bg-[#FBFCFE] shadow-sm">
-                  <CiSearch className="w-5 h-5 text-gray-400 font-bold hover:text-[#0052ff] mr-2" />
-                  <input
-                    type="text"
-                    placeholder="Поиск"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    className="flex-1 bg-transparent outline-none  w-full text-gray-700 placeholder-gray-400"
-                  />
-                </div>
-            </div>
-            
-         </div>
+         
 
 
         <main className="px-4">{children}</main>
