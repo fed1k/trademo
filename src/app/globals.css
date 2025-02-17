@@ -16,6 +16,7 @@
   background-size: 200%;
   transition: 0.3s ease-out;
 }
+
 .link-bg-animation:hover {
   background-position: right;
 }
@@ -25,21 +26,30 @@
 }
 
 .custom-scroll::-webkit-scrollbar {
-  width: 4px; 
+  width: 4px;
   margin-right: 10px;
 }
 
 .custom-scroll::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
   border-radius: 10px;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
-  background: #cccccc; 
+  background: #cccccc;
   border-radius: 10px;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb:hover {
-  background: #aaaaaa; 
+  background: #aaaaaa;
 }
 
+input:focus::placeholder {
+  color: transparent;
+  transition: color 0.3s ease-out;
+}
+
+input::placeholder {
+  color: inherit;
+  transition: color 0.3s ease-in;
+}
