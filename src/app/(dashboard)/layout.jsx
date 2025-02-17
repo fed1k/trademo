@@ -101,11 +101,212 @@ const DashboardLayout = ({ children }) => {
           </div>
         </div>
 
-        <div className="p-5 bg-white flex items-center justify-between rounded-lg">
-          <div className="flex items-center gap-3">
-            <div className="bg-[#eef2f9] rounded-full inline-block p-2">
-              <PiUser className="w-6 h-6 text-[#BAC2D6]" />
+        {/*          */}
+        <nav className="">
+        <div>
+          <p className="text-[#c2cde2] ml-8 font-medium mb-2.5">Навигация</p>
+          <div className="space-y-[6px]">
+            {routes.map((route, index) => (
+              <div
+                className={`px-7 ${isActive(route.href)}  link-bg-animation  flex gap-2.5 items-center text-[#002269FF] py-1 ${inter.className}`}
+                key={index}
+              >
+                {route.icon}
+                <Link className=" text-sm font-medium" href={route.href}>{route.text}</Link>
+              </div>
+            ))}
+          </div>
+          <div className="px-5">
+            <p className={`text-[#c2cde2] font-medium text-sm mb-2.5 mt-5`}>
+              Финансы
+            </p>
+
+
+
+        <div className='mx-1 mr-2 grid grid-cols-2 gap-2 mt-5 pb-20'>
+          <div className="w-full flex-shrink-0 h-22 flex flex-col justify-center mb-3 bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+              <div className="w-full flex items-center justify-between">
+                <p
+                  className={`${inter.className} text-[#8091B5] text-[10px] font-medium mb-2`}
+                >
+                  ТРАСТ
+                </p>
+                <button className="py-0 flex gap-1 text-[#8091b5] rounded-2xl items-center mb-2">
+                  <svg
+                    _ngcontent-ng-c3644767295=""
+                    width="14"
+                    height="14"
+                    _ngcontent-ng-c1898598531=""
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      _ngcontent-ng-c3644767295=""
+                      _ngcontent-ng-c1898598531=""
+                      d="M20.25 17.5v-1.75a1.75 1.75 0 1 0-3.5 0v1.75M22 10H2m20 1V8.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C20.48 5 19.92 5 18.8 5H5.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C2 6.52 2 7.08 2 8.2v7.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C3.52 19 4.08 19 5.2 19H11m5.6 2.5h3.8c.56 0 .84 0 1.054-.109a1 1 0 0 0 .437-.437C22 20.74 22 20.46 22 19.9v-.8c0-.56 0-.84-.109-1.054a1 1 0 0 0-.437-.437c-.214-.109-.494-.109-1.054-.109h-3.8c-.56 0-.84 0-1.054.109a1 1 0 0 0-.437.437C15 18.26 15 18.54 15 19.1v.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437c.214.109.494.109 1.054.109Z"
+                      stroke="#8091b5"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    ></path>
+                  </svg>
+                  <span
+                    className={`${inter.className} text-[#8091b5] text-[12px]`}
+                  >
+                    0
+                  </span>
+                </button>
+              </div>
+              <p
+                className={`font-sans text-[#002269] text-[16px] font-semibold  mb-16`}
+              >
+                0 <span className="text-[#0052F9]">USDT</span>
+              </p>
             </div>
+
+            <div className="w-full flex-shrink-0 h-22 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+              <div className="w-full flex justify-between">
+                <p
+                  className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
+                >
+                  Прибыль
+                </p>
+              </div>
+              <p
+                className={`font-sans text-[#002269] text-[16px] font-semibold mb-16`}
+              >
+                0 <span className="text-[#0052F9]">USDT</span>
+              </p>
+            </div>
+            
+            <div className="w-full flex-shrink-0  flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+              <div className="w-full flex justify-between">
+                <p
+                  className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
+                >
+                  Баланс резерва
+                </p>
+              </div>
+              <p
+                className={`font-sans text-[#002269] text-[16px] font-semibold mb-16`}
+              >
+                0 <span className="text-[#0052F9]">USDT</span>
+              </p>
+            </div>
+
+            <div className="w-full flex-shrink-0 flex mb-6  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+              <p
+                className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
+              >
+                Курс Tether TRC-20
+              </p>
+              <div className="w-full flex justify-center gap-1">
+                <svg
+                  _ngcontent-ng-c394174421=""
+                  width="18"
+                  height="18"
+                  viewBox="0 0 36 36"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="styles_icon__R_UZa"
+                >
+                  <circle
+                    _ngcontent-ng-c394174421=""
+                    cx="18"
+                    cy="18"
+                    r="18"
+                    fill="#50AF95"
+                  ></circle>
+                  <path
+                    _ngcontent-ng-c394174421=""
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M20.156 19.16c-.117.009-.725.044-2.08.044-1.079 0-1.845-.032-2.113-.044-4.167-.182-7.277-.9-7.277-1.762 0-.86 3.11-1.579 7.277-1.763v2.809c.272.02 1.053.065 2.13.065 1.295 0 1.942-.054 2.06-.064v-2.808c4.157.183 7.26.902 7.26 1.761 0 .86-3.102 1.578-7.26 1.76l.003.002Zm0-3.814v-2.513h5.803V9H10.16v3.833h5.802v2.512c-4.716.215-8.262 1.141-8.262 2.25 0 1.11 3.546 2.035 8.262 2.25V27.9h4.193v-8.057c4.705-.215 8.245-1.14 8.245-2.248 0-1.109-3.537-2.034-8.245-2.25l.001.001Z"
+                    fill="#fff"
+                  ></path>
+                </svg>
+                <p
+                  className={`${inter.className} text-[#002269] text-[14px] font-bold mb-1`}
+                >
+                  93.46
+                </p>
+                <span className="text-[#0052F9] text-[12px] font-medium mt-[1px]">
+                  RUB
+                </span>
+              </div>
+            </div>
+
+            <div className="w-full flex-shrink-0 h-22 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+              <div className="w-full flex justify-between">
+                <p
+                  className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
+                >
+                  Баланс резерва
+                </p>
+              </div>
+              <p
+                className={`font-sans text-[#002269] text-[16px] font-semibold mb-16`}
+              >
+                0 <span className="text-[#0052F9]">USDT</span>
+              </p>
+            </div>
+
+            <div className="w-full flex-shrink-0 flex mb-6  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+              <p
+                className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
+              >
+                Моб. приложение
+              </p>
+              <div className="w-full flex gap-2">
+                <svg
+                  _ngcontent-ng-c394174421=""
+                  width="16"
+                  height="16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="styles_icon__R_UZa"
+                >
+                  <g
+                    _ngcontent-ng-c394174421=""
+                    clipPath="url(#android_svg__a)"
+                  >
+                    <path
+                      _ngcontent-ng-c394174421=""
+                      d="M9.67 16c.535 0 1.002-.467 1.002-1.002V12.66h.668c.402 0 .67-.268.67-.67V5.31H3.99v6.68c.001.402.268.67.67.67h.668v2.338c0 .536.467 1.002 1.002 1.002.535 0 1.001-.466 1.001-1.002V12.66H8.67v2.338c0 .535.466 1.002 1.001 1.002Zm4.01-4.01c.534 0 1-.466 1-1V6.311c0-.533-.466-1.002-1-1.002-.536 0-1.002.47-1.002 1.002v4.677c0 .535.466 1.002 1.001 1.002Zm-11.36 0c.536 0 1.002-.466 1.002-1V6.311c0-.533-.466-1.002-1.001-1.002-.535 0-1.002.47-1.002 1.002v4.677c0 .535.467 1.002 1.002 1.002ZM11.208.1a.32.32 0 0 0-.467 0l-.897.895-.041.041C9.27.77 8.674.636 8.01.636h-.02c-.664 0-1.26.134-1.792.4L6.157.995 5.26.1a.32.32 0 0 0-.467 0 .32.32 0 0 0 0 .466l.868.868c-.28.186-.533.415-.753.676a3.926 3.926 0 0 0-.911 2.322l-.002.027c-.003.06-.004.12-.004.181h8.018c0-.06-.001-.12-.004-.18l-.002-.028a3.925 3.925 0 0 0-.91-2.322 3.615 3.615 0 0 0-.754-.676l.868-.868a.32.32 0 0 0 0-.466ZM6.329 3.475a.501.501 0 1 1 0-1.002.501.501 0 0 1 0 1.002Zm3.342 0a.501.501 0 1 1 0-1.002.501.501 0 0 1 0 1.002Z"
+                      fill="#A6D864"
+                    ></path>
+                  </g>
+                  <defs _ngcontent-ng-c394174421="">
+                    <clipPath _ngcontent-ng-c394174421="" id="android_svg__a">
+                      <path
+                        _ngcontent-ng-c394174421=""
+                        fill="#fff"
+                        d="M0 0h16v16H0z"
+                      ></path>
+                    </clipPath>
+                  </defs>
+                </svg>
+                <p
+                  className={`${inter.className} text-[#002269] text-[14px] font-bold mb-1`}
+                >
+                  Скачать APK
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+        {/*          */}
+
+
+        <div className="p-[22px] bg-white mx-1 flex items-center justify-between rounded-lg">
+          <div className="flex w-full items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="bg-[#eef2f9] rounded-full inline-block p-2">
+                <PiUser className="w-6 h-6 text-[#BAC2D6]" />
+              </div>
 
             <div>
               <p>Referer Cloud</p>
