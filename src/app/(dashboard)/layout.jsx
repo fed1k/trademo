@@ -302,6 +302,24 @@ const DashboardLayout = ({ children }) => {
       {/* komp uchun */}
       <div className="border-x-[1px_solid_#eef2f9] pt-20 flex-[0.8] border">
         {/* <nav></nav> */}
+
+         <div className='mb-[35px] px-5 flex justify-between items-center'>
+            <div>
+                <div className="relative flex items-center border border-gray-300 rounded-lg p-2 w-full bg-[#FBFCFE] shadow-sm">
+                  <CiSearch className="w-5 h-5 text-gray-400 font-bold hover:text-[#0052ff] mr-2" />
+                  <input
+                    type="text"
+                    placeholder="Поиск"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    className="flex-1 bg-transparent outline-none  w-full text-gray-700 placeholder-gray-400"
+                  />
+                </div>
+            </div>
+            
+         </div>
+
+
         <main className="px-4">{children}</main>
         <nav className="fixed lg:hidden bg-white border-t border-[#eef2f9] bottom-0 left-0 right-0  flex justify-between items-center p-5">
           <Link href="/requisites">
