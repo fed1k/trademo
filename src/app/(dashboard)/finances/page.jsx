@@ -170,7 +170,7 @@ const FinancesPage = () => {
         <div className="w-full flex-shrink-0 h-36 flex-col items-center justify-center bg-[#fbfcfe] rounded-2xl space-y-2 border border-[#eef2f9] py-5 px-4">
             <div className='flex justify-between items-center w-full cursor-pointer'>
                  <p className={`${inter.className} text-[#002269] lowercase text-[18px] font-medium`}>СПОРНЫЕ СДЕЛКИ</p>
-                <svg _ngcontent-ng-c3644767295="" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path _ngcontent-ng-c3644767295="" clip-rule="evenodd" d="M10 17.708a7.708 7.708 0 1 0 0-15.417 7.708 7.708 0 0 0 0 15.417Z" stroke="#0052FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path _ngcontent-ng-c3644767295="" data-value="arrow" d="M8.798 12.893 11.703 10 8.798 7.107" stroke="#0052FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <svg _ngcontent-ng-c3644767295="" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path _ngcontent-ng-c3644767295="" clip-rule="evenodd" d="M10 17.708a7.708 7.708 0 1 0 0-15.417 7.708 7.708 0 0 0 0 15.417Z" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path><path _ngcontent-ng-c3644767295="" data-value="arrow" d="M8.798 12.893 11.703 10 8.798 7.107" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
             </div>
             <p className={`font-sans text-[#002269] text-[20px] mb-[10px] font-semibold`}>0 USDT</p>
             <p className={`${inter.className} text-[#8091b5] text-[14px] font-medium mb-4`}>0 RUB – Споров: 0</p>
@@ -206,7 +206,7 @@ const FinancesPage = () => {
         <div className="mt-4">
           <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center justify-between bg-[#fbfcfe] px-4 py-2 rounded-lg shadow w-full">
             <span className="flex text-[12px] items-center w-full gap-2 text-[#002269] font-medium">
-            <svg _ngcontent-ng-c3644767295="" width='20' height='20' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M16.5 7.5h-15m6.75 3H4.5m-3-4.35v5.7c0 .84 0 1.26.163 1.581a1.5 1.5 0 0 0 .656.655c.32.164.74.164 1.581.164h10.2c.84 0 1.26 0 1.581-.164a1.5 1.5 0 0 0 .656-.655c.163-.32.163-.74.163-1.581v-5.7c0-.84 0-1.26-.163-1.581a1.5 1.5 0 0 0-.656-.656c-.32-.163-.74-.163-1.581-.163H3.9c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656c-.163.32-.163.74-.163 1.581Z" stroke="#0052FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> 
+            <svg _ngcontent-ng-c3644767295="" width='20' height='20' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M16.5 7.5h-15m6.75 3H4.5m-3-4.35v5.7c0 .84 0 1.26.163 1.581a1.5 1.5 0 0 0 .656.655c.32.164.74.164 1.581.164h10.2c.84 0 1.26 0 1.581-.164a1.5 1.5 0 0 0 .656-.655c.163-.32.163-.74.163-1.581v-5.7c0-.84 0-1.26-.163-1.581a1.5 1.5 0 0 0-.656-.656c-.32-.163-.74-.163-1.581-.163H3.9c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656c-.163.32-.163.74-.163 1.581Z" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg> 
                 <select className="bg-[#fbfcfe] p-2 w-full border-none">
                 <option className="text-blue-600 font-medium">Все типы</option>
                 <option className="text-gray-500">Вывод прибыли</option>
@@ -216,7 +216,7 @@ const FinancesPage = () => {
           </button>
           <button  onClick={() => setIsDropdownOpen1(!isDropdownOpen1)} className="flex items-center justify-between bg-[#fbfcfe] px-4 py-2 rounded-lg shadow w-full mt-2">
             <span className="flex items-center w-full text-[12px] gap-1 text-[#002269] font-medium">
-            <svg _ngcontent-ng-c3644767295="" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M14.167 3.333v13.334m0 0-3.334-3.334m3.334 3.334 3.333-3.334M5.833 16.667V3.333m0 0L2.5 6.667m3.333-3.334 3.334 3.334" stroke="#0052FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <svg _ngcontent-ng-c3644767295="" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M14.167 3.333v13.334m0 0-3.334-3.334m3.334 3.334 3.333-3.334M5.833 16.667V3.333m0 0L2.5 6.667m3.333-3.334 3.334 3.334" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
             <select className="bg-[#fbfcfe] p-2 border-none w-full">
                 <option className="text-blue-600 font-medium"> Сначала новые</option>
                 <option className="text-gray-500"> Сначала старые</option>
@@ -234,7 +234,7 @@ const FinancesPage = () => {
           <p className={`${inter.className} text-[16px] md:text-[14px] text-[#8091b5] leading-6`}>Тип операции</p>
           <button className="flex items-center justify-between bg-[#fbfcfe] px-4 py-2 rounded-lg shadow w-full">
             <span className="flex text-[12px] items-center w-full gap-2 text-[#002269] font-medium">
-            <svg _ngcontent-ng-c3644767295="" width='20' height='20' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M16.5 7.5h-15m6.75 3H4.5m-3-4.35v5.7c0 .84 0 1.26.163 1.581a1.5 1.5 0 0 0 .656.655c.32.164.74.164 1.581.164h10.2c.84 0 1.26 0 1.581-.164a1.5 1.5 0 0 0 .656-.655c.163-.32.163-.74.163-1.581v-5.7c0-.84 0-1.26-.163-1.581a1.5 1.5 0 0 0-.656-.656c-.32-.163-.74-.163-1.581-.163H3.9c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656c-.163.32-.163.74-.163 1.581Z" stroke="#0052FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> 
+            <svg _ngcontent-ng-c3644767295="" width='20' height='20' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M16.5 7.5h-15m6.75 3H4.5m-3-4.35v5.7c0 .84 0 1.26.163 1.581a1.5 1.5 0 0 0 .656.655c.32.164.74.164 1.581.164h10.2c.84 0 1.26 0 1.581-.164a1.5 1.5 0 0 0 .656-.655c.163-.32.163-.74.163-1.581v-5.7c0-.84 0-1.26-.163-1.581a1.5 1.5 0 0 0-.656-.656c-.32-.163-.74-.163-1.581-.163H3.9c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656c-.163.32-.163.74-.163 1.581Z" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg> 
                 <select className="bg-[#fbfcfe] p-2 w-full border-none">
                 <option className="text-blue-600 font-medium">Все типы</option>
                 <option className="text-gray-500">Вывод прибыли</option>
@@ -248,7 +248,7 @@ const FinancesPage = () => {
           <p className={`${inter.className} text-[16px] md:text-[14px] text-[#8091b5] leading-6`}>Сортировка результатов</p>
           <button className="flex items-center justify-between bg-[#fbfcfe] px-4 py-2 rounded-lg shadow w-full">
             <span className="flex items-center w-full text-[12px] gap-1 text-[#002269] font-medium">
-            <svg _ngcontent-ng-c3644767295="" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M14.167 3.333v13.334m0 0-3.334-3.334m3.334 3.334 3.333-3.334M5.833 16.667V3.333m0 0L2.5 6.667m3.333-3.334 3.334 3.334" stroke="#0052FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <svg _ngcontent-ng-c3644767295="" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M14.167 3.333v13.334m0 0-3.334-3.334m3.334 3.334 3.333-3.334M5.833 16.667V3.333m0 0L2.5 6.667m3.333-3.334 3.334 3.334" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
             <select className="bg-[#fbfcfe] p-2 border-none w-full">
                 <option className="text-blue-600 font-medium"> Сначала новые</option>
                 <option className="text-gray-500"> Сначала старые</option>

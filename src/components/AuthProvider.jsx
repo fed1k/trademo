@@ -1,6 +1,7 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import { checkUserByToken } from "@/utils/firebase_utils";
+import { redirect, useRouter } from "next/navigation";
 import { createContext, useContext, useState, useEffect } from "react";
 
 // Create context
@@ -16,11 +17,21 @@ export const AuthProvider = ({ children }) => {
   // Authentication state
   const [user, setUser] = useState(null);
 
+  const updateSeverUser = async (token) => {
+    const response = await checkUserByToken(token);
+    if (response) {
+      setUser(response)
+    }
+  }
+
+  const router = useRouter()
   useEffect(() => {
     // Check if there's a logged-in user (e.g., from localStorage or an API)
-    const storedUser = localStorage.getItem("user");
+    const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) {
-      setUser(storedUser);
+      updateSeverUser(storedUser.token).then((res) => {
+        router.push("/home")
+      })
     }
   }, []);
 

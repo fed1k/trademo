@@ -6,13 +6,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { routes } from "@/utils/routes";
 import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HiXMark } from "react-icons/hi2";
 import { CiSearch } from "react-icons/ci";
 import { PiUser } from "react-icons/pi";
 import { inter } from "./bank-profiles/page";
 import { PiSignOutBold } from "react-icons/pi";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/components/AuthProvider";
 
 const mont = Montserrat({
   weight: ["600"],
@@ -22,7 +24,16 @@ const DashboardLayout = ({ children }) => {
   const [openNavbar, setOpenNavbar] = useState(false);
   const pathname = usePathname();
   const [query, setQuery] = useState("");
-  // console.log(pathname)
+  const router = useRouter()
+  const {user} = useAuth()
+
+  const isAdmin = user?.isAdmin
+  useEffect(() => {
+    console.log(localStorage.getItem("user"))
+    if (!localStorage.getItem("user")) {
+      router.push("/login")
+    }
+  }, [])
 
   const isActive = (path) => pathname === path ? 'active-link' : ''
 
@@ -99,8 +110,6 @@ const DashboardLayout = ({ children }) => {
             <input
               type="text"
               placeholder="Поиск"
-              // value={query}
-              // onChange={(e) => setQuery(e.target.value)}
               className="flex-1 bg-transparent outline-none h-8 w-1/2 text-gray-700 placeholder-gray-400"
             />
           </div>
@@ -298,7 +307,11 @@ const DashboardLayout = ({ children }) => {
         <div>
           <p className="text-[#c2cde2] ml-8 font-medium mb-2.5">Навигация</p>
           <div className="space-y-[6px]">
-            {routes.map((route, index) => (
+            {routes.map((route, index) => {
+
+              if (!isAdmin && index === 0) return <></>
+
+              return(
               <div
                 className={`px-7 ${isActive(route.href)}  link-bg-animation  flex gap-2.5 items-center text-[#002269FF] py-1 ${inter.className}`}
                 key={index}
@@ -306,7 +319,7 @@ const DashboardLayout = ({ children }) => {
                 {route.icon}
                 <Link className=" text-sm font-medium" href={route.href}>{route.text}</Link>
               </div>
-            ))}
+            )})}
           </div>
 
 
@@ -479,7 +492,7 @@ const DashboardLayout = ({ children }) => {
                 Как подключиться?
               </p>
               <div className="w-full flex gap-2">
-              <svg _ngcontent-ng-c394174421="" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" class="styles_icon__R_UZa"><path _ngcontent-ng-c394174421="" d="M9.334 1.513v2.754c0 .373 0 .56.072.702a.667.667 0 0 0 .292.292c.142.072.329.072.702.072h2.754M6.567 8.001a1.499 1.499 0 0 1 2.913.5c0 1-1.5 1.499-1.5 1.499M8 12h.007M9.334 1.333H5.867c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874c-.218.428-.218.988-.218 2.108v6.934c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874c.428.218.988.218 2.108.218h4.267c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874c.218-.428.218-.988.218-2.108V5.333l-4-4Z" stroke="#0052FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              <svg _ngcontent-ng-c394174421="" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" className="styles_icon__R_UZa"><path _ngcontent-ng-c394174421="" d="M9.334 1.513v2.754c0 .373 0 .56.072.702a.667.667 0 0 0 .292.292c.142.072.329.072.702.072h2.754M6.567 8.001a1.499 1.499 0 0 1 2.913.5c0 1-1.5 1.499-1.5 1.499M8 12h.007M9.334 1.333H5.867c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874c-.218.428-.218.988-.218 2.108v6.934c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874c.428.218.988.218 2.108.218h4.267c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874c.218-.428.218-.988.218-2.108V5.333l-4-4Z" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
                 <p
                   className={`${inter.className} text-[#002269] text-[14px] font-bold mb-1`}
                 >

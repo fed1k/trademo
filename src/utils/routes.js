@@ -6,7 +6,14 @@ import { PiHandWithdrawThin } from "react-icons/pi";
 import { RxCounterClockwiseClock } from "react-icons/rx";
 import {GiAerialSignal} from "react-icons/gi";
 import {LuMessageCircleMore} from "react-icons/lu"
+import { IoIosSettings } from "react-icons/io";
 export const routes = [
+  {
+    text: "Управления",
+    icon: <IoIosSettings className="text-[#0052ff]" />,
+    href: "/admin"
+
+  },
   {
     text: "Главная",
     icon: <GoHome className="text-[#0052ff]" />,

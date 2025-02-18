@@ -1,5 +1,6 @@
 "use client";
 import { useAuth } from '@/components/AuthProvider';
+import { checkUserByToken } from '@/utils/firebase_utils';
 import { Montserrat, Inter } from 'next/font/google';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -16,10 +17,19 @@ const inter = Inter({
 const LoginPage = () => {
     const router = useRouter()
     const [token, setToken] = useState("")
+    const [error, setError] = useState(false)
     const { login } = useAuth()
 
-    const handleAuth = () => {
-        login(token)     
+    
+
+    const handleAuth = async () => {
+        const response = await checkUserByToken(token)
+        if (!response) {
+            setError("Ошибка: проверьте правильность введённых данных")
+            return
+        }
+        setError(false)
+        login(response)
     }
 
     return (
@@ -36,18 +46,19 @@ const LoginPage = () => {
                     <p className={`text-center mb-10 font-serif text-[#8091b5] font-normal mt-[4px] leading-6 text-[18px] ${inter.className}`}>Введите токен для входа</p>
 
                     <div className="relative group">
-                        <span className="absolute inset-y-0 left-3 flex items-center text-[#C4CCDA] group-focus-within:text-[#0052ff] transition-colors">
-                            <svg className='group-focus-within:stroke-[#0052ff] stroke-[#C1CCDA] transition-colors'  _ngcontent-ng-c3820240896="" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><g _ngcontent-ng-c3820240896="" clip-path="url(#@_svg__a)"><path _ngcontent-ng-c3820240896="" d="M13.333 6.667v4.166a2.5 2.5 0 0 0 5 0V10a8.333 8.333 0 1 0-3.266 6.617M13.333 10a3.333 3.333 0 1 1-6.666 0 3.333 3.333 0 0 1 6.666 0Z"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></g><defs _ngcontent-ng-c3820240896=""><clipPath _ngcontent-ng-c3820240896="" id="@_svg__a"><path _ngcontent-ng-c3820240896="" fill="#fff" d="M0 0h20v20H0z"></path></clipPath></defs></svg>
+                        <span className={`absolute inset-y-0 left-3 flex items-center ${error ? "text-[#fb6c6c]" : "text-[#C4CCDA] group-focus-within:text-[#0052ff]"}  transition-colors`}>
+                            <svg className={` ${error ? "stroke-[#fb6c6c]" : " stroke-[#C1CCDA] group-focus-within:stroke-[#0052ff]"}  transition-colors`} _ngcontent-ng-c3820240896="" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><g _ngcontent-ng-c3820240896="" clip-path="url(#@_svg__a)"><path _ngcontent-ng-c3820240896="" d="M13.333 6.667v4.166a2.5 2.5 0 0 0 5 0V10a8.333 8.333 0 1 0-3.266 6.617M13.333 10a3.333 3.333 0 1 1-6.666 0 3.333 3.333 0 0 1 6.666 0Z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></g><defs _ngcontent-ng-c3820240896=""><clipPath _ngcontent-ng-c3820240896="" id="@_svg__a"><path _ngcontent-ng-c3820240896="" fill="#fff" d="M0 0h20v20H0z"></path></clipPath></defs></svg>
                         </span>
                         <input
                             type="password"
                             placeholder="Токен"
                             value={token}
                             onChange={(e) => setToken(e.target.value)}
-                            className="pl-11 px-0 py-[14px] placeholder:text-[#C4CCDA] text-base font-medium w-full placeholder:font-light rounded-2xl focus:placeholder-transparent transition-colors border border-[#eef2f9] bg-[#fafbfc] text-[#0052ff] outline-none h-12 min-w-[120px]"
+                            className={`pl-11 px-0 py-[14px] placeholder:text-[#C4CCDA] text-base font-medium w-full placeholder:font-light rounded-2xl focus:placeholder-transparent transition-colors border border-[#eef2f9] focus:text-[#0052ff] bg-[#fafbfc] ${error ? "text-[#fb6c6c]" : "text-[#0052ff]"}  outline-none h-12 min-w-[120px]`}
                         />
                     </div>
-                    <button type='button' onClick={handleAuth} className={`w-full py-2 ${token ? "opacity-100" : "opacity-50"} rounded-[8px]  bg-[#e6eeff] text-[#0052ff] text-center mt-5`}>
+                    {error ? <p className={`text-[#fb6c6c] ${inter.className} pt-5`}>{error}</p> : <></>}
+                    <button type='button' disabled={!token} onClick={handleAuth} className={`w-full disabled:cursor-not-allowed py-2 ${token ? "opacity-100" : "opacity-50"} rounded-[8px]  bg-[#e6eeff] text-[#0052ff] text-center mt-5`}>
                         Авторизоваться
                     </button>
                 </div>
