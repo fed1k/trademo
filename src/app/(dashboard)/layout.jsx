@@ -270,7 +270,7 @@ const DashboardLayout = ({ children }) => {
 
 
 
-          <div className="w-full flex-shrink-0 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+          <a target="_blank" href="https://trademo.top/assets/files/trademo1.8.7.apk" className="w-full flex-shrink-0 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
             <p
               className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
             >
@@ -281,9 +281,9 @@ const DashboardLayout = ({ children }) => {
             >
               Скачать APK
             </p>
-          </div>
+          </a>
 
-          <div className="w-full flex-shrink-0 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+          <a target="_blank" href="https://rumbling-bosworth-7a7.notion.site/TradeMO-MassMO-4cb7876f310a4f15aa9a54f8ffe555ce" className="w-full flex-shrink-0 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
             <p
               className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
             >
@@ -294,7 +294,7 @@ const DashboardLayout = ({ children }) => {
             >
               Инструкция
             </p>
-          </div>
+          </a>
 
         </div>
 
@@ -450,7 +450,7 @@ const DashboardLayout = ({ children }) => {
               </p>
             </div>
 
-            <div className="w-full flex-shrink-0 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+            <a target="_blank" href="https://trademo.top/assets/files/trademo1.8.7.apk" className="w-full flex-shrink-0 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
               <p
                 className={`${inter.className} text-[#8091B5] text-[12px] font-semibold mb-2`}
               >
@@ -491,9 +491,9 @@ const DashboardLayout = ({ children }) => {
                   Скачать APK
                 </p>
               </div>
-            </div>
+            </a>
 
-            <div className="w-full flex-shrink-0 flex mb-6  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+            <a target="_blank" href="https://rumbling-bosworth-7a7.notion.site/TradeMO-MassMO-4cb7876f310a4f15aa9a54f8ffe555ce" className="w-full flex-shrink-0 flex mb-6  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
               <p
                 className={`${inter.className} text-[#8091B5] text-[12px] font-semibold  mb-2`}
               >
@@ -507,7 +507,7 @@ const DashboardLayout = ({ children }) => {
                   Инструкция
                 </p>
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </nav>
