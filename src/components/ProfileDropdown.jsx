@@ -8,7 +8,7 @@ import { useAuth } from "./AuthProvider"
 
 const ProfileDropdown = () => {
 
-    const { logout } = useAuth()
+    const { logout, user } = useAuth()
     const [isOpen, setIsOpen] = useState(false)
 
     
@@ -21,7 +21,7 @@ const ProfileDropdown = () => {
                     <PiUser className="w-6 h-6 text-[#BAC2D6]" />
                 </div>
                 <div>
-                    <p className={`${inter.className} text-[#002269] font-medium`}>Referer Cloud</p>
+                    <p className={`${inter.className} text-[#002269] font-medium`}>Referer {user?.username || "Admin"}</p>
                     <p className={`text-[#8091B5] ${inter.className} text-[12px] font-medium`}>CHAT ID: 0</p>
                 </div>
 

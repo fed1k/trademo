@@ -125,7 +125,7 @@ const DashboardLayout = ({ children }) => {
                 <PiUser className="w-6 h-6 text-[#BAC2D6]" />
               </div>
               <div>
-                <p className={`${inter.className} text-sm font-semibold`}>Referer Cloud</p>
+                <p className={`${inter.className} text-sm font-semibold`}>Referer {user?.username || "Admin"}</p>
                 <p className='text-[#8091B5] text-[12px] mt-[2px] font-semibold'>CHAT ID: 0</p>
               </div>
             </div>

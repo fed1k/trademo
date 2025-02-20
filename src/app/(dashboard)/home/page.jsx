@@ -1,22 +1,28 @@
 'use client'
 import { Inter } from 'next/font/google';
-import { useState } from "react";
 import { GoArrowRight } from "react-icons/go";
-import { IoIosArrowDown } from "react-icons/io";
 import { FaPlus } from "react-icons/fa";
 import DateDropdown from '@/components/DateDropdown';
+import { BsArrowRightSquare } from "react-icons/bs"
+import { useRouter } from 'next/navigation';
+
 export const periods = ["за сегодня", "за неделю", "за месяц", "за год"];
 export const inter = Inter({
   weight: ['400'],
   subsets: ['latin'],
 });
 const HomePage = () => {
-  const [selectedPeriod, setSelectedPeriod] = useState(periods[0]);
-  const [isOpen, setIsOpen] = useState(false);
+
+  const router = useRouter();
+
   return (
     <div className={`flex pb-28 flex-col gap-7 ${inter.className}`}>
       <div className="flex justify-between md:justify-start md:gap-2 mb-5 items-center">
-        <p className={`${inter.className} text-[16px] md:text-[20px] text-[#002269]`}>Финансы</p>
+        <div onClick={() => router.push("/finances")} className='group flex gap-3 cursor-pointer items-center'>
+
+          <p className={`${inter.className} cursor-pointer text-[16px] md:text-[20px] text-[#002269]`}>Финансы</p>
+          <BsArrowRightSquare className='hidden text-[#0052ff] cursor-pointer group-hover:opacity-100 opacity-0 transition-all md:block' />
+        </div>
         <div className='block sm:hidden'>
           <DateDropdown />
         </div>
@@ -59,9 +65,9 @@ const HomePage = () => {
           <p className={`pb-5 text-[20px] md:flex hidden text-[#002269] ${inter.className}`}>Последние события</p>
           <p className={`pb-5 text-[16px] flex md:hidden text-[#002269] ${inter.className}`}>Устройства</p>
           <p className={`pb-5 text-[20px] hidden md:block text-[#002269] ${inter.className}`}>Устройства</p>
-          <button className="flex gap-2 items-center px-3 py-1 text-sm bg-[#E6EEFF] mb-6 md:mb-3 cursor-pointer p-1 rounded-md">
+          <button onClick={() => router.push("/devices")} className="flex gap-2 items-center px-3 py-1 text-sm mb-6 md:mb-3 cursor-pointer p-1 rounded-md">
             <span className="text-[#0052ff] md:text-[#002269]"> Показать все</span>
-            <GoArrowRight className="text-blue-700 border-spacing-1 border-[#0052ff]" />
+            <BsArrowRightSquare className='text-[#0052ff]' />
           </button>
         </div>
         <div className='flex'>
@@ -82,9 +88,9 @@ const HomePage = () => {
       <div className="flex flex-col">
         <div className="flex justify-between items-center">
           <p className={`pb-5 text-[16px] md:text-[20px] text-[#002269] ${inter.className}`}>Открытые споры</p>
-          <button className="flex gap-2 items-center  text-sm bg-[#E6EEFF] mb-6 md:mb-3 cursor-pointer px-2 py-1 rounded-md">
-            <span className="text-[#0052ff]  text-sm md:text-[#002269]"> Показать все</span>
-            <div><GoArrowRight className="text-blue-700 border-1 border-[#0052ff]-700" /></div>
+          <button onClick={() => router.push("/disputes")} className="flex gap-2 items-center px-3 py-1 text-sm mb-6 md:mb-3 cursor-pointer p-1 rounded-md">
+            <span className="text-[#0052ff] md:text-[#002269]"> Показать все</span>
+            <BsArrowRightSquare className='text-[#0052ff]' />
           </button>
         </div>
 
@@ -96,9 +102,9 @@ const HomePage = () => {
       <div className="flex flex-col  mb-20">
         <div className="flex justify-between items-center">
           <p className={`pb-5 text-[16px] md:text-[20px] text-[#002269] ${inter.className}`}>Последние сделки</p>
-          <button className="flex gap-2 items-center px-3 py-1 text-sm bg-[#E6EEFF] md:mb-3  cursor-pointer p-1 rounded-md">
-            <span className="text-[#0052ff] text-sm md:text-[#002269]"> Показать все</span>
-            <GoArrowRight className="text-blue-700 border-1" />
+          <button onClick={() => router.push("/deals")} className="flex gap-2 items-center px-3 py-1 text-sm mb-6 md:mb-3 cursor-pointer p-1 rounded-md">
+            <span className="text-[#0052ff] md:text-[#002269]"> Показать все</span>
+            <BsArrowRightSquare className='text-[#0052ff]' />
           </button>
         </div>
 
