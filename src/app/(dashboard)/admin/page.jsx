@@ -1,6 +1,8 @@
 "use client"
 
 import { useAuth } from "@/components/AuthProvider"
+import { inter } from "../bank-profiles/page";
+import AdminTabs from "@/components/AdminTabs";
 
 const AdminPage = () => {
     const { user } = useAuth();
@@ -9,7 +11,9 @@ const AdminPage = () => {
     if (!isAdmin) return <h2>Unauthorized page</h2>
 
     return (
-        <h1>Admin page</h1>
+        <div>
+            <AdminTabs />
+        </div>
     )
 }
 

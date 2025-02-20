@@ -17,15 +17,19 @@ const HomePage = () => {
     <div className={`flex pb-28 flex-col gap-7 ${inter.className}`}>
       <div className="flex justify-between md:justify-start md:gap-2 mb-5 items-center">
         <p className={`${inter.className} text-[16px] md:text-[20px] text-[#002269]`}>Финансы</p>
-
-
+        <div className='block sm:hidden'>
+          <DateDropdown />
+        </div>
       </div>
 
       <div className='flex justify-between gap-4 items-center'>
         <div className="bg-[#fbfcfe] rounded-2xl space-y-4 w-full border border-[#eef2f9] p-[13px_20px_15px]">
           <div className='flex justify-between items-center'>
             <p className={`${inter.className} text-[#002269] text-[14px] font-semibold`}>СДЕЛКИ</p>
-            <DateDropdown />
+            <div className='hidden md:block'>
+
+              <DateDropdown />
+            </div>
           </div>
           <p className={`font-sans text-[rgb(0 34 105)] text-[20px] mb-[10px] font-semibold`}>0 USDT</p>
           <p className={`${inter.className} text-[#8091b5] text-[14px] font-medium mb-4`}>0 RUB</p>

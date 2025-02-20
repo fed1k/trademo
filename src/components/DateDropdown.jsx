@@ -18,7 +18,7 @@ const DateDropdown = () => {
 
     return (
 
-        <div className="relative hidden md:flex">
+        <div className="relative flex">
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="bg-white hover:bg-[#e6eeff] flex items-center gap-1 px-2 py-1 rounded-md text-gray-800 focus:outline-none border border-[#eef2f9]"

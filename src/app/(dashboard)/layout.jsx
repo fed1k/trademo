@@ -15,6 +15,11 @@ import { PiSignOutBold } from "react-icons/pi";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/AuthProvider";
+import LanguageDropdown from "@/components/Dropdown";
+import CurrencyDropdown from "@/components/CurrencyDropdown";
+import { IoIosArrowDown } from "react-icons/io";
+import ProfileDropdown from "@/components/ProfileDropdown";
+import LogoComp from "@/components/LogoComp";
 
 const mont = Montserrat({
   weight: ["600"],
@@ -25,7 +30,7 @@ const DashboardLayout = ({ children }) => {
   const pathname = usePathname();
   const [query, setQuery] = useState("");
   const router = useRouter()
-  const {user} = useAuth()
+  const { user, logout } = useAuth()
 
   const isAdmin = user?.isAdmin
   useEffect(() => {
@@ -38,9 +43,9 @@ const DashboardLayout = ({ children }) => {
   const isActive = (path) => pathname === path ? 'active-link' : ''
 
   return (
-    <div className="flex lg:px-20 xl:px-0 xl:justify-center flex-col lg:flex-row">
+    <div className="flex lg:px-6 xl:px-0 lg:justify-center flex-col lg:flex-row">
       {/* telefon uchun */}
-      <nav className="p-5 lg:hidden mb-7 bg-[#f8f9fc] border-b-[1px] border-[#eef2f9] flex justify-between items-center">
+      <nav className={`p-5 lg:hidden ${openNavbar ? "bg-linear" : "bg-[#f8f9fc]"} mb-7  border-b-[1px] border-[#eef2f9] flex justify-between items-center`}>
         <div className="flex items-center gap-[10px]">
           <svg
             _ngcontent-ng-c1742942910=""
@@ -94,17 +99,15 @@ const DashboardLayout = ({ children }) => {
 
       {/* tel uchun */}
       <div
-        className={`${
-          openNavbar ? "z-10 opacity-100" : "-z-10 opacity-0"
-        } transition-all bg-linear px-4 lg:hidden fixed mt-[70px] w-screen min-h-screen z-10 top-0`}
+        className={`${openNavbar ? "z-10 opacity-100" : "-z-10 opacity-0"
+          } transition-all bg-linear px-4 lg:hidden h-full overflow-y-scroll fixed mt-[70px] w-screen top-0`}
       >
-       
+
         <div className="flex flex-col pb-10">
           <div className='mb-2'>
             <button>Region</button>
             <button>Yazik</button>
           </div>
-          {/* <label className="text-[#8091b5] text-sm font-[400] mb-[10px]">Поиск по спорам</label> */}
           <div className="relative flex items-center border border-gray-300 rounded-lg p-2 w-1/2 bg-white shadow-sm">
             <CiSearch className="w-5 h-5 hover:text-[#0052ff] mr-2" />
             <input
@@ -127,11 +130,11 @@ const DashboardLayout = ({ children }) => {
               </div>
             </div>
 
-            <Link href={'/login'}>
-              <div className='p-2 bg-[#FFEAEA] rounded-[8px]'>
-                <PiSignOutBold className='text-red-500'/>
+            <div>
+              <div onClick={logout} className='p-2 bg-[#FFEAEA] rounded-[8px]'>
+                <PiSignOutBold className='text-red-500' />
               </div>
-            </Link>
+            </div>
           </div>
           <div>
 
@@ -144,166 +147,170 @@ const DashboardLayout = ({ children }) => {
 
 
         <nav className="flex gap-2 mx-1">
-       <div className="w-full flex ">
-         <div className="space-y-[7px] w-full bg-white py-5 px-2 rounded-[8px]">
-           {routes.slice(0, 5).map((route, index) => (
-            <div
-             className={`px-3 ${isActive(route.href)} flex gap-2.5 items-center text-[#002269FF] py-1 ${inter.className}`}
-            key={index}
-        >
-          {route.icon}
-          <Link className="text-[12px] flex w-full justify-between font-normal hover:text-[#0052ff]" href={route.href}>
-            <p>{route.text}</p>
-            <p><MdKeyboardArrowRight className='w-3 h-3 text-[#0052ff] font-bold'/></p>
-          </Link>
-        </div>
-      ))}
-    </div>
-  </div>
+          <div className="w-full flex ">
+            <div className="space-y-[7px] w-full bg-white py-5 px-2 rounded-[8px]">
+              {routes.slice(0, 5).map((route, index) => (
+                <div
+                  className={`px-3 ${isActive(route.href)} flex gap-2.5 items-center text-[#002269FF] py-1 ${inter.className}`}
+                  key={index}
+                >
+                  {route.icon}
+                  <Link className="text-[12px] flex w-full justify-between font-normal hover:text-[#0052ff]" href={route.href}>
+                    <p>{route.text}</p>
+                    <p><MdKeyboardArrowRight className='w-3 h-3 text-[#0052ff] font-bold' /></p>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
 
-  <div className="w-full flex gap-1">
-    <div className="space-y-[7px] w-full bg-white py-5 rounded-[8px]">
-      {routes.slice(5).map((route, index) => (
-        <div
-          className={`px-3 ${isActive(route.href)}  flex gap-2.5 items-center text-[#002269FF] py-1 ${inter.className}`}
-          key={index + 5}
-        >
-          <p className='w-4 h-4'>{route.icon}</p>
-          <Link className="text-[12px] font-normal flex w-full justify-between hover:text-[#0052ff]" href={route.href}>
-            <p>{route.text}</p>
-            <MdKeyboardArrowRight className='w-3 h-3 text-[#0052ff] font-bold'/>
-          </Link>
-        </div>
-      ))}
-    </div>
-  </div>
+          <div className="w-full flex gap-1">
+            <div className="space-y-[7px] w-full bg-white py-5 rounded-[8px]">
+              {routes.slice(5).map((route, index) => (
+                <div
+                  className={`px-3 ${isActive(route.href)}  flex gap-2.5 items-center text-[#002269FF] py-1 ${inter.className}`}
+                  key={index + 5}
+                >
+                  <p className='w-4 h-4'>{route.icon}</p>
+                  <Link className="text-[12px] font-normal flex w-full justify-between hover:text-[#0052ff]" href={route.href}>
+                    <p>{route.text}</p>
+                    <MdKeyboardArrowRight className='w-3 h-3 text-[#0052ff] font-bold' />
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
         </nav>
 
 
         <div className='mx-1 mr-2 grid grid-cols-2 gap-2 mt-5 pb-20'>
           <div className="w-full flex-shrink-0 h-22 flex flex-col justify-center mb-3 bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
-              <div className="w-full flex items-center justify-between">
-                <p
-                  className={`${inter.className} text-[#8091B5] text-[10px] font-medium mb-2`}
+            <div className="w-full flex items-center justify-between">
+              <p
+                className={`${inter.className} text-[#8091B5] text-[10px] font-medium mb-2`}
+              >
+                ТРАСТ
+              </p>
+              <button className="py-0 flex gap-1 text-[#8091b5] rounded-2xl items-center mb-2">
+                <svg
+                  _ngcontent-ng-c3644767295=""
+                  width="14"
+                  height="14"
+                  _ngcontent-ng-c1898598531=""
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  ТРАСТ
-                </p>
-                <button className="py-0 flex gap-1 text-[#8091b5] rounded-2xl items-center mb-2">
-                  <svg
+                  <path
                     _ngcontent-ng-c3644767295=""
-                    width="14"
-                    height="14"
                     _ngcontent-ng-c1898598531=""
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      _ngcontent-ng-c3644767295=""
-                      _ngcontent-ng-c1898598531=""
-                      d="M20.25 17.5v-1.75a1.75 1.75 0 1 0-3.5 0v1.75M22 10H2m20 1V8.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C20.48 5 19.92 5 18.8 5H5.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C2 6.52 2 7.08 2 8.2v7.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C3.52 19 4.08 19 5.2 19H11m5.6 2.5h3.8c.56 0 .84 0 1.054-.109a1 1 0 0 0 .437-.437C22 20.74 22 20.46 22 19.9v-.8c0-.56 0-.84-.109-1.054a1 1 0 0 0-.437-.437c-.214-.109-.494-.109-1.054-.109h-3.8c-.56 0-.84 0-1.054.109a1 1 0 0 0-.437.437C15 18.26 15 18.54 15 19.1v.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437c.214.109.494.109 1.054.109Z"
-                      stroke="#8091b5"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    ></path>
-                  </svg>
-                  <span
-                    className={`${inter.className} text-[#8091b5] text-[12px]`}
-                  >
-                    0
-                  </span>
-                </button>
-              </div>
-              <p
-                className={`font-sans text-[#002269] text-[16px] font-semibold  mb-16`}
-              >
-                0 <span className="text-[#0052F9]">USDT</span>
-              </p>
-            </div>
-
-            <div className="w-full flex-shrink-0 h-22 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
-              <div className="w-full flex justify-between">
-                <p
-                  className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
+                    d="M20.25 17.5v-1.75a1.75 1.75 0 1 0-3.5 0v1.75M22 10H2m20 1V8.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C20.48 5 19.92 5 18.8 5H5.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C2 6.52 2 7.08 2 8.2v7.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C3.52 19 4.08 19 5.2 19H11m5.6 2.5h3.8c.56 0 .84 0 1.054-.109a1 1 0 0 0 .437-.437C22 20.74 22 20.46 22 19.9v-.8c0-.56 0-.84-.109-1.054a1 1 0 0 0-.437-.437c-.214-.109-.494-.109-1.054-.109h-3.8c-.56 0-.84 0-1.054.109a1 1 0 0 0-.437.437C15 18.26 15 18.54 15 19.1v.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437c.214.109.494.109 1.054.109Z"
+                    stroke="#8091b5"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></path>
+                </svg>
+                <span
+                  className={`${inter.className} text-[#8091b5] text-[12px]`}
                 >
-                  Прибыль
-                </p>
-              </div>
-              <p
-                className={`font-sans text-[#002269] text-[16px] font-semibold mb-16`}
-              >
-                0 <span className="text-[#0052F9]">USDT</span>
-              </p>
+                  0
+                </span>
+              </button>
             </div>
+            <p
+              className={`font-sans text-[#002269] text-[16px] font-semibold  mb-16`}
+            >
+              0 <span className="text-[#0052F9]">USDT</span>
+            </p>
+          </div>
 
-            <div className="w-full flex-shrink-0 h-[76px] flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
-              <div className="w-full flex justify-between">
-                <p
-                  className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
-                >
-                 Баланс резерва
-                </p>
-              </div>
-              <p
-                className={`font-sans text-[#002269] text-[16px] font-semibold mb-16`}
-              >
-                0.00 <span className="text-[#0052F9]">USDT</span>
-              </p>
-            </div>
-
-            <div className="w-full flex-shrink-0 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+          <div className="w-full flex-shrink-0 h-22 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+            <div className="w-full flex justify-between">
               <p
                 className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
               >
-                Курс Tether TRC-20
-              </p>
-              <p
-                className={`font-sans text-[#002269] text-[16px] font-semibold mb-16`}
-              >
-                92.88 <span className="text-[#0052F9]">RUB</span>
+                Прибыль
               </p>
             </div>
+            <p
+              className={`font-sans text-[#002269] text-[16px] font-semibold mb-16`}
+            >
+              0 <span className="text-[#0052F9]">USDT</span>
+            </p>
+          </div>
 
-            
-
-            <div className="w-full flex-shrink-0 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+          <div className="w-full flex-shrink-0 h-[76px] flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+            <div className="w-full flex justify-between">
               <p
                 className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
               >
-                Моб. приложение
-              </p>
-              <p
-                className={`font-sans text-[#002269] text-[16px] font-semibold mb-16`}
-              >
-                Скачать APK
+                Баланс резерва
               </p>
             </div>
-            
-            <div className="w-full flex-shrink-0 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
-              <p
-                className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
-              >
-                Как подключиться?
-              </p>
-              <p
-                className={`font-sans text-[#002269] text-[16px] font-semibold mb-16`}
-              >
-                Инструкция
-              </p>
-            </div>
-            
+            <p
+              className={`font-sans text-[#002269] text-[16px] font-semibold mb-16`}
+            >
+              0.00 <span className="text-[#0052F9]">USDT</span>
+            </p>
+          </div>
+
+          <div className="w-full flex-shrink-0 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+            <p
+              className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
+            >
+              Курс Tether TRC-20
+            </p>
+            <p
+              className={`font-sans text-[#002269] text-[16px] font-semibold mb-16`}
+            >
+              92.88 <span className="text-[#0052F9]">RUB</span>
+            </p>
+          </div>
+
+
+
+          <div className="w-full flex-shrink-0 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+            <p
+              className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
+            >
+              Моб. приложение
+            </p>
+            <p
+              className={`font-sans text-[#002269] text-[16px] font-semibold mb-16`}
+            >
+              Скачать APK
+            </p>
+          </div>
+
+          <div className="w-full flex-shrink-0 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+            <p
+              className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
+            >
+              Как подключиться?
+            </p>
+            <p
+              className={`font-sans text-[#002269] text-[16px] font-semibold mb-16`}
+            >
+              Инструкция
+            </p>
+          </div>
+
         </div>
 
 
 
       </div>
-        
+
 
 
 
       {/* chapdagi */}
       <nav className="hidden lg:block pt-20">
+
+        <LogoComp />
+        {/* <img width={30} height={30} src="https://images.unsplash.com/photo-1735825764485-93a381fd5779?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" /> */}
+
         <div>
           <p className="text-[#c2cde2] ml-8 font-medium mb-2.5">Навигация</p>
           <div className="space-y-[6px]">
@@ -311,15 +318,16 @@ const DashboardLayout = ({ children }) => {
 
               if (!isAdmin && index === 0) return <></>
 
-              return(
-              <div
-                className={`px-7 ${isActive(route.href)}  link-bg-animation  flex gap-2.5 items-center text-[#002269FF] py-1 ${inter.className}`}
-                key={index}
-              >
-                {route.icon}
-                <Link className=" text-sm font-medium" href={route.href}>{route.text}</Link>
-              </div>
-            )})}
+              return (
+                <div
+                  className={`px-7 ${isActive(route.href)}  link-bg-animation  flex gap-2.5 items-center text-[#002269FF] py-1 ${inter.className}`}
+                  key={index}
+                >
+                  {route.icon}
+                  <Link className=" text-sm font-medium" href={route.href}>{route.text}</Link>
+                </div>
+              )
+            })}
           </div>
 
 
@@ -484,7 +492,7 @@ const DashboardLayout = ({ children }) => {
                 </p>
               </div>
             </div>
-            
+
             <div className="w-full flex-shrink-0 flex mb-6  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
               <p
                 className={`${inter.className} text-[#8091B5] text-[12px] font-semibold  mb-2`}
@@ -492,7 +500,7 @@ const DashboardLayout = ({ children }) => {
                 Как подключиться?
               </p>
               <div className="w-full flex gap-2">
-              <svg _ngcontent-ng-c394174421="" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" className="styles_icon__R_UZa"><path _ngcontent-ng-c394174421="" d="M9.334 1.513v2.754c0 .373 0 .56.072.702a.667.667 0 0 0 .292.292c.142.072.329.072.702.072h2.754M6.567 8.001a1.499 1.499 0 0 1 2.913.5c0 1-1.5 1.499-1.5 1.499M8 12h.007M9.334 1.333H5.867c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874c-.218.428-.218.988-.218 2.108v6.934c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874c.428.218.988.218 2.108.218h4.267c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874c.218-.428.218-.988.218-2.108V5.333l-4-4Z" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                <svg _ngcontent-ng-c394174421="" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" className="styles_icon__R_UZa"><path _ngcontent-ng-c394174421="" d="M9.334 1.513v2.754c0 .373 0 .56.072.702a.667.667 0 0 0 .292.292c.142.072.329.072.702.072h2.754M6.567 8.001a1.499 1.499 0 0 1 2.913.5c0 1-1.5 1.499-1.5 1.499M8 12h.007M9.334 1.333H5.867c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874c-.218.428-.218.988-.218 2.108v6.934c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874c.428.218.988.218 2.108.218h4.267c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874c.218-.428.218-.988.218-2.108V5.333l-4-4Z" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
                 <p
                   className={`${inter.className} text-[#002269] text-[14px] font-bold mb-1`}
                 >
@@ -505,18 +513,35 @@ const DashboardLayout = ({ children }) => {
       </nav>
 
       {/* komp uchun */}
-      <div className="border-x-[1px_solid_#eef2f9] pt-10 flex-[0.8] border">
-        {/* <nav></nav> */}
+      <div className="border-x-[1px_solid_#eef2f9] px-7 pt-10 flex-[0.8] lg:border">
 
-        <main className="px-4">{children}</main>
+        <nav className="mb-8 justify-between hidden lg:flex">
+          <div className="relative flex items-center border border-[#eef2f9] rounded-lg p-2 bg-[#fbfcfe] my-[10px]">
+            <CiSearch className="w-5 h-5 text-[#C2CDE2] mr-2" />
+            <input
+              type="text"
+              placeholder="Поиск"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="flex-1 bg-transparent outline-none text-gray-700 placeholder:font-medium placeholder-gray-300"
+            />
+          </div>
+
+          <div className="flex items-center gap-3">
+            <LanguageDropdown />
+            <CurrencyDropdown />
+            <ProfileDropdown />
+          </div>
+        </nav>
+
+        <main className="">{children}</main>
         <nav className="fixed lg:hidden bg-white border-t border-[#eef2f9] bottom-0 left-0 right-0  flex justify-between items-center p-5">
           <Link href="/requisites">
             <svg
-              className={`transition-all duration-300 p-2 ${
-                pathname === "/requisites"
-                  ? "bg-[#0052ff] fill-white"
-                  : "opacity-50"
-              } rounded-[16px]`}
+              className={`transition-all duration-300 p-2 ${pathname === "/requisites"
+                ? "bg-[#0052ff] fill-white"
+                : "opacity-50"
+                } rounded-[16px]`}
               width="48"
               height="48"
               viewBox="0 0 18 18"
@@ -535,17 +560,15 @@ const DashboardLayout = ({ children }) => {
 
           <Link href="/disputes">
             <AiOutlineExclamationCircle
-              className={` w-7 h-7 ${
-                pathname === "/disputes" ? "" : "opacity-50"
-              } text-[#0052ff] cursor-pointer`}
+              className={` w-7 h-7 ${pathname === "/disputes" ? "" : "opacity-50"
+                } text-[#0052ff] cursor-pointer`}
             />
           </Link>
 
           <Link href="/home">
             <BiHomeAlt
-              className={` ${
-                pathname === "/home" ? "" : "opacity-50"
-              } w-7 h-7 text-[#0052ff] cursor-pointer`}
+              className={` ${pathname === "/home" ? "" : "opacity-50"
+                } w-7 h-7 text-[#0052ff] cursor-pointer`}
             />
           </Link>
           <Link href="/deals">

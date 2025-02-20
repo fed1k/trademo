@@ -27,3 +27,20 @@ export async function checkUserByToken(token) {
     }
 }
 
+// Function to add data to Firestore with uniqueness check
+async function addDataWithUniquenessCheck(collectionName, data) {
+  // Example: Check for uniqueness of 'username'
+  const querySnapshot = await db.collection(collectionName)
+    .where("username", "==", data.email)
+    .get();
+
+  if (!querySnapshot.empty) {
+    // If querySnapshot is not empty, data already exists, handle accordingly
+    console.log('Email already exists!');
+    return;
+  }
+  
+  // If the email is unique, proceed to add the data
+  await db.collection(collectionName).add(data);
+  console.log('Data added successfully!');
+}
