@@ -6,6 +6,7 @@ import {
   getDoc,
   getDocs,
   query,
+  serverTimestamp,
   where,
 } from "firebase/firestore";
 import { v4 } from "uuid";
@@ -65,3 +66,26 @@ export async function addDataWithUniquenessCheck(collectionName, data) {
     return error;
   }
 }
+
+export const addDeviceData = async (userToken, title) => {
+  try {
+    // Reference the devices collection
+    const devicesRef = collection(db, "devices");
+
+    // Prepare the data to be added
+    const deviceData = {
+      user_token: userToken,
+      title,
+      timestamp: serverTimestamp(), // Firebase v9 syntax
+    };
+
+    // Add data to the devices collection
+    const docRef = await addDoc(devicesRef, deviceData);
+
+    console.log("Document written with ID: ", docRef.id);
+    return docRef.id; // Return the document ID in case you need it
+  } catch (error) {
+    console.error("Error adding document: ", error);
+    throw new Error("Failed to add device data");
+  }
+};
