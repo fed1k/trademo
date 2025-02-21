@@ -1,7 +1,8 @@
 'use client'
 import { useAuth } from '@/components/AuthProvider';
+import { addDeviceData, getDevicesByUserToken } from '@/utils/firebase_utils';
 import { Inter } from 'next/font/google';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CiSearch } from "react-icons/ci";
 import { HiXMark } from "react-icons/hi2";
 export const inter = Inter({
@@ -12,6 +13,30 @@ const DevicesPage = () => {
    const {user} =useAuth()
     const [query, setQuery] = useState("");
     const [active,setActive]=useState(true)
+    const [newDeviceToken, setNewDeviceToken] = useState("")
+
+    const addDevice = async() => {
+      if (query) {
+        const response = await addDeviceData(user.token, query)
+        // console.log(response)
+        setActive(false)
+        setNewDeviceToken(response)
+      }
+    }
+
+    // const fall = async() => {
+    //   getDevicesByUserToken
+    // }
+
+    useEffect(() => {
+      if (user) {
+
+        getDevicesByUserToken(user.token).then((res) => {
+          console.log(res)
+        })
+      }
+    }, [user])
+
     return (
         <div>
              <div className='flex justify-between w-full items-center'>
@@ -115,14 +140,14 @@ const DevicesPage = () => {
                 type="text"
                 placeholder="Введите название"
                 // value={user.token}
-               
+                value={newDeviceToken}
                 className="flex-1 bg-transparent outline-none h-8 w-full text-gray-700 placeholder-gray-300 placeholder:text-[17px] "
                 />
                 <svg _ngcontent-ng-c631131687="" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="styles_copyIcon__KzfF6 w-6 h-6 cursor-pointer"><path _ngcontent-ng-c631131687="" d="M7.5 3h7.1c2.24 0 3.36 0 4.216.436a4 4 0 0 1 1.748 1.748C21 6.04 21 7.16 21 9.4v7.1M6.2 21h8.1c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874c.218-.428.218-.988.218-2.108V9.7c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C15.98 6.5 15.42 6.5 14.3 6.5H6.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C3 8.02 3 8.58 3 9.7v8.1c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C4.52 21 5.08 21 6.2 21Z" stroke="#C2CDE2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
          </div>
          </div>
          }
-          {active && <button onClick={()=>{setActive(false)}} className={`${inter.className} text-[#0052FF] h-[60px] text-[16px] mb-2 w-full text-center bg-[#E6EEFF] rounded-[12px]`}>Добавить устройство</button>}
+          {active && <button onClick={addDevice} className={`${inter.className} text-[#0052FF] h-[60px] text-[16px] mb-2 w-full text-center bg-[#E6EEFF] rounded-[12px]`}>Добавить устройство</button>}
 
           {!active && <button onClick={()=>{setActive(false)}} className={`${inter.className} text-[#0052FF] h-[48px] text-[16px] w-full text-center bg-[#E6EEFF] rounded-[12px]`}> Перейти на страницу устройства</button>}
           <div className="modal-action">

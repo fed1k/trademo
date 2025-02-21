@@ -4,7 +4,7 @@ export const inter = Inter({
     weight: ['400'],
     subsets: ['latin'],
   });
-function page() {
+function DevicePage() {
   return (
     <div> 
       <div className='flex justify-between w-full items-center'>
@@ -20,4 +20,4 @@ function page() {
   )
 }
 
-export default page
+export default DevicePage

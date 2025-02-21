@@ -89,3 +89,37 @@ export const addDeviceData = async (userToken, title) => {
     throw new Error("Failed to add device data");
   }
 };
+
+// 
+
+export const getDevicesByUserToken = async (userTokenValue) => {
+  try {
+    // Reference to the devices collection
+    const devicesRef = collection(db, "devices");
+
+    // Query to find devices where user_token equals the specified value
+    const devicesQuery = query(devicesRef, where("user_token", "==", userTokenValue));
+
+    // Execute the query
+    const querySnapshot = await getDocs(devicesQuery);
+
+    // Check if any devices were found and return them
+    if (querySnapshot.empty) {
+      console.log("No devices found with the given user_token.");
+      return [];
+    }
+
+    // Map the documents to an array of data
+    const devices = querySnapshot.docs.map(doc => ({
+      
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return devices;
+  } catch (error) {
+    console.error("Error fetching devices:", error);
+    throw new Error("Error fetching devices");
+  }
+};
+
