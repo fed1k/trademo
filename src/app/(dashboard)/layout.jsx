@@ -315,9 +315,7 @@ const DashboardLayout = ({ children }) => {
           <p className="text-[#c2cde2] ml-8 font-medium mb-2.5">Навигация</p>
           <div className="space-y-[6px]">
             {routes.map((route, index) => {
-
               if (!isAdmin && index === 0) return <></>
-
               return (
                 <div
                   className={`px-7 ${isActive(route.href)}  link-bg-animation  flex gap-2.5 items-center text-[#002269FF] py-1 ${inter.className}`}
