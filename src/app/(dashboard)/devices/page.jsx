@@ -1,4 +1,5 @@
 'use client'
+import { useAuth } from '@/components/AuthProvider';
 import { Inter } from 'next/font/google';
 import { useState } from 'react';
 import { CiSearch } from "react-icons/ci";
@@ -8,6 +9,8 @@ export const inter = Inter({
     subsets: ['latin'],
   });
 const DevicesPage = () => {
+    const {user}=useAuth()
+    console.log(user);
     const [query, setQuery] = useState("");
     const [active,setActive]=useState(true)
     return (
@@ -89,11 +92,11 @@ const DevicesPage = () => {
 
       {/* устройства start */}
           <dialog id="my_modal_4" className="modal">
-        <div className="modal-box w-[400px] p-5 max-w-5xl">
-          <h3 className={`${inter.className} text-center font-medium text-[#000000] text-[18px] mb-2`}>Добавление устройства</h3>
-          <p className={`${inter.className} text-center mb-4 text-sm text-[#8091B5]`}>Заполните форму для добавления</p>
-          <label className="text-[#8091b5] font-semibold uppercase text-sm mb-[16px]">Сортировка результатов</label>
-          <div className="relative flex  gap-4 items-center border border-gray-300 rounded-2xl p-3 w-full bg-[#FBFCFE] shadow-sm mb-4">
+           <div className="modal-box w-[400px] p-5 max-w-5xl">
+            <h3 className={`${inter.className} text-center font-medium text-[#000000] text-[18px] mb-2`}>Добавление устройства</h3>
+              <p className={`${inter.className} text-center mb-4 text-sm text-[#8091B5]`}>Заполните форму для добавления</p>
+            <label className="text-[#8091b5] font-semibold uppercase text-sm">Сортировка результатов</label>
+            <div className="relative flex  gap-4 items-center border border-gray-300 rounded-2xl p-3 w-full bg-[#FBFCFE] shadow-sm mt-2 mb-4">
               <svg _ngcontent-ng-c2941981905="" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" className='mt-[1px] w-4 h-4 md:w-5 md:h-5'><path _ngcontent-ng-c2941981905="" d="M12.182 4.318a4.5 4.5 0 0 1 0 6.364m-6.364 0a4.5 4.5 0 0 1 0-6.364m-2.121 8.485a7.5 7.5 0 0 1 0-10.606m10.606 0a7.5 7.5 0 0 1 0 10.606M9 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm0 0v6.75" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
                   <input
                 type="text"
@@ -105,15 +108,15 @@ const DevicesPage = () => {
                 <svg _ngcontent-ng-c631131687="" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="styles_copyIcon__KzfF6 w-6 h-6"><path _ngcontent-ng-c631131687="" d="M7.5 3h7.1c2.24 0 3.36 0 4.216.436a4 4 0 0 1 1.748 1.748C21 6.04 21 7.16 21 9.4v7.1M6.2 21h8.1c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874c.218-.428.218-.988.218-2.108V9.7c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C15.98 6.5 15.42 6.5 14.3 6.5H6.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C3 8.02 3 8.58 3 9.7v8.1c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C4.52 21 5.08 21 6.2 21Z" stroke="#C2CDE2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
          </div>
 
-         {!active &&  <div>
-          <label className="text-[#8091b5] font-semibold uppercase text-sm mb-[16px]">СЕКРЕТНЫЙ КЛЮЧ – UUID</label>
-          <div className="relative flex  gap-4 items-center border border-gray-300 rounded-2xl p-3 w-full bg-[#FBFCFE] shadow-sm mb-4">
+          {!active &&  <div>
+           <label className="text-[#8091b5] font-semibold uppercase text-sm mb-[16px]">СЕКРЕТНЫЙ КЛЮЧ – UUID</label>
+            <div className="relative flex  gap-4 items-center border border-gray-300 rounded-2xl p-3 w-full bg-[#FBFCFE] shadow-sm mb-4 mt-2">
               <svg _ngcontent-ng-c631131687="" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c631131687="" d="M5.918 8.333h-.085V6.667a4.167 4.167 0 1 1 8.334 0v1.666h-.085M10 11.667v1.666m5.833-.833a5.833 5.833 0 1 1-11.666 0 5.833 5.833 0 0 1 11.666 0Z" stroke="#0052FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
                   <input
                 type="text"
                 placeholder="Введите название"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                value={user.token}
+               
                 className="flex-1 bg-transparent outline-none h-8 w-full text-gray-700 placeholder-gray-300 placeholder:text-[17px] "
                 />
                 <svg _ngcontent-ng-c631131687="" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="styles_copyIcon__KzfF6 w-6 h-6 cursor-pointer"><path _ngcontent-ng-c631131687="" d="M7.5 3h7.1c2.24 0 3.36 0 4.216.436a4 4 0 0 1 1.748 1.748C21 6.04 21 7.16 21 9.4v7.1M6.2 21h8.1c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874c.218-.428.218-.988.218-2.108V9.7c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C15.98 6.5 15.42 6.5 14.3 6.5H6.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C3 8.02 3 8.58 3 9.7v8.1c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C4.52 21 5.08 21 6.2 21Z" stroke="#C2CDE2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
@@ -124,13 +127,14 @@ const DevicesPage = () => {
 
           {!active && <button onClick={()=>{setActive(false)}} className={`${inter.className} text-[#0052FF] h-[48px] text-[16px] w-full text-center bg-[#E6EEFF] rounded-[12px]`}> Перейти на страницу устройства</button>}
           <div className="modal-action">
-            <form method="dialog w-full">
-              {!active && <button className={`${inter.className} btn text-[#002269] text-[16px] bg-[#F3F4F8] w-full h-12`}>Закрыть</button>}
+            <form method="dialog">
+              {!active && <button className={`${inter.className} btn text-[#002269] text-[16px] bg-[#F3F4F8] w-[360px] h-12`}>Закрыть</button>}
             </form>
           </div>
         </div>
       </dialog>
           {/* устройства end */}
+
 
 
 
