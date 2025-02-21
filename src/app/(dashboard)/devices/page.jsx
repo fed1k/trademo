@@ -9,8 +9,7 @@ export const inter = Inter({
     subsets: ['latin'],
   });
 const DevicesPage = () => {
-    const {user}=useAuth()
-    console.log(user);
+   const {user} =useAuth()
     const [query, setQuery] = useState("");
     const [active,setActive]=useState(true)
     return (
@@ -115,7 +114,7 @@ const DevicesPage = () => {
                   <input
                 type="text"
                 placeholder="Введите название"
-                value={user.token}
+                // value={user.token}
                
                 className="flex-1 bg-transparent outline-none h-8 w-full text-gray-700 placeholder-gray-300 placeholder:text-[17px] "
                 />

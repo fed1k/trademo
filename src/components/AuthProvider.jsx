@@ -1,5 +1,4 @@
 "use client";
-
 import { checkUserByToken } from "@/utils/firebase_utils";
 import { redirect, useRouter } from "next/navigation";
 import { createContext, useContext, useState, useEffect } from "react";
