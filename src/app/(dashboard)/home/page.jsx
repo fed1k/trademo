@@ -5,14 +5,26 @@ import { FaPlus } from "react-icons/fa";
 import DateDropdown from '@/components/DateDropdown';
 import { BsArrowRightSquare } from "react-icons/bs"
 import { useRouter } from 'next/navigation';
-
+import { useAuth } from '@/components/AuthProvider';
+import { getDevicesByUserToken } from '@/utils/firebase_utils';
+import { useState,useEffect } from 'react';
+import DeviceCard from '@/components/DeviceCard';
+import HomeDeviceCard from '@/components/HomeDeviseCard';
 export const periods = ["за сегодня", "за неделю", "за месяц", "за год"];
 export const inter = Inter({
   weight: ['400'],
   subsets: ['latin'],
 });
 const HomePage = () => {
-
+  const {user}=useAuth()
+  const [users,setUsers]=useState([])
+  useEffect(() => {
+    if (user) {
+      getDevicesByUserToken(user.token).then((res) => {
+        setUsers(res)
+      })
+    }
+  }, [user])
   const router = useRouter();
 
   return (
@@ -70,18 +82,22 @@ const HomePage = () => {
             <BsArrowRightSquare className='text-[#0052ff]' />
           </button>
         </div>
-        <div className='flex'>
-          <div className='hidden md:block'>
-
-            <div className="flex justify-center border rounded-2xl border-[#eef2f9] px-10 py-5 items-center h-32 bg-[#fbfcfe]">
+        <div className='flex w-full justify-between gap-5 '>
+          <div className='hidden w-full md:block'>
+            <div className="flex justify-center border  rounded-2xl border-[#eef2f9] px-10 py-5 items-center h-32 bg-[#fbfcfe]">
               <p className={`text-[18px] text-[#8091b5] ${inter.className} leading-5 font-serif`}>События не найдены</p>
             </div>
           </div>
-          <button className="flex items-center mx-auto rounded-md  gap-4 py-3 px-5 hover:bg-[#fbfcfe]  my-5">
+         {!users &&  <button className="flex w-full items-center mx-auto rounded-md  gap-4 py-3 px-5 hover:bg-[#fbfcfe]  my-5">
             <FaPlus className="text-[20px] text-[#0052ff] " /><span className={`text-[16px] text-[#002269] ${inter.className}`}>Добавить устройство</span>
-          </button>
-
-
+          </button>}
+           <div className='w-full'>
+              {users && users.map((user)=>{
+              return <div key={user.id}>
+                <HomeDeviceCard user={user}/>
+              </div>
+        }) }
+           </div>
         </div>
       </div>
 

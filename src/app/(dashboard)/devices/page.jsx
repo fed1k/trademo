@@ -1,5 +1,6 @@
 'use client'
 import { useAuth } from '@/components/AuthProvider';
+import DeviceCard from '@/components/DeviceCard';
 import { addDeviceData, getDevicesByUserToken } from '@/utils/firebase_utils';
 import { Inter } from 'next/font/google';
 import { useEffect, useState } from 'react';
@@ -10,33 +11,29 @@ export const inter = Inter({
     subsets: ['latin'],
   });
 const DevicesPage = () => {
-   const {user} =useAuth()
+    const {user} =useAuth()
     const [query, setQuery] = useState("");
     const [active,setActive]=useState(true)
     const [newDeviceToken, setNewDeviceToken] = useState("")
-
+    const [users,setUsers]=useState([])
     const addDevice = async() => {
       if (query) {
         const response = await addDeviceData(user.token, query)
-        // console.log(response)
         setActive(false)
         setNewDeviceToken(response)
       }
     }
 
-    // const fall = async() => {
-    //   getDevicesByUserToken
-    // }
-
     useEffect(() => {
       if (user) {
-
         getDevicesByUserToken(user.token).then((res) => {
-          console.log(res)
+          setUsers(res)
+          console.log(res);
         })
       }
     }, [user])
-
+     
+     
     return (
         <div>
              <div className='flex justify-between w-full items-center'>
@@ -66,7 +63,7 @@ const DevicesPage = () => {
         )}
          </div>
 
-         <div className='justify-between hidden md:flex  gap-3 items-center'>
+         <div className='justify-between hidden md:flex mb-5  gap-3 items-center'>
       <div className="flex  flex-col gap-2 mt-7 w-full px-1">
         <label className="text-[#8091b5] text-sm font-[400] mb-[10px]">Поиск по сделкам</label>
         <div className="relative flex items-center border border-gray-300 rounded-lg p-2 w-full bg-white shadow-sm">
@@ -162,9 +159,14 @@ const DevicesPage = () => {
 
 
 
-         <div className="flex justify-center border rounded-2xl border-[#eef2f9] items-center h-32 bg-[#fbfcfe] mt-5">
+         {!users && <div className="flex justify-center border rounded-2xl border-[#eef2f9] items-center h-32 bg-[#fbfcfe] mt-5">
           <p className={`text-[18px] text-[#8091b5] font-medium ${inter.className} leading-5 font-serif`}>Устройства не найдены</p>
-        </div>
+        </div>}
+        {users && users.map((user)=>{
+          return <div>
+            <DeviceCard user={user}/>
+          </div>
+        }) }
         </div>
     )
 }
