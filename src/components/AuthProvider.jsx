@@ -28,9 +28,7 @@ export const AuthProvider = ({ children }) => {
     // Check if there's a logged-in user (e.g., from localStorage or an API)
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) {
-      updateSeverUser(storedUser.token).then((res) => {
-        setUser(res)
-      })
+      updateSeverUser(storedUser.token)
     }
   }, []);
 

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import AdminAddUser from './AdminAddUser';
 import AdminEditUser from './AdminEditUser';
 import { inter } from './DateDropdown';
+import PaymentVerification from './PaymentVerification';
 
 function AdminTabs() {
   const [activeTab, setActiveTab] = useState(0);
@@ -11,6 +12,7 @@ function AdminTabs() {
   const tabs = [
     { title: 'Добавить', content: <AdminAddUser /> },
     { title: 'Редактировать', content: <AdminEditUser /> },
+    { title: 'Верификатции', content: <PaymentVerification /> },
   ];
 
   return (

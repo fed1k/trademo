@@ -111,7 +111,7 @@ export const getDevicesByUserToken = async (userTokenValue) => {
 
     // Map the documents to an array of data
     const devices = querySnapshot.docs.map(doc => ({
-      
+
       id: doc.id,
       ...doc.data(),
     }));
@@ -121,5 +121,33 @@ export const getDevicesByUserToken = async (userTokenValue) => {
     console.error("Error fetching devices:", error);
     throw new Error("Error fetching devices");
   }
+};
+
+export const getPaymentVerifications = async () => {
+  const querySnapshot = await getDocs(collection(db, 'deposit_verifications'));
+
+  // Map over the documents and format the date
+  return querySnapshot.docs.map(doc => {
+    const data = doc.data();
+    const timestamp = data.date; // Assuming 'timestamp' is the field name
+
+    // Convert Firestore Timestamp to JavaScript Date object
+    const date = timestamp.toDate();
+
+    // Format the date in the requested format (24 февраля 2025 23:20)
+    const formattedDate = new Intl.DateTimeFormat('ru-RU', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(date);
+
+    return {
+      id: doc.id,
+      ...data,
+      formattedDate, // Add the formatted date to the returned object
+    };
+  });
 };
 
