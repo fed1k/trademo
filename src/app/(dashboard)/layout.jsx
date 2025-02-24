@@ -322,7 +322,7 @@ const DashboardLayout = ({ children }) => {
                   key={index}
                 >
                   {route.icon}
-                  <Link className=" text-sm font-medium" href={route.href}>{route.text}</Link>
+                  <Link className="text-sm font-medium" href={route.href}>{route.text}</Link>
                 </div>
               )
             })}

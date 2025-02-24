@@ -163,7 +163,7 @@ const DevicesPage = () => {
           <p className={`text-[18px] text-[#8091b5] font-medium ${inter.className} leading-5 font-serif`}>Устройства не найдены</p>
         </div>}
         {users && users.map((user)=>{
-          return <div>
+          return <div key={user.id}>
             <DeviceCard user={user}/>
           </div>
         }) }

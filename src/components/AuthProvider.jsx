@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) {
       updateSeverUser(storedUser.token).then((res) => {
-        router.push("/home")
+        setUser(res)
       })
     }
   }, []);

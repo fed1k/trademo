@@ -1,6 +1,5 @@
 'use client'
 import { Inter } from 'next/font/google';
-import { GoArrowRight } from "react-icons/go";
 import { FaPlus } from "react-icons/fa";
 import DateDropdown from '@/components/DateDropdown';
 import { BsArrowRightSquare } from "react-icons/bs"
@@ -26,7 +25,6 @@ const HomePage = () => {
     }
   }, [user])
   const router = useRouter();
-
   return (
     <div className={`flex pb-28 flex-col gap-7 ${inter.className}`}>
       <div className="flex justify-between md:justify-start md:gap-2 mb-5 items-center">
