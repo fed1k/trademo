@@ -11,11 +11,14 @@ function DevicePage() {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div> 
-      <div className='flex justify-between w-full items-center'>
-                <p className={`${inter.className} text-[24px] md:text-[32px] text-[#002269] leading-6 mb-7`}>Устройства</p>
-                <div className='flex gap-4 font-bold items-center'>
-                  <p className={`text-[#FEC065] text-sm ${inter.className}`}>offline</p>
-                   <button className='flex gap-1 items-center bg-[#FBFCFE] rounded-[8px] py-2.5 px-5'>
+      <div className='md:flex block justify-between w-full items-center gap-3'>
+                <div className=' w-full flex justify-between items-center mb-6 md:mb-0'>
+                  <p className={`${inter.className} text-[24px] md:text-[32px] text-[#002269] leading-6`}>Устройства</p>
+                  <p className={`text-[#FEC065] block md:hidden  text-sm ${inter.className}`}>offline</p>
+                </div>
+                <div className='flex gap-4 justify-between font-bold items-center'>
+                  <p className={`text-[#FEC065] hidden md:block  text-sm ${inter.className}`}>offline</p>
+                   <button className='flex min-w-56 gap-1 items-center bg-[#FBFCFE] rounded-[8px] py-2.5 px-5'>
                       <svg _ngcontent-ng-c2661008953="" className='w-5 h-5' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c2661008953="" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10Z" stroke="#0052FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path _ngcontent-ng-c2661008953="" d="M9.5 8.965c0-.477 0-.716.1-.849a.5.5 0 0 1 .364-.199c.166-.012.367.117.769.375l4.72 3.035c.349.224.523.336.583.478a.5.5 0 0 1 0 .39c-.06.142-.234.254-.583.478l-4.72 3.035c-.402.258-.603.387-.769.375a.5.5 0 0 1-.364-.2c-.1-.132-.1-.371-.1-.848v-6.07Z" stroke="#0052FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
                       <p className={`${inter.className} text-[#002269] text-sm `}> Запустить устройство</p>
                        </button>
@@ -51,10 +54,11 @@ function DevicePage() {
               </div>
              </div>
 
-      <div className='flex justify-between mt-10 w-full'>
-          <div className=''>
-              <svg _ngcontent-ng-c2661008953="" className='absolute z-0' height='592' width='296' viewBox="0 0 300 600" fill="none" xmlns="http://www.w3.org/2000/svg" class="styles_deviceImage__NMpHC"><path _ngcontent-ng-c2661008953="" fill-rule="evenodd" clip-rule="evenodd" d="M32 4h234c15.464 0 28 12.536 28 28v536c0 15.464-12.536 28-28 28H32c-15.464 0-28-12.536-28-28V32C4 16.536 16.536 4 32 4ZM1 32C1 14.88 14.88 1 32 1h234c17.121 0 31 13.88 31 31v189.354c-.622.705-1 1.632-1 2.646v67c0 1.014.378 1.941 1 2.646V568c0 17.121-13.879 31-31 31H32c-17.12 0-31-13.879-31-31V32Z" fill="#343443"></path><path _ngcontent-ng-c2661008953="" fill-rule="evenodd" clip-rule="evenodd" d="M32 1h234c17.121 0 31 13.88 31 31v189.354a4.032 4.032 0 0 1 1-.819V32c0-17.673-14.327-32-32-32H32C14.327 0 0 14.327 0 32v536c0 17.673 14.327 32 32 32h234c17.673 0 32-14.327 32-32V294.465a4.032 4.032 0 0 1-1-.819V568c0 17.121-13.879 31-31 31H32c-17.12 0-31-13.879-31-31V32C1 14.88 14.88 1 32 1Z" fill="#1A1A27"></path><rect _ngcontent-ng-c2661008953="" x="5.5" y="5.5" width="287" height="589" rx="26.5" stroke="#1A1A27" stroke-width="3"></rect><rect _ngcontent-ng-c2661008953="" x="8" y="8" width="282" height="584" rx="24" stroke="#222232" stroke-width="2"></rect><rect _ngcontent-ng-c2661008953="" x="12.5" y="12.5" width="273" height="575" rx="19.5" stroke="#F0F4FC" stroke-width="7"></rect><rect _ngcontent-ng-c2661008953="" x="16" y="16" width="266" height="568" rx="16" fill="#F9FBFF"></rect><path _ngcontent-ng-c2661008953="" d="M298 120h.5a1.5 1.5 0 0 1 1.5 1.5v77a1.5 1.5 0 0 1-1.5 1.5h-.5v-80Z" fill="url(#device-body_svg__a)"></path><path _ngcontent-ng-c2661008953="" d="M296 230h.5a1.5 1.5 0 0 1 1.5 1.5v52a1.5 1.5 0 0 1-1.5 1.5h-.5v-55Z" fill="url(#device-body_svg__b)"></path><defs _ngcontent-ng-c2661008953=""><linearGradient _ngcontent-ng-c2661008953="" id="device-body_svg__a" x1="300" y1="120.571" x2="298" y2="120.571" gradientUnits="userSpaceOnUse"><stop _ngcontent-ng-c2661008953="" stop-color="#343443"></stop><stop _ngcontent-ng-c2661008953="" offset="1" stop-color="#272733"></stop></linearGradient><linearGradient _ngcontent-ng-c2661008953="" id="device-body_svg__b" x1="298" y1="230.393" x2="296" y2="230.393" gradientUnits="userSpaceOnUse"><stop _ngcontent-ng-c2661008953="" stop-color="#343443"></stop><stop _ngcontent-ng-c2661008953="" offset="1" stop-color="#272733"></stop></linearGradient></defs></svg>
-
+      <div className='flex justify-between gap-7 mt-10 w-full px-5'>
+          <div>
+              <svg _ngcontent-ng-c2661008953="" className='relative md:block hidden' height='592' width='296' viewBox="0 0 300 600" fill="none" xmlns="http://www.w3.org/2000/svg" class="styles_deviceImage__NMpHC"><path _ngcontent-ng-c2661008953="" fill-rule="evenodd" clip-rule="evenodd" d="M32 4h234c15.464 0 28 12.536 28 28v536c0 15.464-12.536 28-28 28H32c-15.464 0-28-12.536-28-28V32C4 16.536 16.536 4 32 4ZM1 32C1 14.88 14.88 1 32 1h234c17.121 0 31 13.88 31 31v189.354c-.622.705-1 1.632-1 2.646v67c0 1.014.378 1.941 1 2.646V568c0 17.121-13.879 31-31 31H32c-17.12 0-31-13.879-31-31V32Z" fill="#343443"></path><path _ngcontent-ng-c2661008953="" fill-rule="evenodd" clip-rule="evenodd" d="M32 1h234c17.121 0 31 13.88 31 31v189.354a4.032 4.032 0 0 1 1-.819V32c0-17.673-14.327-32-32-32H32C14.327 0 0 14.327 0 32v536c0 17.673 14.327 32 32 32h234c17.673 0 32-14.327 32-32V294.465a4.032 4.032 0 0 1-1-.819V568c0 17.121-13.879 31-31 31H32c-17.12 0-31-13.879-31-31V32C1 14.88 14.88 1 32 1Z" fill="#1A1A27"></path><rect _ngcontent-ng-c2661008953="" x="5.5" y="5.5" width="287" height="589" rx="26.5" stroke="#1A1A27" strokeWidth="3"></rect><rect _ngcontent-ng-c2661008953="" x="8" y="8" width="282" height="584" rx="24" stroke="#222232" strokeWidth="2"></rect><rect _ngcontent-ng-c2661008953="" x="12.5" y="12.5" width="273" height="575" rx="19.5" stroke="#F0F4FC" strokeWidth="7"></rect><rect _ngcontent-ng-c2661008953="" x="16" y="16" width="266" height="568" rx="16" fill="#F9FBFF"></rect><path _ngcontent-ng-c2661008953="" d="M298 120h.5a1.5 1.5 0 0 1 1.5 1.5v77a1.5 1.5 0 0 1-1.5 1.5h-.5v-80Z" fill="url(#device-body_svg__a)"></path><path _ngcontent-ng-c2661008953="" d="M296 230h.5a1.5 1.5 0 0 1 1.5 1.5v52a1.5 1.5 0 0 1-1.5 1.5h-.5v-55Z" fill="url(#device-body_svg__b)"></path><defs _ngcontent-ng-c2661008953=""><linearGradient _ngcontent-ng-c2661008953="" id="device-body_svg__a" x1="300" y1="120.571" x2="298" y2="120.571" gradientUnits="userSpaceOnUse"><stop _ngcontent-ng-c2661008953="" stop-color="#343443"></stop><stop _ngcontent-ng-c2661008953="" offset="1" stop-color="#272733"></stop></linearGradient><linearGradient _ngcontent-ng-c2661008953="" id="device-body_svg__b" x1="298" y1="230.393" x2="296" y2="230.393" gradientUnits="userSpaceOnUse"><stop _ngcontent-ng-c2661008953="" stop-color="#343443"></stop><stop _ngcontent-ng-c2661008953="" offset="1" stop-color="#272733"></stop></linearGradient></defs>
+                <div className='absolute left-1/2 top-1/2'>
+                      
                <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 '>
              
               <p></p>
@@ -62,13 +66,14 @@ function DevicePage() {
              
           </div>
 
-          <div className='left-auto w-[65%]'> 
-            <div className='p-5 mb-5 w-full  border border-[#eef2f9] rounded-[16px] bg-[#FBFCFE] flex items-center gap-2 h-[104px]'>
-              <svg _ngcontent-ng-c2661008953="" className='w-8 h-8' viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c2661008953="" d="M6 8.75h.005M4.1 11h3.8c.56 0 .84 0 1.054-.109a1 1 0 0 0 .437-.437C9.5 10.24 9.5 9.96 9.5 9.4V2.6c0-.56 0-.84-.109-1.054a1 1 0 0 0-.437-.437C8.74 1 8.46 1 7.9 1H4.1c-.56 0-.84 0-1.054.109a1 1 0 0 0-.437.437C2.5 1.76 2.5 2.04 2.5 2.6v6.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C3.26 11 3.54 11 4.1 11Zm2.15-2.25a.25.25 0 1 1-.5 0 .25.25 0 0 1 .5 0Z" stroke="#0052ff" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"></path></svg>
-              <div className='ml-5'>
-                <p className={`${inter.className} font-medium text-[#8091B5] text-[18px] `}>Название устройства</p>
-                <p className={`${inter.className} text-[#002269] text-[900] text-[22px] `}>24123423</p>
-              </div>
+      <div className='p-5 mb-5 w-full mx-auto  border border-[#eef2f9] rounded-[16px] bg-[#FBFCFE] md:hidden flex ml-10 items-center gap-2 h-[280px]'>
+                      <svg _ngcontent-ng-c2661008953="" className='w-36 h-52' viewBox="0 0 300 600" fill="none" xmlns="http://www.w3.org/2000/svg" class="styles_deviceImage__SvmJn"><path _ngcontent-ng-c2661008953="" fill-rule="evenodd" clip-rule="evenodd" d="M32 4h234c15.464 0 28 12.536 28 28v536c0 15.464-12.536 28-28 28H32c-15.464 0-28-12.536-28-28V32C4 16.536 16.536 4 32 4ZM1 32C1 14.88 14.88 1 32 1h234c17.121 0 31 13.88 31 31v189.354c-.622.705-1 1.632-1 2.646v67c0 1.014.378 1.941 1 2.646V568c0 17.121-13.879 31-31 31H32c-17.12 0-31-13.879-31-31V32Z" fill="#343443"></path><path _ngcontent-ng-c2661008953="" fill-rule="evenodd" clip-rule="evenodd" d="M32 1h234c17.121 0 31 13.88 31 31v189.354a4.032 4.032 0 0 1 1-.819V32c0-17.673-14.327-32-32-32H32C14.327 0 0 14.327 0 32v536c0 17.673 14.327 32 32 32h234c17.673 0 32-14.327 32-32V294.465a4.032 4.032 0 0 1-1-.819V568c0 17.121-13.879 31-31 31H32c-17.12 0-31-13.879-31-31V32C1 14.88 14.88 1 32 1Z" fill="#1A1A27"></path><rect _ngcontent-ng-c2661008953="" x="5.5" y="5.5" width="287" height="589" rx="26.5" stroke="#1A1A27" stroke-width="3"></rect><rect _ngcontent-ng-c2661008953="" x="8" y="8" width="282" height="584" rx="24" stroke="#222232" stroke-width="2"></rect><rect _ngcontent-ng-c2661008953="" x="12.5" y="12.5" width="273" height="575" rx="19.5" stroke="#F0F4FC" stroke-width="7"></rect><rect _ngcontent-ng-c2661008953="" x="16" y="16" width="266" height="568" rx="16" fill="#F9FBFF"></rect><path _ngcontent-ng-c2661008953="" d="M298 120h.5a1.5 1.5 0 0 1 1.5 1.5v77a1.5 1.5 0 0 1-1.5 1.5h-.5v-80Z" fill="url(#device-body_svg__a)"></path><path _ngcontent-ng-c2661008953="" d="M296 230h.5a1.5 1.5 0 0 1 1.5 1.5v52a1.5 1.5 0 0 1-1.5 1.5h-.5v-55Z" fill="url(#device-body_svg__b)"></path><defs _ngcontent-ng-c2661008953=""><linearGradient _ngcontent-ng-c2661008953="" id="device-body_svg__a" x1="300" y1="120.571" x2="298" y2="120.571" gradientUnits="userSpaceOnUse"><stop _ngcontent-ng-c2661008953="" stop-color="#343443"></stop><stop _ngcontent-ng-c2661008953="" offset="1" stop-color="#272733"></stop></linearGradient><linearGradient _ngcontent-ng-c2661008953="" id="device-body_svg__b" x1="298" y1="230.393" x2="296" y2="230.393" gradientUnits="userSpaceOnUse"><stop _ngcontent-ng-c2661008953="" stop-color="#343443"></stop><stop _ngcontent-ng-c2661008953="" offset="1" stop-color="#272733"></stop></linearGradient></defs></svg>
+                      <div>
+                        <div className='mb-6'>
+                        <div className='flex gap-4 items-center'>
+                          <BsX className='text-[#fb6c6c]'/>
+                          <p className={`text-[#fb6c6c] ${inter.className} text-sm`}>Устройство offline</p>
+                        </div>
             </div>
              <div className='p-5 mb-5 w-full  border border-[#eef2f9] rounded-[16px] bg-[#FBFCFE] flex items-center gap-2 h-[104px]'>
             <svg _ngcontent-ng-c2661008953="" className='w-8 h-8' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c2661008953="" d="M4 6.8c0-1.68 0-2.52.327-3.162a3 3 0 0 1 1.311-1.311C6.28 2 7.12 2 8.8 2h3.212c.733 0 1.1 0 1.446.083.306.073.598.195.867.36.303.185.562.444 1.08.963l3.19 3.188c.518.519.777.778.963 1.081a3 3 0 0 1 .36.867c.082.346.082.712.082 1.446V17.2c0 1.68 0 2.52-.327 3.162a3 3 0 0 1-1.311 1.311C17.72 22 16.88 22 15.2 22H8.8c-1.68 0-2.52 0-3.162-.327a3 3 0 0 1-1.311-1.311C4 19.72 4 18.88 4 17.2V6.8Z" stroke="#0052FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path _ngcontent-ng-c2661008953="" d="M8 13.8c0-.28 0-.42.055-.527a.5.5 0 0 1 .218-.218C8.38 13 8.52 13 8.8 13h6.4c.28 0 .42 0 .527.055a.5.5 0 0 1 .218.218c.055.107.055.247.055.527v3.4c0 .28 0 .42-.055.527a.5.5 0 0 1-.218.218C15.62 18 15.48 18 15.2 18H8.8c-.28 0-.42 0-.527-.055a.5.5 0 0 1-.218-.218C8 17.62 8 17.48 8 17.2v-3.4Z" stroke="#0052FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
@@ -135,6 +140,22 @@ function DevicePage() {
 
             </div>
           </div>
+      </div>
+
+      <div className='flex gap-5 items-center mt-10'>
+        <div className='p-5 mb-5 w-full  border border-[#eef2f9] rounded-[16px] bg-[#FBFCFE] gap-2 h-[118px]'>
+           <p className={`${inter.className} text-[#002269] text-[900] text-[18px] mb-6 `}>Последняя активность</p>    
+          <div className='flex gap-3 items-center mb-4'>
+            <svg _ngcontent-ng-c2661008953="" className='w-3 h-3' viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c2661008953="" d="M6.5 1 2.047 6.344c-.175.21-.262.314-.263.402a.25.25 0 0 0 .093.198C1.945 7 2.082 7 2.354 7H6l-.5 4 4.453-5.344c.175-.21.262-.314.263-.402a.25.25 0 0 0-.093-.198C10.055 5 9.918 5 9.646 5H6l.5-4Z" stroke="#0052FF" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <p className={`${inter.className} font-medium text-[#8091B5] text-[16px] `}>Запущено:</p>
+            <p className={`${inter.className} text-[#002269] text-[900] text-[16px] `}>Последняя активность</p>  
+          </div>
+         
+        </div>
+        <div className='p-5 mb-5 w-full  border border-[#eef2f9] rounded-[16px] bg-[#FBFCFE] flex items-center gap-2 h-[104px]'>
+          <p className={`${inter.className} font-medium text-[#8091B5] text-[18px] `}>Название устройства</p>
+          <p className={`${inter.className} text-[#002269] text-[900] text-[22px] `}>24123423</p>       
+        </div>
       </div>
     </div>
   )
