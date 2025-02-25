@@ -14,6 +14,8 @@ const FinancesPage = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
 
+  // const {user} = useAuth
+
   const [depositStep, setDepositStep] = useState(1)
 
   const modalRef = useRef(null)
@@ -48,7 +50,7 @@ const FinancesPage = () => {
       </div>
 
       <dialog ref={modalRef} id="my_modal_4" className="modal">
-        <div className="modal-box w-[400px] flex flex-col items-center p-5 max-w-5xl">
+        <div className="modal-box w-[450px] flex flex-col items-center p-5 max-w-5xl">
           {depositStep === 1 &&
             <>
               <p className='mb-5 text-[#0052ff] font-medium text-lg'>Шаг {depositStep}</p>

@@ -125,15 +125,11 @@ export const getDevicesByUserToken = async (userTokenValue) => {
 
 export const getPaymentVerifications = async () => {
   const querySnapshot = await getDocs(collection(db, 'deposit_verifications'));
-
   // Map over the documents and format the date
   return querySnapshot.docs.map(doc => {
     const data = doc.data();
     const timestamp = data.date; // Assuming 'timestamp' is the field name
-
-    // Convert Firestore Timestamp to JavaScript Date object
     const date = timestamp.toDate();
-
     // Format the date in the requested format (24 февраля 2025 23:20)
     const formattedDate = new Intl.DateTimeFormat('ru-RU', {
       day: 'numeric',
@@ -142,7 +138,6 @@ export const getPaymentVerifications = async () => {
       hour: '2-digit',
       minute: '2-digit',
     }).format(date);
-
     return {
       id: doc.id,
       ...data,
@@ -150,4 +145,9 @@ export const getPaymentVerifications = async () => {
     };
   });
 };
+
+export const getWalletAddress = async () => {
+  const querySnapshot = await getDocs(collection(db, 'deposit_wallet'));
+  return querySnapshot.docs.map((doc) => doc.data());
+}
 
