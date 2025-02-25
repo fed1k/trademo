@@ -3,10 +3,12 @@ import { getAuth } from "firebase/auth";
 import {
   addDoc,
   collection,
+  doc,
   getDoc,
   getDocs,
   query,
   serverTimestamp,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { v4 } from "uuid";
@@ -150,4 +152,63 @@ export const getWalletAddress = async () => {
   const querySnapshot = await getDocs(collection(db, 'deposit_wallet'));
   return querySnapshot.docs.map((doc) => doc.data());
 }
+
+export const addDeposit = async (data) => {
+  try {
+    // Reference to the 'deposit_verifications' collection
+    const depositVerificationsRef = collection(db, "deposit_verifications");
+
+    // Add data to the collection
+    const docRef = await addDoc(depositVerificationsRef, data);
+    return docRef.id
+  } catch (error) {
+    console.error("Error adding document: ", error);
+  }
+}
+
+export const updateDeposit = async (doc_id, data, docu) => {
+  try {
+    // Reference to the 'deposit_verifications' document you want to update
+    const docRef = doc(db, 'deposit_verifications', doc_id);
+
+    // Update the specific fields of the document
+    await updateDoc(docRef, data);
+
+    // Reference to the 'users' collection
+    const usersRef = collection(db, 'users');
+    const q = query(usersRef, where('token', '==', docu.user_token));
+
+    // Get the documents matching the query
+    const querySnapshot = await getDocs(q);
+
+    // Check if a user with the specified token exists
+    if (!querySnapshot.empty) {
+      // Since the token is unique, we expect only one document to be returned
+      const userDoc = querySnapshot.docs[0]; // Get the first (and only) document
+      const userDocRef = doc(db, 'users', userDoc.id); // Reference to the user document
+
+      // Check if 'balance' field exists
+      const currentBalance = userDoc.data().balance;
+
+      if (currentBalance !== undefined) {
+        // If the 'balance' field exists, increment it by the amount
+        await updateDoc(userDocRef, {
+          balance: increment(Number(docu.amount)), // Add the new amount to the existing balance
+        });
+        console.log(`Balance updated successfully! New balance: ${Number(currentBalance) + Number(docu.amount)}`);
+      } else {
+        // If 'balance' doesn't exist, set it with the provided amount
+        await updateDoc(userDocRef, {
+          balance: Number(docu.amount), // Set the initial balance to the provided amount
+        });
+        console.log(`Balance added successfully! Initial balance: ${Number(docu.amount)}`);
+      }
+    } else {
+      console.log('No user found with the given token.');
+    }
+
+  } catch (error) {
+    console.error('Error updating document: ', error);
+  }
+};
 

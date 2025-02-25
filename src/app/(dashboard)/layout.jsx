@@ -222,7 +222,7 @@ const DashboardLayout = ({ children }) => {
             <p
               className={`font-sans text-[#002269] text-[16px] font-semibold  mb-16`}
             >
-              0 <span className="text-[#0052F9]">USDT</span>
+              {user?.balance || 0} <span className="text-[#0052F9]">USDT</span>
             </p>
           </div>
 
@@ -373,7 +373,7 @@ const DashboardLayout = ({ children }) => {
               <p
                 className={`font-sans text-[#002269] text-[16px] font-semibold  mb-16`}
               >
-                0 <span className="text-[#0052F9]">USDT</span>
+                {user?.balance || 0} <span className="text-[#0052F9]">USDT</span>
               </p>
             </div>
 

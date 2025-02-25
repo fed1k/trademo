@@ -2,15 +2,23 @@
 
 import { PiCopySimple } from "react-icons/pi"
 import { useEffect, useState } from "react"
-import { getWalletAddress } from "@/utils/firebase_utils"
+import { addDeposit, getWalletAddress } from "@/utils/firebase_utils"
 import { BiSolidWallet } from "react-icons/bi"
 import { inter } from "./DateDropdown"
+import { useAuth } from "./AuthProvider"
 
-const DepositStepTwo = ({ value, handleChange }) => {
+const DepositStepTwo = ({ value, handleChange, close }) => {
     const [depositAddress, setDepositAddress] = useState()
+    const {user} = useAuth()
 
     const copyToClipboard = (value) => {
         navigator.clipboard.writeText(value)
+    }
+
+    const sendDepositToVerification = async() => {
+        const response = await addDeposit({user_token: user.token, status: "checking", amount: value, date: new Date() })
+        console.log(response)
+        close()
     }
 
     useEffect(() => {
@@ -49,10 +57,8 @@ const DepositStepTwo = ({ value, handleChange }) => {
                     <PiCopySimple onClick={(e) => copyToClipboard(depositAddress)} className="text-gray-300 w-6 h-6 cursor-pointer" />
                 </div>
 
-                <p className='self-start mt-8 text-[#8091b5] pb-2.5 font-medium'>QR-КОД ДЛЯ ПОПОЛНЕНИЯ</p>
-                <img className="mx-auto" src="qrcode.jpg" alt="" />
-                <button className="block w-full text-[#0052ff] bg-[#e6eeff] h-14 rounded-xl mt-8 font-medium">Подтвердить платёж</button>
-                <button className={`w-full text-[#fb6c6c] bg-[#ffeaea] mt-4 h-14 rounded-xl ${inter.className}`}>Отменить</button>
+                <button onClick={sendDepositToVerification} className="block w-full text-[#0052ff] bg-[#e6eeff] h-14 rounded-xl mt-8 font-medium">Подтвердить платёж</button>
+                <button onClick={close} className={`w-full text-[#fb6c6c] bg-[#ffeaea] mt-4 h-14 rounded-xl ${inter.className}`}>Отменить</button>
                 
             </div>
         </>

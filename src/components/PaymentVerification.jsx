@@ -1,6 +1,6 @@
 "use client"
 
-import { getPaymentVerifications } from "@/utils/firebase_utils"
+import { getPaymentVerifications, updateDeposit } from "@/utils/firebase_utils"
 import { useEffect, useState } from "react"
 import { inter } from "./DateDropdown"
 import { BsBank } from "react-icons/bs"
@@ -8,11 +8,20 @@ import { BsBank } from "react-icons/bs"
 const PaymentVerification = () => {
     const [verifications, setVerifications] = useState([])
 
+    const verifyDeposit = async(doc) => {
+        const response = await updateDeposit(doc.id, {status: "approved"}, doc)
+        
+    }
+
+    const rejectDeposit = async() => {
+
+    }
+
     useEffect(() => {
         getPaymentVerifications().then((data) => setVerifications(data))
     }, [])
 
-    console.log(verifications)
+    
     return (
         <div>
             <h2>Verification</h2>
@@ -26,8 +35,8 @@ const PaymentVerification = () => {
                         </div>
                         <p>{ver.amount} USDT</p>
                         <div>
-                            <button className="mr-2 flex-1 border px-4 py-1 rounded-md">Подтверждать</button>
-                            <button className="bg-[#ffeaea] flex-1 text-[#fb6c6c] rounded-md py-1 px-4">Отклонить</button>
+                            <button onClick={() => verifyDeposit(ver)} className="mr-2 flex-1 border px-4 py-1 rounded-md">Подтверждать</button>
+                            <button onClick={rejectDeposit} className="bg-[#ffeaea] flex-1 text-[#fb6c6c] rounded-md py-1 px-4">Отклонить</button>
                         </div>
                     </div>
                 )) : <></>}
