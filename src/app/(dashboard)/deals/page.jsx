@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { CiSearch } from "react-icons/ci";
 import { HiXMark } from "react-icons/hi2";
 import DateDropdown from "@/components/DateDropdown";
+
 const Deals = () => {
   const [selectedPeriod, setSelectedPeriod] = useState(periods[0]);
   const [isOpen, setIsOpen] = useState(false);

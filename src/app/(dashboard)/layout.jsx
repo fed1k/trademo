@@ -20,7 +20,8 @@ import CurrencyDropdown from "@/components/CurrencyDropdown";
 import { IoIosArrowDown } from "react-icons/io";
 import ProfileDropdown from "@/components/ProfileDropdown";
 import LogoComp from "@/components/LogoComp";
-
+import { RefreshCcw } from "lucide-react";
+import { TbUpload } from "react-icons/tb";
 const mont = Montserrat({
   weight: ["600"],
   subsets: ["latin"],
@@ -535,24 +536,13 @@ const DashboardLayout = ({ children }) => {
         <main className="">{children}</main>
         <nav className="fixed lg:hidden bg-white border-t border-[#eef2f9] bottom-0 left-0 right-0  flex justify-between items-center p-5">
           <Link href="/requisites">
-            <svg
+            <TbUpload
               className={`transition-all duration-300  p-2.5 w-11 h-11 ${pathname === "/requisites"
-                ? "bg-[#0052ff] fill-white"
+                ? "bg-[#0052ff] text-white"
                 : "text-[#c2cde2]"
-                } rounded-[16px]`}
-              
-              viewBox="0 0 18 18"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M6.75 12L9 9.75m0 0L11.25 12M9 9.75V15m7.5-8.25h-15m2.625 6.75H3.9c-.84 0-1.26 0-1.581-.164a1.5 1.5 0 0 1-.656-.655c-.163-.32-.163-.74-.163-1.581V5.4c0-.84 0-1.26.163-1.581a1.5 1.5 0 0 1 .656-.656C2.639 3 3.059 3 3.9 3h10.2c.84 0 1.26 0 1.581.163a1.5 1.5 0 0 1 .656.656c.163.32.163.74.163 1.581v5.7c0 .84 0 1.26-.163 1.581a1.5 1.5 0 0 1-.656.655c-.32.164-.74.164-1.581.164h-.225"
-                stroke="#c2cde2"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+                } text-[#0052ff] cursor-pointer rounded-[16px]`}   
+            />
+           
           </Link>
 
           <Link href="/disputes">
@@ -569,23 +559,13 @@ const DashboardLayout = ({ children }) => {
             />
           </Link>
           <Link href="/deals">
-            <svg
+            <RefreshCcw
               // onClick={() => handleIconClick(3)}
               // ${activeIndex === 3 ? 'bg-[#0052ff] fill-white' : 'opacity-50'}
-              className={`p-2.5 w-11 h-11 rounded-[16px] ${pathname === "/deals" ? " fill-white" : "text-[#c2cde2]"
+              className={`p-2.5 w-11 h-11 rounded-[16px] ${pathname === "/deals" ? " bg-[#0052ff] text-white" : "text-[#c2cde2]"
               }  text-[#0052ff] cursor-pointer`}
-              viewBox="0 0 18 18"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M15.34 9.67a6.375 6.375 0 0 1-11.861 2.518l-.188-.325M2.66 8.33A6.375 6.375 0 0 1 14.52 5.812l.187.325M2.62 13.55l.549-2.049 2.049.55m7.564-6.1 2.049.55.549-2.05M9 5.625V9l1.875 1.125"
-                stroke="#c2cde2"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            />
+              
           </Link>
           <Link href="/finances">
             <BiWalletAlt  className={`p-2.5 w-11 h-11 rounded-[16px] ${pathname === "/finances" ? "bg-[#0052ff]  fill-white" : "text-[#c2cde2]"
