@@ -1,4 +1,5 @@
 'use client'
+import DepositStepTwo from '@/components/DepositStepTwo';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
@@ -13,11 +14,22 @@ const FinancesPage = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
 
+  const [depositStep, setDepositStep] = useState(1)
+
   const modalRef = useRef(null)
 
   const openDepositModal = () => {
     modalRef.current.showModal();
   }
+
+  const [value, setValue] = useState('');
+
+  const handleChange = (e) => {
+    const inputValue = e.target.value;
+    if (/^\d*\.?\d*$/.test(inputValue)) {
+      setValue(inputValue);
+    }
+  };
 
   return (
     <div className='pb-10'>
@@ -36,8 +48,22 @@ const FinancesPage = () => {
       </div>
 
       <dialog ref={modalRef} id="my_modal_4" className="modal">
-        <div className="modal-box w-[400px] p-5 max-w-5xl">
-          <h2>Boyee</h2>
+        <div className="modal-box w-[400px] flex flex-col items-center p-5 max-w-5xl">
+          {depositStep === 1 &&
+            <>
+              <p className='mb-5 text-[#0052ff] font-medium text-lg'>Шаг {depositStep}</p>
+              <p className='text-2xl font-medium'>Пополнение баланса</p>
+              <p className='text-center text-[#8091b5] font-medium'>Введите <span className='text-[#0052ff]'>сумму пополнения в USDT</span> <br />и нажмите «Продолжить»</p>
+              <p className='self-start mt-8 text-[#8091b5] pb-2.5 font-medium'>СУММА В USDT TRC-20</p>
+              <div className='border flex p-3 items-center text-xl rounded-xl w-full border-[#eef2f9]'>
+                <p className='text-xl font-medium'>USDT</p>
+                <input value={value} onChange={handleChange} className='flex-1 font-medium outline-none placeholder:text-[#c2cde2] text-right' placeholder='Сумма в ' type="text" />
+                <p className={`transition-all font-medium ${value ? "text-black" : "text-[#c2cde2]"}`}>USDT</p>
+              </div>
+
+              <button disabled={!value} onClick={() => setDepositStep(2)} className={`rounded-xl disabled:opacity-50 disabled:cursor-not-allowed mt-8 bg-[#e6eeff] text-[#0052ff] w-full py-4 ${inter.className}`}>Продолжить</button>
+            </>}
+            {depositStep === 2 && <DepositStepTwo value={value} handleChange={handleChange} />}
         </div>
       </dialog>
 
