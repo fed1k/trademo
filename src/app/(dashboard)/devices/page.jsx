@@ -44,6 +44,7 @@ const DevicesPage = () => {
           </span>
         </button>
       </div>
+      
       <label className="text-[#8091b5] md:hidden  text-sm font-[500] mb-[10px]">Поиск по устройствам</label>
       <div className="relative md:hidden flex items-center border border-gray-300 rounded-2xl p-2 w-full bg-white shadow-sm my-[10px]">
         <CiSearch className="w-5 h-5 text-[#0052ff] mr-2" />
