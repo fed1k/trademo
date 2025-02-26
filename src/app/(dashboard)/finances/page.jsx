@@ -1,9 +1,11 @@
 'use client'
 import { useAuth } from '@/components/AuthProvider';
 import DepositStepTwo from '@/components/DepositStepTwo';
+import { getUserDepositHistory } from '@/utils/firebase_utils';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { BsBank } from 'react-icons/bs';
 import { FaCreditCard, FaExchangeAlt, FaAngleDown, FaSort, FaSearch } from "react-icons/fa";
 export const inter = Inter({
   weight: ['400'],
@@ -15,7 +17,11 @@ const FinancesPage = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
 
-  const {user} = useAuth()
+  const [depositHistory, setDepositHistory] = useState([])
+
+  const [activeTab, setActiveTab] = useState("accountOperation")
+
+  const { user } = useAuth()
 
   const [depositStep, setDepositStep] = useState(1)
 
@@ -38,6 +44,21 @@ const FinancesPage = () => {
     modalRef.current.close();
     setDepositStep(1)
   }
+
+  const handleDepositHistory =  () => {
+    setActiveTab("depositHistory")
+  }
+
+  const handleAccountOperation = () => {
+    setActiveTab("accountOperation")
+  }
+
+  useEffect(() => {
+    getUserDepositHistory(user?.token).then((res) => setDepositHistory(res))
+
+  }, [user])
+
+  console.log(depositHistory)
 
   return (
     <div className='pb-10'>
@@ -71,7 +92,7 @@ const FinancesPage = () => {
 
               <button disabled={!value} onClick={() => setDepositStep(2)} className={`rounded-xl disabled:opacity-50 disabled:cursor-not-allowed mt-8 bg-[#e6eeff] text-[#0052ff] w-full py-4 ${inter.className}`}>Продолжить</button>
             </>}
-            {depositStep === 2 && <DepositStepTwo close={closeModal} value={value} handleChange={handleChange} />}
+          {depositStep === 2 && <DepositStepTwo close={closeModal} value={value} handleChange={handleChange} />}
         </div>
       </dialog>
 
@@ -228,84 +249,108 @@ const FinancesPage = () => {
 
 
       <div className='md:flex block gap-4 items-center mt-6'>
-        <button className="flex items-center gap-2 bg-[#f0f4fc] px-7 py-[14px] rounded-lg shadow mt-4 w-full justify-center mb-10">
+        <button onClick={handleAccountOperation} className="flex items-center gap-2 bg-[#f0f4fc] px-7 py-[14px] rounded-lg shadow mt-4 w-full justify-center mb-10">
           <svg _ngcontent-ng-c3644767295="" className='mt-[2px]' width='18' height='18' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M15 7.125V5.4c0-.84 0-1.26-.164-1.581a1.5 1.5 0 0 0-.655-.656C13.861 3 13.441 3 12.6 3H3.9c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656c-.163.32-.163.74-.163 1.581v7.2c0 .84 0 1.26.163 1.581a1.5 1.5 0 0 0 .656.655c.32.164.74.164 1.581.164h8.7c.84 0 1.26 0 1.581-.164a1.5 1.5 0 0 0 .655-.655c.164-.32.164-.74.164-1.581v-1.725M11.25 9c0-.348 0-.523.029-.668a1.5 1.5 0 0 1 1.178-1.178c.145-.029.32-.029.668-.029h1.5c.348 0 .523 0 .668.029a1.5 1.5 0 0 1 1.178 1.178c.029.145.029.32.029.668 0 .348 0 .523-.029.668a1.5 1.5 0 0 1-1.178 1.178c-.145.029-.32.029-.668.029h-1.5c-.348 0-.523 0-.668-.029a1.5 1.5 0 0 1-1.178-1.178c-.029-.145-.029-.32-.029-.668Z" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
           <span className="text-[#002269] text-sm font-medium">Операции по счету</span>
         </button>
-        <button className='md:flex hidden items-center gap-2 bg-[#f0f4fc] px-7 py-[14px] rounded-lg shadow mt-4 w-full justify-center mb-10'>
+        <button onClick={handleDepositHistory} className='md:flex hidden items-center gap-2 bg-[#f0f4fc] px-7 py-[14px] rounded-lg shadow mt-4 w-full justify-center mb-10'>
           <svg _ngcontent-ng-c3644767295="" width='18' height='18' viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M3.333 6v5.333m3-5.333v5.333M9.667 6v5.333m3-5.333v5.333M2 12.4v.533c0 .374 0 .56.073.703a.667.667 0 0 0 .291.291c.143.073.33.073.703.073h9.866c.374 0 .56 0 .703-.073a.667.667 0 0 0 .291-.291c.073-.143.073-.33.073-.703V12.4c0-.373 0-.56-.073-.703a.667.667 0 0 0-.291-.291c-.143-.073-.33-.073-.703-.073H3.067c-.374 0-.56 0-.703.073a.667.667 0 0 0-.291.291C2 11.84 2 12.027 2 12.4ZM7.769 2.051 2.835 3.148c-.298.066-.447.099-.558.18a.667.667 0 0 0-.223.277C2 3.731 2 3.884 2 4.189v.744c0 .374 0 .56.073.703a.667.667 0 0 0 .291.291c.143.073.33.073.703.073h9.866c.374 0 .56 0 .703-.073a.667.667 0 0 0 .291-.291c.073-.143.073-.33.073-.703V4.19c0-.305 0-.458-.054-.584a.667.667 0 0 0-.223-.278c-.111-.08-.26-.113-.558-.18L8.23 2.052a1.389 1.389 0 0 0-.173-.032.668.668 0 0 0-.116 0 1.389 1.389 0 0 0-.173.032Z" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
           <span className="text-[#002269] text-sm font-medium">Заявки на пополнение</span>
         </button>
       </div>
 
 
-      <p className={`${inter.className} text-[16px] md:text-[20px] text-[#8091b5] leading-6 mb-6`}>Операции по счету</p>
+      {activeTab === "accountOperation" ?
+        <>
+          <p className={`${inter.className} text-[16px] md:text-[20px] text-[#8091b5] leading-6 mb-6`}>Операции по счету</p>
 
 
-      <div className="mt-4 mb-28 block md:hidden">
-        <div onClick={() => setIsExpanded(!isExpanded)} className="flex items-center gap-1  mt-4 w-full">
-          <span className={`${inter.className} text-[16px] text-[#8091b5] leading-6`}>
-            Расширенный поиск
-          </span>
-          <FaAngleDown className={`text-gray-600 transform transition-transform ${isExpanded ? "rotate-180" : ""}`} />
-        </div>
-        {isExpanded && (
-          <div className="mt-4">
-            <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center justify-between bg-[#fbfcfe] px-4 py-2 rounded-lg shadow w-full">
-              <span className="flex text-[12px] items-center w-full gap-2 text-[#002269] font-medium">
-                <svg _ngcontent-ng-c3644767295="" width='20' height='20' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M16.5 7.5h-15m6.75 3H4.5m-3-4.35v5.7c0 .84 0 1.26.163 1.581a1.5 1.5 0 0 0 .656.655c.32.164.74.164 1.581.164h10.2c.84 0 1.26 0 1.581-.164a1.5 1.5 0 0 0 .656-.655c.163-.32.163-.74.163-1.581v-5.7c0-.84 0-1.26-.163-1.581a1.5 1.5 0 0 0-.656-.656c-.32-.163-.74-.163-1.581-.163H3.9c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656c-.163.32-.163.74-.163 1.581Z" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
-                <select className="bg-[#fbfcfe] p-2 w-full border-none">
-                  <option className="text-blue-600 font-medium">Все типы</option>
-                  <option className="text-gray-500">Вывод прибыли</option>
-                  <option className="text-gray-500">Пополнение</option>
-                </select>
+          <div className="mt-4 mb-28 block md:hidden">
+            <div onClick={() => setIsExpanded(!isExpanded)} className="flex items-center gap-1  mt-4 w-full">
+              <span className={`${inter.className} text-[16px] text-[#8091b5] leading-6`}>
+                Расширенный поиск
               </span>
-            </button>
-            <button onClick={() => setIsDropdownOpen1(!isDropdownOpen1)} className="flex items-center justify-between bg-[#fbfcfe] px-4 py-2 rounded-lg shadow w-full mt-2">
-              <span className="flex items-center w-full text-[12px] gap-1 text-[#002269] font-medium">
-                <svg _ngcontent-ng-c3644767295="" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M14.167 3.333v13.334m0 0-3.334-3.334m3.334 3.334 3.333-3.334M5.833 16.667V3.333m0 0L2.5 6.667m3.333-3.334 3.334 3.334" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
-                <select className="bg-[#fbfcfe] p-2 border-none w-full">
-                  <option className="text-blue-600 font-medium"> Сначала новые</option>
-                  <option className="text-gray-500"> Сначала старые</option>
-                </select>
-              </span>
-            </button>
+              <FaAngleDown className={`text-gray-600 transform transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+            </div>
+            {isExpanded && (
+              <div className="mt-4">
+                <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center justify-between bg-[#fbfcfe] px-4 py-2 rounded-lg shadow w-full">
+                  <span className="flex text-[12px] items-center w-full gap-2 text-[#002269] font-medium">
+                    <svg _ngcontent-ng-c3644767295="" width='20' height='20' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M16.5 7.5h-15m6.75 3H4.5m-3-4.35v5.7c0 .84 0 1.26.163 1.581a1.5 1.5 0 0 0 .656.655c.32.164.74.164 1.581.164h10.2c.84 0 1.26 0 1.581-.164a1.5 1.5 0 0 0 .656-.655c.163-.32.163-.74.163-1.581v-5.7c0-.84 0-1.26-.163-1.581a1.5 1.5 0 0 0-.656-.656c-.32-.163-.74-.163-1.581-.163H3.9c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656c-.163.32-.163.74-.163 1.581Z" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                    <select className="bg-[#fbfcfe] p-2 w-full border-none">
+                      <option className="text-blue-600 font-medium">Все типы</option>
+                      <option className="text-gray-500">Вывод прибыли</option>
+                      <option className="text-gray-500">Пополнение</option>
+                    </select>
+                  </span>
+                </button>
+                <button onClick={() => setIsDropdownOpen1(!isDropdownOpen1)} className="flex items-center justify-between bg-[#fbfcfe] px-4 py-2 rounded-lg shadow w-full mt-2">
+                  <span className="flex items-center w-full text-[12px] gap-1 text-[#002269] font-medium">
+                    <svg _ngcontent-ng-c3644767295="" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M14.167 3.333v13.334m0 0-3.334-3.334m3.334 3.334 3.333-3.334M5.833 16.667V3.333m0 0L2.5 6.667m3.333-3.334 3.334 3.334" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                    <select className="bg-[#fbfcfe] p-2 border-none w-full">
+                      <option className="text-blue-600 font-medium"> Сначала новые</option>
+                      <option className="text-gray-500"> Сначала старые</option>
+                    </select>
+                  </span>
+                </button>
+              </div>
+            )}
+
+
+
           </div>
-        )}
+          <div className='flex gap-4 items-center'>
+            <div className='w-1/2 flex flex-col gap-y-3'>
+              <p className={`${inter.className} text-[16px] md:text-[14px] text-[#8091b5] leading-6`}>Тип операции</p>
+              <button className="flex items-center justify-between bg-[#fbfcfe] px-4 py-2 rounded-lg shadow w-full">
+                <span className="flex text-[12px] items-center w-full gap-2 text-[#002269] font-medium">
+                  <svg _ngcontent-ng-c3644767295="" width='20' height='20' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M16.5 7.5h-15m6.75 3H4.5m-3-4.35v5.7c0 .84 0 1.26.163 1.581a1.5 1.5 0 0 0 .656.655c.32.164.74.164 1.581.164h10.2c.84 0 1.26 0 1.581-.164a1.5 1.5 0 0 0 .656-.655c.163-.32.163-.74.163-1.581v-5.7c0-.84 0-1.26-.163-1.581a1.5 1.5 0 0 0-.656-.656c-.32-.163-.74-.163-1.581-.163H3.9c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656c-.163.32-.163.74-.163 1.581Z" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                  <select className="bg-[#fbfcfe] p-2 w-full border-none">
+                    <option className="text-blue-600 font-medium">Все типы</option>
+                    <option className="text-gray-500">Вывод прибыли</option>
+                    <option className="text-gray-500">Пополнение</option>
+                  </select>
+                </span>
+              </button>
 
+            </div>
+            <div className='w-1/2 flex flex-col gap-y-3'>
+              <p className={`${inter.className} text-[16px] md:text-[14px] text-[#8091b5] leading-6`}>Сортировка результатов</p>
+              <button className="flex items-center justify-between bg-[#fbfcfe] px-4 py-2 rounded-lg shadow w-full">
+                <span className="flex items-center w-full text-[12px] gap-1 text-[#002269] font-medium">
+                  <svg _ngcontent-ng-c3644767295="" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M14.167 3.333v13.334m0 0-3.334-3.334m3.334 3.334 3.333-3.334M5.833 16.667V3.333m0 0L2.5 6.667m3.333-3.334 3.334 3.334" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                  <select className="bg-[#fbfcfe] p-2 border-none w-full">
+                    <option className="text-blue-600 font-medium"> Сначала новые</option>
+                    <option className="text-gray-500"> Сначала старые</option>
+                  </select>
+                </span>
+              </button>
+            </div>
+          </div>
 
+          <p className={`${inter.className} text-[16px] text-[#002269] leading-6 mt-3`} >Операции не найдены  </p>
+        </> : 
 
-      </div>
-      <div className='flex gap-4 items-center'>
-        <div className='w-1/2 flex flex-col gap-y-3'>
-          <p className={`${inter.className} text-[16px] md:text-[14px] text-[#8091b5] leading-6`}>Тип операции</p>
-          <button className="flex items-center justify-between bg-[#fbfcfe] px-4 py-2 rounded-lg shadow w-full">
-            <span className="flex text-[12px] items-center w-full gap-2 text-[#002269] font-medium">
-              <svg _ngcontent-ng-c3644767295="" width='20' height='20' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M16.5 7.5h-15m6.75 3H4.5m-3-4.35v5.7c0 .84 0 1.26.163 1.581a1.5 1.5 0 0 0 .656.655c.32.164.74.164 1.581.164h10.2c.84 0 1.26 0 1.581-.164a1.5 1.5 0 0 0 .656-.655c.163-.32.163-.74.163-1.581v-5.7c0-.84 0-1.26-.163-1.581a1.5 1.5 0 0 0-.656-.656c-.32-.163-.74-.163-1.581-.163H3.9c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656c-.163.32-.163.74-.163 1.581Z" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
-              <select className="bg-[#fbfcfe] p-2 w-full border-none">
-                <option className="text-blue-600 font-medium">Все типы</option>
-                <option className="text-gray-500">Вывод прибыли</option>
-                <option className="text-gray-500">Пополнение</option>
-              </select>
-            </span>
-          </button>
+        <div>
+          <p className={`${inter.className} text-[16px] md:text-[20px] text-[#8091b5] leading-6 mb-6`}>Заявки на пополнение</p>
 
+          <div>
+            {depositHistory?.map((ver) => (
+              <div className={`border flex-wrap text-[#002269] border-[#eef2f9] bg-[#fbfcfe] ${inter.className} items-center py-2.5 px-5 mb-2.5 rounded-2xl flex justify-between`}>
+              <div className="flex gap-3 items-center">
+                  <BsBank className="text-[#fb6c6c]" />
+                  <p className="text-sm">{ver.formattedDate}</p>
+              </div>
+              <p>{ver.amount} USDT</p>
+              {ver?.status && ver.status === "approved" ? <p className="px-2 py-0.5 rounded-md text-green-500 bg-green-200">Подверждено</p> : <></>}
+              {ver?.status && ver.status === "rejected" ? <p className="px-2 py-0.5 rounded-md text-red-500 bg-red-200">Отклоненный</p> : <></>}
+              {ver?.status && ver.status === "checking" ? <p className="px-2 py-0.5 rounded-md border">Проверка</p> : <></>}
+          </div>
+            ))}
+          </div>
         </div>
-        <div className='w-1/2 flex flex-col gap-y-3'>
-          <p className={`${inter.className} text-[16px] md:text-[14px] text-[#8091b5] leading-6`}>Сортировка результатов</p>
-          <button className="flex items-center justify-between bg-[#fbfcfe] px-4 py-2 rounded-lg shadow w-full">
-            <span className="flex items-center w-full text-[12px] gap-1 text-[#002269] font-medium">
-              <svg _ngcontent-ng-c3644767295="" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" d="M14.167 3.333v13.334m0 0-3.334-3.334m3.334 3.334 3.333-3.334M5.833 16.667V3.333m0 0L2.5 6.667m3.333-3.334 3.334 3.334" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
-              <select className="bg-[#fbfcfe] p-2 border-none w-full">
-                <option className="text-blue-600 font-medium"> Сначала новые</option>
-                <option className="text-gray-500"> Сначала старые</option>
-              </select>
-            </span>
-          </button>
-        </div>
-      </div>
 
-      <p className={`${inter.className} text-[16px] text-[#002269] leading-6 mt-3`} >Операции не найдены  </p>
+      }
 
     </div>
   )

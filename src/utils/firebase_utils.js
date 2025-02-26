@@ -6,6 +6,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  orderBy,
   query,
   serverTimestamp,
   updateDoc,
@@ -145,7 +146,7 @@ export const getPaymentVerifications = async () => {
       ...data,
       formattedDate, // Add the formatted date to the returned object
     };
-  });
+  }).sort((a, b) => a.formattedDate - b.formattedDate)
 };
 
 export const getWalletAddress = async () => {
@@ -190,19 +191,27 @@ export const updateDeposit = async (doc_id, data, docu) => {
       // Check if 'balance' field exists
       const currentBalance = userDoc.data().balance;
 
-      if (currentBalance !== undefined) {
-        // If the 'balance' field exists, increment it by the amount
-        await updateDoc(userDocRef, {
-          balance: increment(Number(docu.amount)), // Add the new amount to the existing balance
-        });
-        console.log(`Balance updated successfully! New balance: ${Number(currentBalance) + Number(docu.amount)}`);
-      } else {
-        // If 'balance' doesn't exist, set it with the provided amount
-        await updateDoc(userDocRef, {
-          balance: Number(docu.amount), // Set the initial balance to the provided amount
-        });
-        console.log(`Balance added successfully! Initial balance: ${Number(docu.amount)}`);
+      // if rejection, dont deposit the money to the balance
+      if (data.status === "approved") {
+
+
+
+        if (currentBalance !== undefined) {
+          // If the 'balance' field exists, increment it by the amount
+          await updateDoc(userDocRef, {
+            balance: increment(Number(docu.amount)), // Add the new amount to the existing balance
+          });
+          console.log(`Balance updated successfully! New balance: ${Number(currentBalance) + Number(docu.amount)}`);
+        } else {
+          // If 'balance' doesn't exist, set it with the provided amount
+          await updateDoc(userDocRef, {
+            balance: Number(docu.amount), // Set the initial balance to the provided amount
+          });
+          console.log(`Balance added successfully! Initial balance: ${Number(docu.amount)}`);
+        }
       }
+      return data.status
+
     } else {
       console.log('No user found with the given token.');
     }
@@ -211,4 +220,39 @@ export const updateDeposit = async (doc_id, data, docu) => {
     console.error('Error updating document: ', error);
   }
 };
+
+export const getUserDepositHistory = async (token) => {
+  try {
+    // const db = getFirestore();  // Initialize Firestore
+    const depositVerificationsRef = collection(db, "deposit_verifications");  // Reference to the collection
+    const q = query(depositVerificationsRef, where("user_token", "==", token));  // Query for documents with user_token equal to token
+
+    const querySnapshot = await getDocs(q);  // Execute the query
+    const depositHistory = [];
+
+    
+
+    querySnapshot.forEach((doc) => {
+
+      const timestamp = doc.data().date; // Assuming 'timestamp' is the field name
+      const date = timestamp.toDate();
+      // Format the date in the requested format (24 февраля 2025 23:20)
+      const formattedDate = new Intl.DateTimeFormat('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      }).format(date);
+
+      depositHistory.push({ id: doc.id, ...doc.data(), formattedDate });  // Push each document into the depositHistory array
+    });
+
+    return depositHistory;  // Return the deposit history array
+
+  } catch (error) {
+    console.error("Error getting documents: ", error);  // Log any errors
+    throw new Error("Unable to fetch deposit history");  // Optionally, throw an error to be handled elsewhere
+  }
+}
 
