@@ -256,3 +256,31 @@ export const getUserDepositHistory = async (token) => {
   }
 }
 
+export const getDocumentById = async (docId) => {
+  try {
+    // Reference to the document
+    const docRef = doc(db, "devices", docId);
+
+    // Fetch the document snapshot
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data()
+      console.log(data)
+      const formattedDate = new Intl.DateTimeFormat('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      }).format(data.timestamp.toDate());
+
+      return {...data, date: formattedDate}  // Document exists
+    } else {
+      console.log("No such document!");  // Document doesn't exist
+    }
+  } catch (error) {
+    console.error("Error getting document:", error);
+  }
+};
+

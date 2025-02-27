@@ -3,6 +3,7 @@ import { useAuth } from '@/components/AuthProvider';
 import DeviceCard from '@/components/DeviceCard';
 import { addDeviceData, getDevicesByUserToken } from '@/utils/firebase_utils';
 import { Inter } from 'next/font/google';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { CiSearch } from "react-icons/ci";
 import { HiXMark } from "react-icons/hi2";
@@ -16,6 +17,9 @@ const DevicesPage = () => {
   const [active, setActive] = useState(true)
   const [newDeviceToken, setNewDeviceToken] = useState("")
   const [users, setUsers] = useState([])
+
+  const router = useRouter()
+
   const addDevice = async () => {
     if (query) {
       const response = await addDeviceData(user.token, query)
@@ -147,7 +151,7 @@ const DevicesPage = () => {
           }
           {active && <button onClick={addDevice} className={`${inter.className} text-[#0052FF] h-[60px] text-[16px] mb-2 w-full text-center bg-[#E6EEFF] rounded-[12px]`}>Добавить устройство</button>}
 
-          {!active && <button onClick={() => { setActive(false) }} className={`${inter.className} text-[#0052FF] h-[48px] text-[16px] w-full text-center bg-[#E6EEFF] rounded-[12px]`}> Перейти на страницу устройства</button>}
+          {!active && <button onClick={() => router.push(`/devices/${newDeviceToken}`)} className={`${inter.className} text-[#0052FF] h-[48px] text-[16px] w-full text-center bg-[#E6EEFF] rounded-[12px]`}> Перейти на страницу устройства</button>}
           <div className="modal-action">
             <form method="dialog">
               {!active && <button className={`${inter.className} btn text-[#002269] text-[16px] bg-[#F3F4F8] w-[360px] h-12`}>Закрыть</button>}

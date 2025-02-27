@@ -1,19 +1,31 @@
 "use client"
 import { Inter } from 'next/font/google';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoIosArrowUp } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { HiXMark } from "react-icons/hi2";
 import { BsCheck2 } from "react-icons/bs";
 import { BsX } from "react-icons/bs";
+import { getDocumentById } from '@/utils/firebase_utils';
 export const inter = Inter({
     weight: ['400'],
     subsets: ['latin'],
   });
-function DevicePage() {
+function DevicePage({params}) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [device, setDevice] = useState({})
+  // console.log(params)
+
+  useEffect(() => {
+    //  console.log(params.id) 
+    getDocumentById(params.id).then((dev) => {
+      setDevice(dev)
+      console.log(dev)
+    })
+  }, [])
+
   return (
     <div className='overflow-x-hidden'> 
       <div className='md:flex block justify-between w-full items-center gap-3'>
@@ -72,7 +84,7 @@ function DevicePage() {
                   <svg _ngcontent-ng-c2661008953="" className='w-8 h-8' viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c2661008953="" d="M6 8.75h.005M4.1 11h3.8c.56 0 .84 0 1.054-.109a1 1 0 0 0 .437-.437C9.5 10.24 9.5 9.96 9.5 9.4V2.6c0-.56 0-.84-.109-1.054a1 1 0 0 0-.437-.437C8.74 1 8.46 1 7.9 1H4.1c-.56 0-.84 0-1.054.109a1 1 0 0 0-.437.437C2.5 1.76 2.5 2.04 2.5 2.6v6.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C3.26 11 3.54 11 4.1 11Zm2.15-2.25a.25.25 0 1 1-.5 0 .25.25 0 0 1 .5 0Z" stroke="#0052ff" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"></path></svg>
                    <div className='md:ml-5 w-full'>
                      <p className={`${inter.className} font-medium text-[#8091B5] text-sm md:text-[18px] `}>Название устройства</p>
-                    <p className={`${inter.className} text-[#002269] text-[900] text-[18px] md:text-[22px] `}>24123423</p>
+                    <p className={`${inter.className} text-[#002269] text-[900] text-[18px] md:text-[22px] `}>{device?.title}</p>
                  </div>
                </div>
                <p> <svg _ngcontent-ng-c2661008953="" className='hidden group-hover:block w-5 h-5 cursor-pointer' viewBox="0 0 16 16" fill="none"        xmlns="http://www.w3.org/2000/svg"><g _ngcontent-ng-c2661008953="" clip-path="url(#edit-01_svg__a)"><path _ngcontent-ng-c2661008953="" d="M1.917 12.077c.031-.275.046-.413.088-.542.037-.114.09-.223.155-.324.075-.113.173-.21.37-.407L11.332 2A1.886 1.886 0 0 1 14 4.667L5.196 13.47c-.196.196-.294.294-.407.369-.1.066-.21.118-.324.155-.129.042-.266.057-.542.088l-2.256.25.25-2.256Z" stroke="#C2CDE2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></g><defs _ngcontent-ng-c2661008953=""><clipPath _ngcontent-ng-c2661008953="" id="edit-01_svg__a"><path _ngcontent-ng-c2661008953="" fill="#fff" d="M0 0h16v16H0z"></path></clipPath></defs></svg></p>
@@ -131,7 +143,7 @@ function DevicePage() {
                     <p className={`${inter.className} font-medium text-[#8091B5] text-sm `}>UUID (Ключ)</p>
                   </div>
                   <p className={`${inter.className} w-40 truncate text-[#002269] text-[900] text-[16px]  `}>
-                  b1ece9cfc83c1ae251f0ee6a1b8f1f7a</p>
+                  {params.id}</p>
                     <svg _ngcontent-ng-c2661008953="" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" className="styles_squares__dmaEo cursor-pointer"><g _ngcontent-ng-c2661008953="" clip-path="url(#copy-03_svg__a)"><path _ngcontent-ng-c2661008953="" d="M6.667 6.667V4.332c0-.933 0-1.4.182-1.756.16-.314.414-.569.728-.729.357-.181.823-.181 1.757-.181h6.333c.933 0 1.4 0 1.757.181.313.16.568.415.728.729.182.356.182.823.182 1.756v6.333c0 .934 0 1.4-.182 1.757-.16.314-.415.569-.728.729-.357.181-.824.181-1.757.181h-2.333m-9 5h6.333c.933 0 1.4 0 1.757-.181.313-.16.568-.415.728-.729.182-.356.182-.823.182-1.756V9.332c0-.933 0-1.4-.182-1.756a1.667 1.667 0 0 0-.728-.729c-.357-.181-.824-.181-1.757-.181H4.334c-.934 0-1.4 0-1.757.181-.314.16-.569.415-.728.729-.182.356-.182.823-.182 1.756v6.333c0 .934 0 1.4.182 1.757.16.314.414.569.728.729.357.181.823.181 1.757.181Z" stroke="#C2CDE2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g><defs _ngcontent-ng-c2661008953=""><clipPath _ngcontent-ng-c2661008953="" id="copy-03_svg__a"><path _ngcontent-ng-c2661008953="" fill="#fff" d="M0 0h20v20H0z"></path></clipPath></defs></svg>
                 </div>
 
@@ -140,7 +152,7 @@ function DevicePage() {
                  <svg _ngcontent-ng-c2661008953="" className='w-3 h-3'  viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-ng-c2661008953="" clip-path="url(#calendar-plus-02_svg__a)"><path _ngcontent-ng-c2661008953="" d="M10.5 5.75V4.4c0-.84 0-1.26-.164-1.581a1.5 1.5 0 0 0-.655-.656C9.361 2 8.941 2 8.1 2H3.9c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656c-.163.32-.163.74-.163 1.581v4.2c0 .84 0 1.26.163 1.581a1.5 1.5 0 0 0 .656.655c.32.164.74.164 1.581.164h2.35m4.25-6h-9M8 1v2M4 1v2m5 7.5v-3M7.5 9h3" stroke="#0052FF" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"></path></g><defs _ngcontent-ng-c2661008953=""><clipPath _ngcontent-ng-c2661008953="" id="calendar-plus-02_svg__a"><path _ngcontent-ng-c2661008953="" fill="#fff" d="M0 0h12v12H0z"></path></clipPath></defs></svg>
                     <p className={`${inter.className} font-medium text-[#8091B5] text-sm `}>Добавлено</p>
                   </div>
-                  <p className={`${inter.className} text-[#002269] text-[900] text-[16px]  `}>21 февраля 12:45</p>
+                  <p className={`${inter.className} text-[#002269] text-[900] text-[16px]  `}>{device?.date}</p>
                 </div>
               </div>
             </div>
