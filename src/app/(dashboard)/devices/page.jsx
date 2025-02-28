@@ -37,6 +37,7 @@ const DevicesPage = () => {
     }
   }, [user])
 
+console.log(users);
 
   return (
     <div>

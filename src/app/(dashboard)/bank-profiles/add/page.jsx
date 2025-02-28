@@ -2,17 +2,38 @@
 import { Inter } from 'next/font/google';
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { options } from '@/utils/routes';
+import { addDeviceData, getDevicesByUserToken } from '@/utils/firebase_utils';
+import { useAuth } from '@/components/AuthProvider';
 export const inter = Inter({
     weight: ['400'],
     subsets: ['latin'],
   });
 const AddProfil = () => {
+    const { user } = useAuth()
     const [query, setQuery] = useState("");
     const [active,setActive]=useState(false)
+    const [users, setUsers] = useState([])
     const [selectedBank, setSelectedBank] = useState(options[0]); 
   const [isOpen, setIsOpen] = useState(false);
+  // const addDevice = async () => {
+  //   if (query) {
+  //     const response = await addDeviceData(user.token, query)
+  //     setActive(false)
+  //     setNewDeviceToken(response)
+  //   }
+  // }
+
+  useEffect(() => {
+    if (user) {
+      getDevicesByUserToken(user.token).then((res) => {
+        setUsers(res)
+      })
+    }
+  }, [user])
+  console.log(users,'sada');
+  
   return (
     <div className='pb-32 md:pb-10'>
       <p className={`${inter.className}  text-[24px] text-[#002269] leading-6 mb-7`}>Добавление банковского профиля</p>
@@ -34,10 +55,17 @@ const AddProfil = () => {
                onClick={()=>setActive(false)}
               />}
             </button>
-            {active && <div className='bg-gray-100 transition duration-700 rounded-md p-2.5 pt-4  max-w-[620px] min-h-[229px] '>
-                <svg _ngcontent-ng-c3929038549="" className='mt-4 w-5 h-5' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3929038549="" d="M12.182 4.318a4.5 4.5 0 0 1 0 6.364m-6.364 0a4.5 4.5 0 0 1 0-6.364m-2.121 8.485a7.5 7.5 0 0 1 0-10.606m10.606 0a7.5 7.5 0 0 1 0 10.606M9 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm0 0v6.75" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
-                <p className={`${inter.className} text-[#8091b5] my-4 text-[14px] font-medium mb-3`}>
-                Добавить устройство</p>
+            {active && <div className='bg-white transition duration-700 rounded-md p-2.5 pt-4 pl-[20px]  max-w-[620px] min-h-[229px] '>
+                {users.map((user)=>{
+                  return <div key={user.id} className='flex gap-4 items-center py-[7px] px-2 hover:bg-[#fafbff] rounded-[8px]'>
+                     <svg _ngcontent-ng-c3929038549="" className='w-5 h-5' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3929038549="" d="M12 17.5h.01M8.2 22h7.6c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874C19 20.48 19 19.92 19 18.8V5.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C17.48 2 16.92 2 15.8 2H8.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C5 3.52 5 4.08 5 5.2v13.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C6.52 22 7.08 22 8.2 22Zm4.3-4.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z" stroke="#fb6c6c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                     <p key={user.id} className='flex flex-col gap-0'>
+                        <span className={`${inter.className} text-[16px] text-[#002269] font-semibold`}>{user.id}</span>
+                        <span className={`${inter.className} text-[12px] text-[#8091B5] font-semibold -mt-1`}>{user.title}</span>
+                     </p>
+                  </div>
+                  
+                })}
             </div>}
             </div>
           {/* bankni tanlash */}
