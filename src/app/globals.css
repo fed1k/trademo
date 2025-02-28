@@ -66,3 +66,33 @@ input::placeholder {
 .dropdown-shadow {
   box-shadow: 0px 10px 40px rgba(18, 62, 112, .1);
 }
+
+
+.custom-scrollbar {
+  overflow-y: auto;
+  scrollbar-width: thin; /* Firefox uchun */
+  scrollbar-color: rgba(180, 180, 180, 0.5) transparent; /* Firefox */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 1px; /* Chrome va Edge uchun */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(120, 120, 120, 0.7); /* Skrollbar rangini kul rangga o‘zgartiramiz */
+  border-radius: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent; /* Orqa fonni yashirish */
+}
+
+.custom-scrollbar::-webkit-scrollbar-button {
+  display: none; /* Strelkalarni olib tashlash */
+  width: 0;
+  height: 0;
+  background: transparent;
+  opacity: 0;
+  visibility: hidden;
+}
+
