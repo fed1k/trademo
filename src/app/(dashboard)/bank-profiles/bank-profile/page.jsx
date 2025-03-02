@@ -253,7 +253,7 @@ const BankProfile = () => {
          </div>
         <input type="checkbox" id="my_modal_7" className="modal-toggle" />
         <div className="modal" role="dialog"> 
-          <div className='min-w-[400px] bg-white p-4 px-5 rounded-md top-0 absolute'>
+          <div className='min-w-[330px] md:min-w-[400px] bg-white p-4 px-5 rounded-md top-0 absolute'>
             <p className={`${inter.className} font-semibold text-[18px] text-black text-center mb-2`}>Добавление реквизита</p>
             <p className={`${inter.className} font-semibold text-sm text-[#8091B5] text-center mb-5`}>Заполните форму для добавления</p>
 
