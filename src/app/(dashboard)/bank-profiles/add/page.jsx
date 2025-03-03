@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { options } from '@/utils/routes';
 import { getDevicesByUserToken } from '@/utils/firebase_utils';
 import { useAuth } from '@/components/AuthProvider';
+import { limit } from 'firebase/firestore';
 export const inter = Inter({
   weight: ['400'],
   subsets: ['latin'],
@@ -16,6 +17,27 @@ const AddProfil = () => {
   const [users, setUsers] = useState([])
   const [selectedBank, setSelectedBank] = useState(options[0]);
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedBankTitle, setSelectedBankTitle] = useState(options[0]?.title || null);
+
+  const [userInfo,setUserInfo]=useState({
+    title:selectedUser,
+    selectBank:selectedBankTitle,
+    firstName: "",
+    lastName: "",
+    fatherName: "",
+    phone: "",
+    limit: "",
+  })
+
+  console.log(userInfo);
+  useEffect(() => {
+    setUserInfo((prev) => ({
+      ...prev,
+      title: selectedUser,
+      selectBank: selectedBankTitle, 
+    }));
+  }, [selectedUser, selectedBankTitle]);
   
 
   useEffect(() => {
@@ -25,6 +47,11 @@ const AddProfil = () => {
       })
     }
   }, [user])
+  
+  useEffect(() => {
+    setUserInfo((prev) => ({ ...prev, title: selectedUser }));
+  }, [selectedUser]);
+  
 
   return (
     <div className='pb-32 md:pb-10'>
@@ -35,10 +62,16 @@ const AddProfil = () => {
       <div className='w-full flex flex-col gap-y-2'>
         <button onClick={() => setActive((prev) => (!prev))} className="flex items-center max-w-[620px] justify-between bg-[#fbfcfe] px-4 py-2 rounded-lg shadow w-full">
           <span className="flex items-center max-w-[620px] text-[12px] p-1 gap-3 text-[#C2C2D2] font-medium">
-            <span className='p-2 bg-[#E6EEFF] rounded-full'>
+            {!selectedUser && <span className='p-2 bg-[#E6EEFF] rounded-full'>
               <svg _ngcontent-ng-c3929038549="" width='20' height='20' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3929038549="" d="M12.182 4.318a4.5 4.5 0 0 1 0 6.364m-6.364 0a4.5 4.5 0 0 1 0-6.364m-2.121 8.485a7.5 7.5 0 0 1 0-10.606m10.606 0a7.5 7.5 0 0 1 0 10.606M9 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm0 0v6.75" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
-            </span>
-            <span className={`${inter.className} text-sm text-[#C2CDE2]`}>Источник не выбран </span>
+            </span>}
+            {selectedUser && <span className='p-2'>
+                 <svg _ngcontent-ng-c3929038549="" className='w-5 h-5' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3929038549="" d="M12 17.5h.01M8.2 22h7.6c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874C19 20.48 19 19.92 19 18.8V5.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C17.48 2 16.92 2 15.8 2H8.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C5 3.52 5 4.08 5 5.2v13.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C6.52 22 7.08 22 8.2 22Zm4.3-4.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z" stroke="#FB6C6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                </span>}
+            <span className={`${inter.className} text-[16px] ${selectedUser ? 'text-[#FB6C6C]':'text-[#8091B5]'}`}>
+            {selectedUser ? selectedUser : "Источник не выбран"}
+               </span>
+            
           </span>
           {!active && <IoIosArrowDown
             onClick={() => setActive(true)}
@@ -47,11 +80,11 @@ const AddProfil = () => {
             onClick={() => setActive(false)}
           />}
         </button>
-        {active && <div className='bg-white transition duration-700 rounded-md p-2.5 pt-4 pl-[20px]  max-w-[620px] max-h-[229px] overflow-y-auto custom-scrollbar '>
+        {active && <div className='bg-white transition duration-700 rounded-lg p-2.5 pt-4 pl-[20px]  max-w-[620px] max-h-[229px] shadow-lg overflow-y-auto custom-scrollbar '>
           {users.map((user) => {
             return <div key={user.id} className='flex gap-4 items-center py-2 px-2 hover:bg-[#fafbff] rounded-[8px]'>
-              <svg _ngcontent-ng-c3929038549="" className='w-5 h-5' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3929038549="" d="M12 17.5h.01M8.2 22h7.6c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874C19 20.48 19 19.92 19 18.8V5.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C17.48 2 16.92 2 15.8 2H8.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C5 3.52 5 4.08 5 5.2v13.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C6.52 22 7.08 22 8.2 22Zm4.3-4.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z" stroke="#fb6c6c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
-              <p key={user.id} className='flex flex-col gap-0'>
+              <svg _ngcontent-ng-c3929038549="" className='w-6 h-6' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3929038549="" d="M12 17.5h.01M8.2 22h7.6c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874C19 20.48 19 19.92 19 18.8V5.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C17.48 2 16.92 2 15.8 2H8.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C5 3.52 5 4.08 5 5.2v13.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C6.52 22 7.08 22 8.2 22Zm4.3-4.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z" stroke="#fb6c6c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+              <p key={user.id} onClick={() => {setSelectedUser(user.title);setActive(false)}} className='flex flex-col gap-0'>
                 <span className={`${inter.className} text-[16px] text-[#002269] font-semibold`}>{user.title}</span>
                 <span className={`${inter.className} text-[12px] text-[#8091B5] font-semibold -mt-1`}>{user.id}</span>
               </p>
@@ -83,7 +116,8 @@ const AddProfil = () => {
                 className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 cursor-pointer"
                 onClick={() => {
                   setSelectedBank(bank);
-                  setIsOpen(false);
+                    setSelectedBankTitle(bank.title); 
+                    setIsOpen(false);
                 }}
               >
                 <div className='border border-gray-200 p-2 rounded-full'>
@@ -105,11 +139,13 @@ const AddProfil = () => {
         <input
           type="text"
           placeholder='Фамилия'
+          onChange={(e) => setUserInfo((prev) => ({ ...prev, lastName: e.target.value }))}
           className={`${inter.className} p-4 bg-[#FBFCFE] w-1/2 md:w-2/3 border border-[#eef2f9] rounded-[16px] focus:outline-none focus:ring-0 placeholder:text-[16px] text-[#002269]`}
         />
         <input
           type="text"
           placeholder='Имя'
+          onChange={(e) => setUserInfo((prev) => ({ ...prev, firstName: e.target.value }))}
           className='p-4 bg-[#FBFCFE] w-1/2 md:w-1/3 focus:outline-none focus:ring-0 border placeholder:text-[16px] border-[#eef2f9] rounded-[16px]'
         />
       </div>
@@ -117,6 +153,8 @@ const AddProfil = () => {
         <input
           type="text"
           placeholder='Отчество'
+          onChange={(e) => setUserInfo((prev) => ({ ...prev, fatherName: e.target.value }))}
+
           className='p-4 bg-[#FBFCFE] w-full focus:outline-none focus:ring-0 border placeholder:text-[16px] border-[#eef2f9] rounded-[16px]'
         />
       </div>
@@ -132,6 +170,8 @@ const AddProfil = () => {
         <input
           type="text"
           placeholder="+7 999 999 99 99"
+          onChange={(e) => setUserInfo((prev) => ({ ...prev, phone: e.target.value }))}
+
           className="pl-14 pr-4 py-4  left-4 bg-[#FBFCFE] w-full focus:outline-none focus:ring-0 border placeholder:text-[16px] border-[#eef2f9] rounded-[16px]"
         />
       </div>
@@ -147,6 +187,7 @@ const AddProfil = () => {
         <input
           type="text"
           placeholder="Суточный лимит"
+          onChange={(e) => setUserInfo((prev) => ({ ...prev, limit: e.target.value }))}
           className="pl-20 pr-4 py-4  left-4 bg-[#FBFCFE] w-full focus:outline-none focus:ring-0 border placeholder:text-[16px] border-[#eef2f9] rounded-[16px]"
         />
       </div>
