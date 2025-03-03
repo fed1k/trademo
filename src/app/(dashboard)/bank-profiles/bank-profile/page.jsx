@@ -193,11 +193,52 @@ const BankProfile = () => {
                     <p className={`${inter.className} text-sm font-bold text-[#8091B5]`}>Прием по СБП</p>
                     <p className='flex items-center gap-2 mt-1'>
                         <span className={`${inter.className} text-[18px]  text-sm md:text-[18px]  ${isChecked2 ? "text-[#0052FF]" : "text-[#002269]"}`}>Выкл</span>
+                        <label htmlFor="my_modal_8" className="btn bg-transparent border-none">
                         <input type="checkbox"
-                         onChange={() => setIsChecked2(!isChecked2)}
-                        name="" id="" />
+                          onChange={() => setIsChecked2(!isChecked2)}
+                          name="" id="" />
+                        </label>
+                           
+                         
                     </p>
                 </div>
+                 
+                <input type="checkbox" id="my_modal_8" className="modal-toggle" />
+                 {isChecked2 && <div className="modal" role="dialog">
+                  <div className="modal-box max-w-[330px] md:max-w-[400px]">
+                    <h3 className={`${inter.className} text-center text-[18px] text-black`}>Выбор карты для СБП</h3>
+                    <p className={`${inter.className} text-center text-sm text-[#8091B5] mt-2 `}>Выберите основную карту профиля</p>
+                      <div>
+                    <div className='flex gap-3 items-center mt-5 mb-3'>
+                        <div className='p-3 bg-[#EEF2F9] rounded-full'>
+                          
+                        </div>
+                        <div className="relative flex gap-4 items-center h-16 border border-  [#eef2f9] rounded-lg p-3 w-full bg-[#FBFCFE] shadow-sm mt-2">
+                          
+                          <div className='w-16 h-10 bg-[#0022FF] rounded-lg p-3'>
+                              <svg _ngcontent-ng-c1255989102="" className='w-2.5 h-2.5 ml-auto' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1255989102="" d="M9.937.008c2.279-.023 4.429.01 6.637.022a.9.9 0 0 1 .4.076c.393.199.53.743.276 1.1a9.032 9.032 0 0 1-.382.387 4629.905 4629.905 0 0 0-3.427 3.365 2.973 2.973 0 0 1-.591.475c-.876.49-1.846.3-2.52-.44-.932-1.023-1.442-2.23-1.53-3.622C8.745.491 9.03.018 9.937.008ZM8.082 1.129c-.005 1.683-.041 3.367-.043 5.05 0 .863-.533 1.666-1.363 1.936-.275.09-.622.116-1.042.08a5.747 5.747 0 0 1-3.44-1.487c-.623-.56-.756-1.124-.133-1.745L6.808.238a.746.746 0 0 1 .995-.052c.327.256.28.557.28.943ZM19.107 2.168a842.697 842.697 0 0 1 4.53 4.57c.269.273.402.545.253.9-.134.321-.39.48-.765.474-1.697-.023-3.394-.044-5.091-.063-.396-.004-.689-.035-.877-.092a1.968 1.968 0 0 1-1.391-1.952c.036-1.427.517-2.677 1.442-3.748.362-.42.796-.76 1.369-.51.129.055.305.196.53.421ZM.003 13.981c-.012-2.225.014-4.45.015-6.675 0-.482.502-.808.951-.686.293.08.548.417.791.664a839.24 839.24 0 0 1 3.368 3.438c.846.871.71 2.178-.188 2.966-1.078.947-2.322 1.444-3.734 1.494-.505.018-.917-.107-1.116-.574-.056-.132-.085-.341-.087-.627ZM23.964 10.058c.017 2.249-.013 4.388-.017 6.58 0 .273-.107.48-.317.623-.561.38-.953-.044-1.351-.453a1964.718 1964.718 0 0 0-3.316-3.4 2.643 2.643 0 0 1-.433-.547c-.46-.841-.31-1.809.398-2.47 1.064-.994 2.332-1.52 3.804-1.581.517-.022.943.107 1.143.59.057.136.087.356.089.658ZM21.817 19.117c-1.495 1.511-3.017 3.004-4.531 4.498-.181.179-.33.287-.446.326-.478.159-.966-.208-.961-.724l.041-5.323c.01-1.257.858-2.143 2.13-2.11a5.803 5.803 0 0 1 3.605 1.402c.47.403.819.812.566 1.402-.06.14-.194.316-.404.529ZM1.847 15.905c1.951.005 3.437.02 4.457.044.793.018 1.55.594 1.797 1.356.082.253.11.566.086.94a5.737 5.737 0 0 1-1.422 3.467c-.674.777-1.215.826-1.932.1-1.491-1.51-2.983-3.02-4.476-4.528-.117-.118-.25-.22-.295-.386-.15-.543.152-.984.712-1.004.36-.014.786.01 1.073.01ZM14.155 23.991c-2.26.023-4.521-.005-6.782-.014-.754-.003-1.086-.854-.527-1.358l.139-.126c1.203-1.185 2.41-2.368 3.617-3.549.776-.758 1.723-.892 2.672-.287.167.106.383.33.648.67.75.962 1.165 2.074 1.245 3.337.045.702-.194 1.319-1.012 1.327Z" fill="#fff"></path></svg>
+                          </div>
+                          <p className='flex flex-col items-center'>
+                            <span className={`${inter.className} text-sm text-black`}>fe</span>
+                            <span className={`${inter.className} text-sm text-[#8091B5]`}>2232 3232 3232 3232</span>
+                          </p>
+                        </div>
+                    </div>
+                    <span className={`${inter.className} font-semibold text-sm uppercase text-[#8091B5] text-center my-4`}>Номер счета *</span>
+                  <div className="relative flex items-center border border-[#eef2f9] rounded-lg p-3 w-full bg-[#FBFCFE] shadow-sm mt-2">
+                     <svg _ngcontent-ng-c1123165154="" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1123165154="" d="M18.333 8.333H1.667m7.5 3.333H5M1.667 6.833v6.333c0 .934 0 1.4.181 1.757.16.314.415.569.729.729.356.181.823.181 1.756.181h11.334c.933 0 1.4 0 1.756-.181.314-.16.569-.415.729-.729.181-.356.181-.823.181-1.757V6.833c0-.933 0-1.4-.181-1.756a1.666 1.666 0 0 0-.729-.729c-.356-.181-.823-.181-1.756-.181H4.333c-.933 0-1.4 0-1.756.181-.314.16-.569.415-.729.729-.181.356-.181.823-.181 1.756Z" stroke="#0052FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                    <input
+                    type="text"
+                    placeholder={'0000000000000000'}    
+                    className="flex-1 bg-transparent outline-none h-8 w-full ml-3 placeholder-[#8091B5] placeholder:text-lg"
+                  />
+                </div>
+                    </div>
+                    <button className={`w-full bg-[#E6EEFF] h-14 ${inter.className} text-[16px] text-[#0052FF] my-4 rounded-lg py-2`}>Выбрать карту</button>
+              </div>
+                   <label className="modal-backdrop" htmlFor="my_modal_8">Close</label>
+        </div>}
+
                 <div className='p-3 rounded-full bg-[#f3f4f8]'>
                     <svg _ngcontent-ng-c1210880631="" className='w-5 h-5' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1210880631="" d="m2.666 5.78 2.79 4.792v2.923L2.67 18.278 2.666 5.78ZM13.379 8.828l2.614-1.54 5.35-.005-7.964 4.69V8.827ZM13.364 5.75l.015 6.345-2.797-1.651V.959l2.782 4.791Z" fill="#8091B5"></path><path _ngcontent-ng-c1210880631="" d="m21.343 7.282-5.35.005-2.63-1.537L10.583.96l10.761 6.323ZM13.379 18.304v-3.079l-2.797-1.62.002 9.495 2.795-4.796Z" fill="#8091B5"></path><path _ngcontent-ng-c1210880631="" d="M15.987 16.779 5.456 10.572l-2.79-4.793 18.666 10.994-5.345.006ZM10.584 23.102l2.795-4.796 2.607-1.526 5.346-.007-10.748 6.329ZM2.668 18.276l7.936-4.672-2.668-1.573-2.481 1.462-2.787 4.783Z" fill="#8091B5"></path></svg>
                 </div>
@@ -251,6 +292,8 @@ const BankProfile = () => {
              <p className={`${inter.className} text-[12px] text-[#8091B5]`}>для данного профиля</p>
           </label>
          </div>
+
+         
         <input type="checkbox" id="my_modal_7" className="modal-toggle" />
         <div className="modal" role="dialog"> 
           <div className='min-w-[330px] md:min-w-[400px] bg-white p-4 px-5 rounded-md top-0 absolute'>
@@ -324,7 +367,7 @@ const BankProfile = () => {
           
         <label className="modal-backdrop" htmlFor="my_modal_7">Close</label>
         </div>
-
+       
     </div>
   )
 }
