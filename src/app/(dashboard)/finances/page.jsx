@@ -212,7 +212,96 @@ const FinancesPage = () => {
           <p className={`font-sans text-[#002269] text-[20px] mb-[10px] font-semibold`}>0 USDT</p>
           <p className={`${inter.className} text-[#8091b5] text-[14px] font-medium mb-4`}>0 RUB</p>
         </div>
+        <input type="checkbox" id="my_modal_7" className="modal-toggle" />
+        {/* modal */}
+            <div className="modal" role="dialog">
+              <div className="modal-box max-w-[420px] px-8 bg-white">
+                {newBank && <div>
+                  <h3 className={`${inter.className} text-[24px] text-black text-center my-2`}>Вывод средств</h3>
+                  <p className={`${inter.className} text-sm text-[#8091B5] text-center mb-2 `}>Вывод с баланса компенсация с выплат <br /> (компенсация выплат)</p>
+                  <div className="w-full flex-shrink-0 h-32 flex-col items-center justify-center bg-[#fbfcfe] rounded-2xl space-y-1 border border-[#eef2f9] py-5 px-4">
+                  <div className='w-full flex justify-between mb-1'>
+                 <p className={`${inter.className} text-[#002269] uppercase text-[14px] font-medium`}>Прибыль с приема</p>
+          </div>
+             <p className={`font-sans text-[#002269] text-[20px] mb-[10px] font-semibold`}>0 USDT</p>
+            <p className={`${inter.className} text-[#8091b5] text-[14px] font-medium `}>0 RUB</p>
+              <span className='w-2.5 h-2.5 bg-[#0052FF] rounded-full text-center mx-auto flex justify-center mt-1'></span>
+               </div>
 
+               <div className='flex justify-between items-center mt-6'>
+                  <p className={`${inter.className} text-sm text-[#8091B5] `}>КОШЕЛЕК ДЛЯ ВЫВОДА</p>
+                  <p className='flex items-center gap-1'>
+                    <span className={`${inter.className} cursor-pointer text-sm text-[#0052FF] uppercase`}>Выбрать</span>
+                    <IoIosArrowDown className='text-[#0052FF] cursor-pointer'/>
+                    <IoIosArrowUp className='text-[#0052FF] cursor-pointer'/>
+                  </p>
+               </div>
+
+               <div className='flex gap-5 items-center h-[60px] p-4 w-full rounded-[16px] bg-[#F9FAFB] my-2 border border-[#eef2f9]'>
+                  <svg _ngcontent-ng-c3807582623=""  className='w-5 h-5' viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3807582623="" d="M10.667 5.333V3c0-.554 0-.831-.117-1.002a.667.667 0 0 0-.438-.28c-.204-.035-.456.082-.959.314l-5.914 2.73c-.449.207-.673.31-.838.47a1.333 1.333 0 0 0-.324.508C2 5.957 2 6.204 2 6.698V10m9-.333h.007M2 7.467v4.4c0 .746 0 1.12.145 1.405.128.25.332.455.583.583.285.145.659.145 1.405.145h7.734c.746 0 1.12 0 1.405-.145.25-.128.455-.332.583-.583.145-.285.145-.659.145-1.405v-4.4c0-.747 0-1.12-.145-1.406a1.334 1.334 0 0 0-.583-.582c-.285-.146-.659-.146-1.405-.146H4.133c-.746 0-1.12 0-1.405.146-.25.127-.455.331-.583.582C2 6.347 2 6.72 2 7.467Zm9.333 2.2a.333.333 0 1 1-.666 0 .333.333 0 0 1 .666 0Z" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                   {active && <p className={`${inter.className} text-sm text-[#C2CDE2]`}>Кошелёк не выбран</p>}
+                   {!active && <p className={`${inter.className} text-sm text-[#0022FF]`}>Вывести на траст</p> }
+               </div>
+               {
+                 !newBank && <div className='bg-white shadow-lg p-4 w-full'>
+                  <p className={`${inter.className} text-center text-black text-[18px] mb-2`}>Добавление кошелька</p>
+                  <span className={`${inter.className} text-sm text-[#8091B5] font-bold mt-4`}>Название кошелька</span>
+                  <input 
+                  type="text"
+                  className='w-full h-12 max-w-[268px] bg-[#FAFBFC]  focus:ring-0 border border-[#eef2f9] rounded-xl p-2 px-4 mt-2 placeholder:text-[#C2CDE2]  focus:border-none focus:outline-none '
+                  placeholder='Введите название кошелька' />
+
+                  <span className={`${inter.className} text-sm text-[#8091B5] font-bold mt-6`}>Адрес кошелька</span>
+                  <input 
+                  type="text"
+                  className='w-full h-12 max-w-[268px] bg-[#FAFBFC]  focus:ring-0 border border-[#eef2f9] rounded-xl p-2 px-4 mt-2 placeholder:text-[#C2CDE2]  focus:border-none focus:outline-none '
+                  placeholder='Введите адрес кошелька' />
+                  <button className={`${inter.className} mt-4  text-[16px] text-[#0022FF] text-center w-full h-10 bg-[#E6EEFF] rounded-lg`}>Добавить кошелек</button>
+                </div>
+               }
+              
+                    {(aa && modal) && 
+                      <div className='absolute bg-white shadow-lg border top-[370px] rounded-lg p-4 w-[85%] min-h-[200px] z-50 mx-auto transition-all duration-500'>
+                          <p className='flex items-center gap-4 cursor-pointer p-1 w-full hover:bg-[#fafbff]' onClick={handleBank}>
+                            <svg _ngcontent-ng-c3807582623="" className='w-5 h-5' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3807582623="" d="M12 5v14m-7-7h14" stroke="#0052FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                            <span className={`${inter.className} text-sm text-black`}>
+                               Добавить новый кошелек <br />
+                               Для вывода USDT TRC-20</span>
+                          </p>
+
+                          <p className='flex items-center gap-4 cursor-pointer p-1 w-full hover:bg-[#fafbff] mt-2' onClick={handleActive}>
+                              <svg _ngcontent-ng-c3807582623="" className='w-5 h-5' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3807582623="" d="M6.75 12 9 9.75m0 0L11.25 12M9 9.75V15m7.5-8.25h-15m2.625 6.75H3.9c-.84 0-1.26 0-1.581-.164a1.5 1.5 0 0 1-.656-.655c-.163-.32-.163-.74-.163-1.581V5.4c0-.84 0-1.26.163-1.581a1.5 1.5 0 0 1 .656-.656C2.639 3 3.059 3 3.9 3h10.2c.84 0 1.26 0 1.581.163a1.5 1.5 0 0 1 .656.656c.163.32.163.74.163 1.581v5.7c0 .84 0 1.26-.163 1.581a1.5 1.5 0 0 1-.656.655c-.32.164-.74.164-1.581.164h-.225" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                            <span>
+                               Добавить новый кошелек <br />
+                               Для вывода USDT TRC-20</span>
+                          </p>
+                      </div>}}
+               
+               {!active && <div>
+                <p className={`${inter.className} text-sm text-[#8091B5] mt-4 font-bold mb-2 `}>СУММА В USDT TRC-20</p>
+                <div className='flex items-center gap-20 h-[60px] p-4 w-full rounded-[16px] bg-[#F9FAFB] my-2 border border-[#eef2f9]'>
+                  <p className={`${inter.className} text-[20px] text-black text-center my-2`}>USDT</p>
+                   <div className='flex gap-1 items-center'>
+                    <input type="text" placeholder='СУММА В' className='bg-transparent border-none focus:border-none focus:outline-none focus:ring-0 h-full placeholder:text-[#C2CDE2] placeholder:text-[20px] text-black text-[20px] w-full text-right mb-1'/>
+                     <p className={`${inter.className} text-[20px] mr-2  text-[#C2CDE2]`}>USDT</p>
+                   </div>
+               </div>
+               <p className={`${inter.className} text-sm text-[#8091B5] mt-4 font-bold mb-2 `}>ЭКВИВАЛЕНТНАЯ СУММА В ВАЛЮТЕ</p>
+               <div className='flex items-center gap-20 h-[60px] p-4 w-full rounded-[16px] bg-[#F9FAFB] my-2 border border-[#eef2f9]'>
+                  <div className='flex gap-2 items-center'>
+                    <p className={`${inter.className} p-2 px-4 bg-[#0022FF] text-white font-bold text-md rounded-full`}>₽</p>
+                    <p className={`${inter.className} text-[20px] text-black text-center my-2`}>RUB</p>
+                  </div>
+    
+                   <div className='flex gap-1 items-center'>
+                    <input type="text" placeholder='0' className='bg-transparent border-none focus:border-none focus:outline-none focus:ring-0 h-full placeholder:text-[#C2CDE2] placeholder:text-[20px] text-black text-[20px] w-full text-right mb-1' disabled/>
+                     <p className={`${inter.className} text-[20px] mr-2  text-[#C2CDE2]`}>₽</p>
+                   </div>
+               </div>
+              </div>
+              <label className="modal-backdrop" htmlFor="my_modal_7">Close</label>
+            </div>
+            {/* modal end */}
         <div className="w-full flex-shrink-0 h-36 flex-col items-center justify-center bg-[#fbfcfe] rounded-2xl space-y-2 border border-[#eef2f9] py-5 px-4">
           <div className='w-full flex justify-between mb-2'>
             <p className={`${inter.className} text-[#002269] uppercase text-[14px] font-medium`}>Прибыль с выплат</p>
