@@ -4,9 +4,12 @@ import DepositStepTwo from '@/components/DepositStepTwo';
 import { getUserDepositHistory } from '@/utils/firebase_utils';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
+import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
 import { useEffect, useRef, useState } from 'react';
 import { BsBank } from 'react-icons/bs';
 import { FaCreditCard, FaExchangeAlt, FaAngleDown, FaSort, FaSearch } from "react-icons/fa";
+import { MdNoAdultContent } from 'react-icons/md';
 export const inter = Inter({
   weight: ['400'],
   subsets: ['latin'],
@@ -16,9 +19,11 @@ const FinancesPage = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
-
+  const [newBank,setNewBank]=useState(true)
+  const [modal,setModal]=useState(false)
   const [depositHistory, setDepositHistory] = useState([])
-
+  const [active,setActive]=useState(false)
+  const [active1,setActive1]=useState(false)
   const [activeTab, setActiveTab] = useState("accountOperation")
 
   const { user } = useAuth()
@@ -39,7 +44,15 @@ const FinancesPage = () => {
       setValue(inputValue);
     }
   };
-
+  const handleActive=()=>{
+    setNewBank(false)
+    setActive1(true)
+  }
+  const handleBank=()=>{
+    setNewBank(!newBank)
+    setModal(!modal)
+    setActive(true)
+  }
   const closeModal = () => {
     modalRef.current.close();
     setDepositStep(1)
@@ -190,7 +203,7 @@ const FinancesPage = () => {
             </button>
             <button className='flex bg-[#EEF2F9] items-center py-1 gap-2 px-3 rounded-md '>
               <p className='text-[12px]'>1</p>
-              <span className={`${inter.className} text-[#002269] text-[12px] font-medium`}> Вывод средств</span>
+              <label htmlFor="my_modal_7"  className={`${inter.className} text-[#002269] text-[12px] font-medium cursor-pointer`}> Вывод средств</label>
             </button>
           </div>
           <p className={`font-sans text-[#002269] text-[20px] mb-[10px] font-semibold`}>0 USDT</p>
@@ -204,9 +217,9 @@ const FinancesPage = () => {
               <svg _ngcontent-ng-c3644767295="" width='23' height='20' _ngcontent-ng-c1898598531="" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" _ngcontent-ng-c1898598531="" d="M20.25 17.5v-1.75a1.75 1.75 0 1 0-3.5 0v1.75M22 10H2m20 1V8.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C20.48 5 19.92 5 18.8 5H5.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C2 6.52 2 7.08 2 8.2v7.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C3.52 19 4.08 19 5.2 19H11m5.6 2.5h3.8c.56 0 .84 0 1.054-.109a1 1 0 0 0 .437-.437C22 20.74 22 20.46 22 19.9v-.8c0-.56 0-.84-.109-1.054a1 1 0 0 0-.437-.437c-.214-.109-.494-.109-1.054-.109h-3.8c-.56 0-.84 0-1.054.109a1 1 0 0 0-.437.437C15 18.26 15 18.54 15 19.1v.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437c.214.109.494.109 1.054.109Z" stroke="#8091b5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
               <span className={`${inter.className} text-[#8091b5] text-[12px]`}>0</span>
             </button>
-            <button className='flex bg-[#EEF2F9] items-center py-1 gap-2 px-3 rounded-md '>
+            <button className='flex bg-[#EEF2F9] cursor-pointer items-center py-1 gap-2 px-3 rounded-md '>
               <p className='text-[12px]'>1</p>
-              <span className={`${inter.className} text-[#002269] text-[12px] font-medium`}> Вывод средств</span>
+              <label htmlFor="my_modal_7"  className={`${inter.className} text-[#002269] text-[12px] font-medium cursor-pointer`}> Вывод средств</label>
             </button>
           </div>
           <p className={`font-sans text-[#002269] text-[20px] mb-[10px] font-semibold`}>0 USDT</p>
@@ -216,7 +229,7 @@ const FinancesPage = () => {
         {/* modal */}
             <div className="modal" role="dialog">
               <div className="modal-box max-w-[420px] px-8 bg-white">
-                {newBank && <div>
+                <div>
                   <h3 className={`${inter.className} text-[24px] text-black text-center my-2`}>Вывод средств</h3>
                   <p className={`${inter.className} text-sm text-[#8091B5] text-center mb-2 `}>Вывод с баланса компенсация с выплат <br /> (компенсация выплат)</p>
                   <div className="w-full flex-shrink-0 h-32 flex-col items-center justify-center bg-[#fbfcfe] rounded-2xl space-y-1 border border-[#eef2f9] py-5 px-4">
@@ -227,20 +240,18 @@ const FinancesPage = () => {
             <p className={`${inter.className} text-[#8091b5] text-[14px] font-medium `}>0 RUB</p>
               <span className='w-2.5 h-2.5 bg-[#0052FF] rounded-full text-center mx-auto flex justify-center mt-1'></span>
                </div>
-
                <div className='flex justify-between items-center mt-6'>
                   <p className={`${inter.className} text-sm text-[#8091B5] `}>КОШЕЛЕК ДЛЯ ВЫВОДА</p>
                   <p className='flex items-center gap-1'>
                     <span className={`${inter.className} cursor-pointer text-sm text-[#0052FF] uppercase`}>Выбрать</span>
-                    <IoIosArrowDown className='text-[#0052FF] cursor-pointer'/>
-                    <IoIosArrowUp className='text-[#0052FF] cursor-pointer'/>
+                    {!modal && <IoIosArrowDown onClick={()=>{setModal(!modal)}} className='text-[#0052FF] cursor-pointer transition-all duration-500'/>}
+                    {modal && <IoIosArrowUp onClick={()=>{setModal(!modal)}} className='text-[#0052FF] cursor-pointer transition-all duration-500'/>}
                   </p>
                </div>
-
                <div className='flex gap-5 items-center h-[60px] p-4 w-full rounded-[16px] bg-[#F9FAFB] my-2 border border-[#eef2f9]'>
                   <svg _ngcontent-ng-c3807582623=""  className='w-5 h-5' viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3807582623="" d="M10.667 5.333V3c0-.554 0-.831-.117-1.002a.667.667 0 0 0-.438-.28c-.204-.035-.456.082-.959.314l-5.914 2.73c-.449.207-.673.31-.838.47a1.333 1.333 0 0 0-.324.508C2 5.957 2 6.204 2 6.698V10m9-.333h.007M2 7.467v4.4c0 .746 0 1.12.145 1.405.128.25.332.455.583.583.285.145.659.145 1.405.145h7.734c.746 0 1.12 0 1.405-.145.25-.128.455-.332.583-.583.145-.285.145-.659.145-1.405v-4.4c0-.747 0-1.12-.145-1.406a1.334 1.334 0 0 0-.583-.582c-.285-.146-.659-.146-1.405-.146H4.133c-.746 0-1.12 0-1.405.146-.25.127-.455.331-.583.582C2 6.347 2 6.72 2 7.467Zm9.333 2.2a.333.333 0 1 1-.666 0 .333.333 0 0 1 .666 0Z" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
-                   {active && <p className={`${inter.className} text-sm text-[#C2CDE2]`}>Кошелёк не выбран</p>}
-                   {!active && <p className={`${inter.className} text-sm text-[#0022FF]`}>Вывести на траст</p> }
+                   {!active1 && <p className={`${inter.className} text-sm text-[#C2CDE2]`}>Кошелёк не выбран</p>}
+                   {active1 && <p className={`${inter.className} text-sm text-[#0022FF]`}>Вывести на траст</p> }
                </div>
                {
                  !newBank && <div className='bg-white shadow-lg p-4 w-full'>
@@ -260,7 +271,7 @@ const FinancesPage = () => {
                 </div>
                }
               
-                    {(aa && modal) && 
+                    { modal && 
                       <div className='absolute bg-white shadow-lg border top-[370px] rounded-lg p-4 w-[85%] min-h-[200px] z-50 mx-auto transition-all duration-500'>
                           <p className='flex items-center gap-4 cursor-pointer p-1 w-full hover:bg-[#fafbff]' onClick={handleBank}>
                             <svg _ngcontent-ng-c3807582623="" className='w-5 h-5' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3807582623="" d="M12 5v14m-7-7h14" stroke="#0052FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
@@ -275,11 +286,11 @@ const FinancesPage = () => {
                                Добавить новый кошелек <br />
                                Для вывода USDT TRC-20</span>
                           </p>
-                      </div>}}
+                      </div>}
                
                {!active && <div>
                 <p className={`${inter.className} text-sm text-[#8091B5] mt-4 font-bold mb-2 `}>СУММА В USDT TRC-20</p>
-                <div className='flex items-center gap-20 h-[60px] p-4 w-full rounded-[16px] bg-[#F9FAFB] my-2 border border-[#eef2f9]'>
+                  <div className='flex items-center gap-20 h-[60px] p-4 w-full rounded-[16px] bg-[#F9FAFB] my-2 border border-[#eef2f9]'>
                   <p className={`${inter.className} text-[20px] text-black text-center my-2`}>USDT</p>
                    <div className='flex gap-1 items-center'>
                     <input type="text" placeholder='СУММА В' className='bg-transparent border-none focus:border-none focus:outline-none focus:ring-0 h-full placeholder:text-[#C2CDE2] placeholder:text-[20px] text-black text-[20px] w-full text-right mb-1'/>
@@ -298,6 +309,16 @@ const FinancesPage = () => {
                      <p className={`${inter.className} text-[20px] mr-2  text-[#C2CDE2]`}>₽</p>
                    </div>
                </div>
+
+               <div className='flex gap-3 items-center my-5'>
+                <input type="checkbox" className='cursor-pointer scale-150 border border-[#eef2f9]' />
+                <p className={`${inter.className} text-sm text-[#8091B5]  font-bold  `}> Данные введены корректно </p>
+               </div>
+
+               <button className={`${inter.className}  text-[16px] text-[#0022FF] text-center w-full h-14 bg-[#E6EEFF] rounded-lg`}>Вывести средства</button>
+              </div>}
+               </div>
+                
               </div>
               <label className="modal-backdrop" htmlFor="my_modal_7">Close</label>
             </div>
@@ -311,7 +332,7 @@ const FinancesPage = () => {
             </button>
             <button className='flex bg-[#EEF2F9] items-center py-1 gap-2 px-3 rounded-md '>
               <p className='text-[12px]'>1</p>
-              <span className={`${inter.className} text-[#002269] text-[12px] font-medium`}> Вывод средств</span>
+              <label htmlFor="my_modal_7"  className={`${inter.className} text-[#002269] text-[12px] font-medium cursor-pointer`}> Вывод средств</label>
             </button>
           </div>
           <p className={`font-sans text-[#002269] text-[20px] mb-[10px] font-semibold`}>0 USDT</p>
