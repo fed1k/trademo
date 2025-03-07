@@ -22,6 +22,7 @@ import ProfileDropdown from "@/components/ProfileDropdown";
 import LogoComp from "@/components/LogoComp";
 import { RefreshCcw } from "lucide-react";
 import { TbUpload } from "react-icons/tb";
+import CurrencyRate from "@/components/Currency";
 const mont = Montserrat({
   weight: ["600"],
   subsets: ["latin"],
@@ -265,7 +266,8 @@ const DashboardLayout = ({ children }) => {
             <p
               className={`font-sans text-[#002269] text-[16px] font-semibold mb-16`}
             >
-              92.88 <span className="text-[#0052F9]">RUB</span>
+               <CurrencyRate />
+               <span className="text-[#0052F9]">RUB</span>
             </p>
           </div>
 
@@ -423,11 +425,7 @@ const DashboardLayout = ({ children }) => {
                     fill="#fff"
                   ></path>
                 </svg>
-                <p
-                  className={`${inter.className} text-[#002269] text-[14px] font-bold mb-1`}
-                >
-                  93.46
-                </p>
+                <CurrencyRate />
                 <span className="text-[#0052F9] text-[12px] font-medium mt-[1px]">
                   RUB
                 </span>

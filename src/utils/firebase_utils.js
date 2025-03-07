@@ -3,6 +3,7 @@ import { getAuth } from "firebase/auth";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -230,7 +231,7 @@ export const getUserDepositHistory = async (token) => {
     const querySnapshot = await getDocs(q);  // Execute the query
     const depositHistory = [];
 
-    
+
 
     querySnapshot.forEach((doc) => {
 
@@ -275,7 +276,7 @@ export const getDocumentById = async (docId) => {
         minute: '2-digit',
       }).format(data.timestamp.toDate());
 
-      return {...data, date: formattedDate}  // Document exists
+      return { ...data, date: formattedDate }  // Document exists
     } else {
       console.log("No such document!");  // Document doesn't exist
     }
@@ -283,4 +284,34 @@ export const getDocumentById = async (docId) => {
     console.error("Error getting document:", error);
   }
 };
+
+export const deleteDocument = async (docId, colName) => {
+  try {
+    // await collection(db, colName).doc(docId).delete();
+    await deleteDoc(doc(db, colName, docId));
+    return 200
+  } catch (error) {
+    return "error"
+  }
+};
+
+export const updateDocument = async (data, colName, docId) => {
+
+  try {
+
+
+    const docRef = doc(db, colName, docId);
+
+    // Set the "capital" field of the city 'DC'
+    await updateDoc(docRef, {
+      ...data
+    });
+
+    return 200
+
+  } catch (err) {
+    console.log(err)
+  }
+
+}
 
