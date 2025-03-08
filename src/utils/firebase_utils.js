@@ -257,10 +257,10 @@ export const getUserDepositHistory = async (token) => {
   }
 }
 
-export const getDocumentById = async (docId) => {
+export const getDocumentById = async (docId, colName = "devices") => {
   try {
     // Reference to the document
-    const docRef = doc(db, "devices", docId);
+    const docRef = doc(db, colName, docId);
 
     // Fetch the document snapshot
     const docSnap = await getDoc(docRef);
@@ -268,14 +268,15 @@ export const getDocumentById = async (docId) => {
     if (docSnap.exists()) {
       const data = docSnap.data()
       console.log(data)
-      const formattedDate = new Intl.DateTimeFormat('ru-RU', {
+
+      const formattedDate = colName !== "bank-profiles" ?  new Intl.DateTimeFormat('ru-RU', {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
-      }).format(data.timestamp.toDate());
-
+      }).format(data.timestamp.toDate()) : "2002";
+      console.log(data)
       return { ...data, date: formattedDate }  // Document exists
     } else {
       console.log("No such document!");  // Document doesn't exist
@@ -313,5 +314,48 @@ export const updateDocument = async (data, colName, docId) => {
     console.log(err)
   }
 
+}
+
+export const addBankProfile = async (data) => {
+  try {
+    // Reference the devices collection
+    const bankProfiles = collection(db, "bank-profiles");
+
+    // Add data to the devices collection
+    const docRef = await addDoc(bankProfiles, data);
+
+    return  {status: 200, id: docRef.id}; // Return the document ID in case you need it
+  } catch (error) {
+    return error
+  }
+}
+
+export const getUserBankProfiles = async(token) => {
+  try {
+    const bankProfilesRef = collection(db, "bank-profiles");
+
+    // Query to find devices where user_token equals the specified value
+    const bankProfilesQuery = query(bankProfilesRef, where("userToken", "==", token));
+
+    // Execute the query
+    const querySnapshot = await getDocs(bankProfilesQuery);
+
+    // Check if any devices were found and return them
+    if (querySnapshot.empty) {
+      console.log("No bank profiles found with the given user token.");
+      return [];
+    }
+
+    // Map the documents to an array of data
+    const bankProfiles = querySnapshot.docs.map(doc => ({
+
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return bankProfiles;
+  } catch(error) {
+    return error
+  }
 }
 

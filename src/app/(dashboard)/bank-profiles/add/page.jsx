@@ -4,9 +4,10 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import { useState, useEffect } from 'react';
 import { options } from '@/utils/routes';
-import { getDevicesByUserToken } from '@/utils/firebase_utils';
+import { addBankProfile, getDevicesByUserToken } from '@/utils/firebase_utils';
 import { useAuth } from '@/components/AuthProvider';
 import { limit } from 'firebase/firestore';
+import { useRouter } from 'next/navigation';
 export const inter = Inter({
   weight: ['400'],
   subsets: ['latin'],
@@ -20,25 +21,51 @@ const AddProfil = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedBankTitle, setSelectedBankTitle] = useState(options[0]?.title || null);
 
-  const [userInfo,setUserInfo]=useState({
-    title:selectedUser,
-    selectBank:selectedBankTitle,
+  const [userInfo, setUserInfo] = useState({
+    title: selectedUser,
+    selectBank: selectedBankTitle,
     firstName: "",
     lastName: "",
     fatherName: "",
     phone: "",
     limit: "",
+    deviceId: ""
   })
 
-  console.log(userInfo);
+  const [error, setError] = useState("")
+
+  const router = useRouter()
+
+
+  const handleAddProfile = async () => {
+    const { title, selectBank, firstName, lastName, fatherName, phone, limit } = userInfo
+    if (!title || !selectBank || !firstName || !lastName || !fatherName || !phone || !limit) {
+      setError("Заполните все поля!")
+      return
+    }
+
+    const response = await addBankProfile({ ...userInfo, userToken: user.token, url: selectedBank.url })
+
+    if (response?.status === 200) {
+      router.push(`/bank-profiles/${response.id}`)
+    }
+  }
+
+  const selectDevice = (user) => {
+    setSelectedUser(user.title)
+    setActive(false)
+    setUserInfo((prev) => ({...prev, deviceId: user.id}))
+  }
+
+  // console.log(userInfo);
   useEffect(() => {
     setUserInfo((prev) => ({
       ...prev,
       title: selectedUser,
-      selectBank: selectedBankTitle, 
+      selectBank: selectedBankTitle,
     }));
   }, [selectedUser, selectedBankTitle]);
-  
+
 
   useEffect(() => {
     if (user) {
@@ -47,11 +74,11 @@ const AddProfil = () => {
       })
     }
   }, [user])
-  
+
   useEffect(() => {
     setUserInfo((prev) => ({ ...prev, title: selectedUser }));
   }, [selectedUser]);
-  
+
 
   return (
     <div className='pb-32 md:pb-10'>
@@ -66,12 +93,12 @@ const AddProfil = () => {
               <svg _ngcontent-ng-c3929038549="" width='20' height='20' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3929038549="" d="M12.182 4.318a4.5 4.5 0 0 1 0 6.364m-6.364 0a4.5 4.5 0 0 1 0-6.364m-2.121 8.485a7.5 7.5 0 0 1 0-10.606m10.606 0a7.5 7.5 0 0 1 0 10.606M9 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm0 0v6.75" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
             </span>}
             {selectedUser && <span className='p-2'>
-                 <svg _ngcontent-ng-c3929038549="" className='w-5 h-5' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3929038549="" d="M12 17.5h.01M8.2 22h7.6c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874C19 20.48 19 19.92 19 18.8V5.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C17.48 2 16.92 2 15.8 2H8.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C5 3.52 5 4.08 5 5.2v13.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C6.52 22 7.08 22 8.2 22Zm4.3-4.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z" stroke="#FB6C6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
-                </span>}
-            <span className={`${inter.className} text-[16px] ${selectedUser ? 'text-[#FB6C6C]':'text-[#8091B5]'}`}>
-            {selectedUser ? selectedUser : "Источник не выбран"}
-               </span>
-            
+              <svg _ngcontent-ng-c3929038549="" className='w-5 h-5' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3929038549="" d="M12 17.5h.01M8.2 22h7.6c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874C19 20.48 19 19.92 19 18.8V5.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C17.48 2 16.92 2 15.8 2H8.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C5 3.52 5 4.08 5 5.2v13.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C6.52 22 7.08 22 8.2 22Zm4.3-4.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z" stroke="#FB6C6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+            </span>}
+            <span className={`${inter.className} text-[16px] ${selectedUser ? 'text-[#FB6C6C]' : 'text-[#8091B5]'}`}>
+              {selectedUser ? selectedUser : "Источник не выбран"}
+            </span>
+
           </span>
           {!active && <IoIosArrowDown
             onClick={() => setActive(true)}
@@ -84,7 +111,7 @@ const AddProfil = () => {
           {users.map((user) => {
             return <div key={user.id} className='flex gap-4 items-center py-2 px-2 hover:bg-[#fafbff] rounded-[8px]'>
               <svg _ngcontent-ng-c3929038549="" className='w-6 h-6' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3929038549="" d="M12 17.5h.01M8.2 22h7.6c1.12 0 1.68 0 2.108-.218a2 2 0 0 0 .874-.874C19 20.48 19 19.92 19 18.8V5.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C17.48 2 16.92 2 15.8 2H8.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C5 3.52 5 4.08 5 5.2v13.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C6.52 22 7.08 22 8.2 22Zm4.3-4.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z" stroke="#fb6c6c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
-              <p key={user.id} onClick={() => {setSelectedUser(user.title);setActive(false)}} className='flex flex-col gap-0'>
+              <p key={user.id} onClick={() => selectDevice(user)} className='flex flex-col gap-0'>
                 <span className={`${inter.className} text-[16px] text-[#002269] font-semibold`}>{user.title}</span>
                 <span className={`${inter.className} text-[12px] text-[#8091B5] font-semibold -mt-1`}>{user.id}</span>
               </p>
@@ -116,8 +143,8 @@ const AddProfil = () => {
                 className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 cursor-pointer"
                 onClick={() => {
                   setSelectedBank(bank);
-                    setSelectedBankTitle(bank.title); 
-                    setIsOpen(false);
+                  setSelectedBankTitle(bank.title);
+                  setIsOpen(false);
                 }}
               >
                 <div className='border border-gray-200 p-2 rounded-full'>
@@ -191,8 +218,10 @@ const AddProfil = () => {
           className="pl-20 pr-4 py-4  left-4 bg-[#FBFCFE] w-full focus:outline-none focus:ring-0 border placeholder:text-[16px] border-[#eef2f9] rounded-[16px]"
         />
       </div>
+
+      {error && <p className='text-red-500'>{error}</p>}
       <div className='max-w-[620px]'>
-        <button className={`${inter.className} flex justify-center items-center text-[18px] rounded-[16px] bg-[#e6eeff] w-full text-[#0052ff] font-semibold p-4 mt-5`}>
+        <button onClick={handleAddProfile} className={`${inter.className} flex justify-center items-center text-[18px] rounded-[16px] bg-[#e6eeff] w-full text-[#0052ff] font-semibold p-4 mt-5`}>
           Добавить профиль
         </button>
       </div>
