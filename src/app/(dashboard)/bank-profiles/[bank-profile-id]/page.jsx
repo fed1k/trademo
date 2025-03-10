@@ -2,12 +2,14 @@
 import { Inter } from 'next/font/google';
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { getDocumentById } from '@/utils/firebase_utils';
+import { useEffect, useRef, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { changeAllRequisites, deleteDocument, getDocumentById, getRequisites } from '@/utils/firebase_utils';
 import { FaChevronRight } from 'react-icons/fa';
 import Image from 'next/image';
 import Link from 'next/link';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import AddRequisiteForm from '@/components/AddRequisiteModal';
 export const inter = Inter({
   weight: ['400'],
   subsets: ['latin'],
@@ -17,7 +19,11 @@ const BankProfile = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [isChecked1, setIsChecked1] = useState(false);
   const [isChecked2, setIsChecked2] = useState(false);
-  const [checkeds, setIsCheckeds] = useState(true)
+  const [profileActive, setProfileActive] = useState(false)
+  const [reqs, setReqs] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  const [previewReq, setPreviewReq] = useState({status: "", name: "", number: "", id: ""})
 
   const [bankProfile, setBankProfile] = useState({
     firstName: "",
@@ -26,12 +32,54 @@ const BankProfile = () => {
   })
 
   const params = useParams();
+  const router = useRouter()
+
+  const previewModalRef = useRef(null)
+
+  const handleProfileDelete = async () => {
+    setLoading(true)
+    const response = await deleteDocument(params["bank-profile-id"], "bank-profiles")
+    setLoading(false)
+    if (response === 200) {
+      router.push("/bank-profiles")
+    }
+  }
+
+  const changeAllRequisitesStatus = async(status) => {
+    changeAllRequisites(params["bank-profile-id"], status)
+    setActive(false)
+    setReqs((prev) => ([...prev].map((el) => {
+      return {
+        ...el,
+        status
+      }
+    })))
+
+    setProfileActive(status === "active" ? true : false)
+
+  }
+
+  const handlePreview = (data) => {
+    const {name, number, id, status} = data
+    previewModalRef.current.showModal()
+    console.log(data)
+    setPreviewReq({name, number, id, status})
+  }
+
+  const handleDeteleReq = async () => {
+    await deleteDocument(previewReq.id, "requisites")
+    setReqs((prev) => ([...prev].filter((el) => el.id !== previewReq.id)))
+    previewModalRef.current.close()
+  }
 
   useEffect(() => {
-    // console.log(params["bank-profile-id"])
     getDocumentById(params["bank-profile-id"], "bank-profiles").then((res) => {
       setBankProfile(res)
-      console.log(res)
+    })
+    getRequisites(params["bank-profile-id"]).then((res) => {
+      setReqs(res)
+      const isActive = res.some((el) => el.status === "active");
+      isActive && setProfileActive(true)
     })
   }, [params["bank-profile-id"]])
 
@@ -57,12 +105,12 @@ const BankProfile = () => {
               <span className={`${inter.className} text-sm group-hover:text-[#0052FF] text-[#002269]`}>Добавить реквизит</span>
             </button>
 
-            <button className='flex items-center gap-2 h-full py-2 px-5 w-full hover:bg-[#e9fce6]'>
+            <button onClick={() => changeAllRequisitesStatus("active")} className='flex items-center gap-2 h-full py-2 px-5 w-full hover:bg-[#e9fce6]'>
               <svg _ngcontent-ng-c1210880631="" className='w-4 h-4' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1210880631="" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10Z" stroke="#0052FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path><path _ngcontent-ng-c1210880631="" d="M9.5 8.965c0-.477 0-.716.1-.849a.5.5 0 0 1 .364-.199c.166-.012.367.117.769.375l4.72 3.035c.349.224.523.336.583.478a.5.5 0 0 1 0 .39c-.06.142-.234.254-.583.478l-4.72 3.035c-.402.258-.603.387-.769.375a.5.5 0 0 1-.364-.2c-.1-.132-.1-.371-.1-.848v-6.07Z" stroke="#0052FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
               <span className={`${inter.className} text-sm text-[#002269]`}>Запустить реквизиты</span>
             </button>
 
-            <button className='flex items-center gap-2 h-full py-2 px-5 w-full hover:bg-[#e9fce6]'>
+            <button onClick={() => changeAllRequisitesStatus("inactive")} className='flex items-center gap-2 h-full py-2 px-5 w-full hover:bg-[#e9fce6]'>
               <svg _ngcontent-ng-c1210880631="" className='w-4 h-4' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1210880631="" d="M9.5 15V9m5 6V9m7.5 3c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2s10 4.477 10 10Z" stroke="#0052FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
               <span className={`${inter.className} text-sm  text-[#002269]`}>Остановить реквизиты</span>
             </button>
@@ -89,9 +137,9 @@ const BankProfile = () => {
             </button>
 
             <div className='w-[210px] my-2 mx-auto h-[1px] bg-[#f3f4f8] '></div>
-            <button className='flex items-center gap-2 h-full py-2 px-5 w-full mb-4 hover:bg-[#e9fce6]'>
+            <button disabled={loading} onClick={handleProfileDelete} className='flex disabled:opacity-50 items-center gap-2 h-full py-2 px-5 w-full mb-4 hover:bg-[#e9fce6]'>
               <svg _ngcontent-ng-c1210880631="" className='w-4 h-4' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1210880631="" d="M12 4.5v-.6c0-.84 0-1.26-.164-1.581a1.5 1.5 0 0 0-.655-.656c-.32-.163-.74-.163-1.581-.163H8.4c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656C6 2.639 6 3.059 6 3.9v.6m1.5 4.125v3.75m3-3.75v3.75M2.25 4.5h13.5m-1.5 0v8.4c0 1.26 0 1.89-.245 2.371-.216.424-.56.768-.984.984-.48.245-1.11.245-2.371.245h-3.3c-1.26 0-1.89 0-2.371-.245a2.25 2.25 0 0 1-.984-.983C3.75 14.79 3.75 14.16 3.75 12.9V4.5" stroke="#0052FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
-              <span className={`${inter.className} text-sm  text-[#002269]`}>Удалить профиль </span>
+              <span className={`${inter.className} text-sm  text-[#002269]`}>{loading ? <AiOutlineLoading3Quarters className=' animate-spin' /> : "Удалить профиль"}</span>
             </button>
           </div>}
         </div>
@@ -104,7 +152,7 @@ const BankProfile = () => {
             <svg _ngcontent-ng-c1210880631="" className='w-6 h-6' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1210880631="" d="M3 20c2.336-2.477 5.507-4 9-4 3.493 0 6.664 1.523 9 4M16.5 7.5a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" stroke="#0052FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
             <p className='flex flex-col'>
               <span className={`${inter.className} text-sm text-[#8091B5] mb-1`}>Статус профиля </span>
-              <span className={`${inter.className} text-[18px] text-[900] text-[#0052FF]`}>Приостановлено  </span>
+              <span className={`${inter.className} text-[18px] text-[900] text-[#0052FF]`}>{profileActive ? "В работе" : "Приостановлено"}</span>
             </p>
           </div>
           <div className='flex items-center gap-6 h-[88px] p-5 w-full rounded-[16px] bg-[#F9FAFB] mb-5 border border-[#eef2f9]'>
@@ -133,7 +181,7 @@ const BankProfile = () => {
           </div>
           <div className='flex gap-3 justify-between '>
             <div className='relative text-center w-[38%]'>
-              <svg  className='w-[146px] h-[249px] absolute z-0 ' viewBox="0 0 300 600" fill="none" xmlns="http://www.w3.org/2000/svg" class="styles_deviceImage__SvmJn"><path _ngcontent-ng-c1210880631="" fill-rule="evenodd" clip-rule="evenodd" d="M32 4h234c15.464 0 28 12.536 28 28v536c0 15.464-12.536 28-28 28H32c-15.464 0-28-12.536-28-28V32C4 16.536 16.536 4 32 4ZM1 32C1 14.88 14.88 1 32 1h234c17.121 0 31 13.88 31 31v189.354c-.622.705-1 1.632-1 2.646v67c0 1.014.378 1.941 1 2.646V568c0 17.121-13.879 31-31 31H32c-17.12 0-31-13.879-31-31V32Z" fill="#343443"></path><path _ngcontent-ng-c1210880631="" fill-rule="evenodd" clip-rule="evenodd" d="M32 1h234c17.121 0 31 13.88 31 31v189.354a4.032 4.032 0 0 1 1-.819V32c0-17.673-14.327-32-32-32H32C14.327 0 0 14.327 0 32v536c0 17.673 14.327 32 32 32h234c17.673 0 32-14.327 32-32V294.465a4.032 4.032 0 0 1-1-.819V568c0 17.121-13.879 31-31 31H32c-17.12 0-31-13.879-31-31V32C1 14.88 14.88 1 32 1Z" fill="#1A1A27"></path><rect _ngcontent-ng-c1210880631="" x="5.5" y="5.5" width="287" height="589" rx="26.5" stroke="#1A1A27" stroke-width="3"></rect><rect _ngcontent-ng-c1210880631="" x="8" y="8" width="282" height="584" rx="24" stroke="#222232" stroke-width="2"></rect><rect _ngcontent-ng-c1210880631="" x="12.5" y="12.5" width="273" height="575" rx="19.5" stroke="#F0F4FC" stroke-width="7"></rect><rect _ngcontent-ng-c1210880631="" x="16" y="16" width="266" height="568" rx="16" fill="#F9FBFF"></rect><path _ngcontent-ng-c1210880631="" d="M298 120h.5a1.5 1.5 0 0 1 1.5 1.5v77a1.5 1.5 0 0 1-1.5 1.5h-.5v-80Z" fill="url(#device-body_svg__a)"></path><path _ngcontent-ng-c1210880631="" d="M296 230h.5a1.5 1.5 0 0 1 1.5 1.5v52a1.5 1.5 0 0 1-1.5 1.5h-.5v-55Z" fill="url(#device-body_svg__b)"></path><defs _ngcontent-ng-c1210880631=""><linearGradient _ngcontent-ng-c1210880631="" id="device-body_svg__a" x1="300" y1="120.571" x2="298" y2="120.571" gradientUnits="userSpaceOnUse"><stop _ngcontent-ng-c1210880631="" stop-color="#343443"></stop><stop _ngcontent-ng-c1210880631="" offset="1" stop-color="#272733"></stop></linearGradient><linearGradient _ngcontent-ng-c1210880631="" id="device-body_svg__b" x1="298" y1="230.393" x2="296" y2="230.393" gradientUnits="userSpaceOnUse"><stop _ngcontent-ng-c1210880631="" stop-color="#343443"></stop><stop _ngcontent-ng-c1210880631="" offset="1" stop-color="#272733"></stop></linearGradient></defs></svg>
+              <svg className='w-[146px] h-[249px] absolute z-0 ' viewBox="0 0 300 600" fill="none" xmlns="http://www.w3.org/2000/svg" class="styles_deviceImage__SvmJn"><path _ngcontent-ng-c1210880631="" fill-rule="evenodd" clip-rule="evenodd" d="M32 4h234c15.464 0 28 12.536 28 28v536c0 15.464-12.536 28-28 28H32c-15.464 0-28-12.536-28-28V32C4 16.536 16.536 4 32 4ZM1 32C1 14.88 14.88 1 32 1h234c17.121 0 31 13.88 31 31v189.354c-.622.705-1 1.632-1 2.646v67c0 1.014.378 1.941 1 2.646V568c0 17.121-13.879 31-31 31H32c-17.12 0-31-13.879-31-31V32Z" fill="#343443"></path><path _ngcontent-ng-c1210880631="" fill-rule="evenodd" clip-rule="evenodd" d="M32 1h234c17.121 0 31 13.88 31 31v189.354a4.032 4.032 0 0 1 1-.819V32c0-17.673-14.327-32-32-32H32C14.327 0 0 14.327 0 32v536c0 17.673 14.327 32 32 32h234c17.673 0 32-14.327 32-32V294.465a4.032 4.032 0 0 1-1-.819V568c0 17.121-13.879 31-31 31H32c-17.12 0-31-13.879-31-31V32C1 14.88 14.88 1 32 1Z" fill="#1A1A27"></path><rect _ngcontent-ng-c1210880631="" x="5.5" y="5.5" width="287" height="589" rx="26.5" stroke="#1A1A27" stroke-width="3"></rect><rect _ngcontent-ng-c1210880631="" x="8" y="8" width="282" height="584" rx="24" stroke="#222232" stroke-width="2"></rect><rect _ngcontent-ng-c1210880631="" x="12.5" y="12.5" width="273" height="575" rx="19.5" stroke="#F0F4FC" stroke-width="7"></rect><rect _ngcontent-ng-c1210880631="" x="16" y="16" width="266" height="568" rx="16" fill="#F9FBFF"></rect><path _ngcontent-ng-c1210880631="" d="M298 120h.5a1.5 1.5 0 0 1 1.5 1.5v77a1.5 1.5 0 0 1-1.5 1.5h-.5v-80Z" fill="url(#device-body_svg__a)"></path><path _ngcontent-ng-c1210880631="" d="M296 230h.5a1.5 1.5 0 0 1 1.5 1.5v52a1.5 1.5 0 0 1-1.5 1.5h-.5v-55Z" fill="url(#device-body_svg__b)"></path><defs _ngcontent-ng-c1210880631=""><linearGradient _ngcontent-ng-c1210880631="" id="device-body_svg__a" x1="300" y1="120.571" x2="298" y2="120.571" gradientUnits="userSpaceOnUse"><stop _ngcontent-ng-c1210880631="" stop-color="#343443"></stop><stop _ngcontent-ng-c1210880631="" offset="1" stop-color="#272733"></stop></linearGradient><linearGradient _ngcontent-ng-c1210880631="" id="device-body_svg__b" x1="298" y1="230.393" x2="296" y2="230.393" gradientUnits="userSpaceOnUse"><stop _ngcontent-ng-c1210880631="" stop-color="#343443"></stop><stop _ngcontent-ng-c1210880631="" offset="1" stop-color="#272733"></stop></linearGradient></defs></svg>
               <p className='absolute z-0 top-0 left-1/4 flex gap-2 text-center'>
                 <svg _ngcontent-ng-c1210880631="" className='w-16 absolute top-0 h-16' viewBox="0 0 145 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="styles_logo__SDUqm"><path _ngcontent-ng-c1210880631="" fill-rule="evenodd" clip-rule="evenodd" d="M5.86 5.035c1.176-.675 2.996-.385 3.447 1.362.032.174-.02.269-.311.186-.927-.43-1.724-.313-2.494.127-1.648.941-3.295 1.885-4.938 2.836-.146.085-.346.204-.376.34-.14.627-.276 1.264-.115 1.946l.216-.107c.135-.067.255-.126.373-.189 2.01-1.07 4.02-2.142 6.03-3.215.763-.407 1.538-.48 2.328-.086.609.302.921.84 1.137 1.45.067.152 0 .334-.147.27-1.02-.538-1.9-.414-2.773.088-1.316.758-2.633 1.513-3.951 2.268-.943.54-1.887 1.08-2.83 1.622-.068.04-.13.092-.2.15l-.113.094.392 1.415.265-.13c.157-.075.29-.14.422-.207l2.17-1.116c1.323-.681 2.647-1.362 3.972-2.041l.049-.025c.298-.154.6-.308.914-.423 1.212-.442 2.322-.137 3.124.871.17.212.303.453.436.694.05.091.102.183.154.273.252.43.498.864.744 1.297.552.973 1.104 1.946 1.72 2.875.742 1.118 2.228 1.44 3.385.822 1.566-.837 3.114-1.709 4.662-2.58l.646-.365c.162-.09.35-.255.392-.42.111-.429.194-.865.288-1.362.038-.2.078-.41.122-.632l-.598.317-1.014.539-1.667.889c-1.051.56-2.103 1.122-3.155 1.681-.898.477-1.789.521-2.65-.084-.428-.3-.713-.784-.762-1.226-.015-.137.122-.229.256-.193 1.483.395 1.648.333 3.223-.571 1.08-.62 2.16-1.24 3.24-1.858l2.356-1.35c.16-.091.318-.187.486-.29l.252-.153-.252-1.528c-.11.058-.21.11-.305.158-.184.095-.342.177-.5.261-.666.356-1.334.71-2.003 1.064a278.18 278.18 0 0 0-4.885 2.628c-1.318.732-3.07.484-3.611-1.292-.051-.169-.096-.381.16-.269 1.026.541 1.903.394 2.773-.107 1.493-.86 2.988-1.716 4.483-2.573l2.956-1.694c.058-.033.107-.08.153-.125.02-.02.04-.039.06-.056C22.554 3.099 17.698-.07 12.863 0c-4.667.069-9.532 3.227-10.707 7l.262-.134c.174-.089.336-.172.497-.257.289-.153.578-.305.868-.456a60.344 60.344 0 0 0 2.076-1.12ZM3.324 16.869l-.135.077-.81.467-.006.004c.996 3.274 5.746 6.366 10.042 6.571 4.438.213 9.465-2.505 10.834-5.909l-.186.091c-.115.056-.217.106-.315.16l-1.085.615c-.54.307-1.081.614-1.624.917-1.773.988-3.524.593-4.62-1.11-.498-.775-.95-1.58-1.402-2.383-.205-.365-.41-.729-.618-1.09-.058-.1-.113-.201-.168-.302-.127-.233-.253-.465-.408-.677-.802-1.097-1.957-1.426-3.224-.93a5.93 5.93 0 0 0-.747.37c-1.83 1.031-3.657 2.067-5.528 3.13Z" fill="url(#logo-accent_svg__a)"></path><path _ngcontent-ng-c1210880631="" d="M38.996 6.516h-5.688V3.804h14.564v2.712h-5.688v14.542h-3.188V6.516ZM52.577 9.818c.882-1.38 2.435-2.07 4.658-2.07v2.933a3.872 3.872 0 0 0-.71-.074c-1.194 0-2.126.354-2.796 1.06-.67.69-1.005 1.693-1.005 3.007v6.384h-3.065V7.896h2.918v1.922ZM64.766 7.748c1.928 0 3.4.468 4.413 1.405 1.03.92 1.545 2.317 1.545 4.19v7.715H67.83v-1.602c-.376.575-.915 1.019-1.618 1.33-.686.297-1.52.445-2.5.445-.982 0-1.84-.165-2.575-.493-.736-.346-1.308-.814-1.717-1.405a3.693 3.693 0 0 1-.588-2.046c0-1.183.433-2.128 1.3-2.835.882-.723 2.263-1.084 4.143-1.084h3.384v-.197c0-.92-.278-1.627-.834-2.12-.54-.493-1.348-.74-2.427-.74-.736 0-1.463.115-2.182.345-.703.23-1.3.551-1.79.962l-1.202-2.243c.687-.526 1.512-.929 2.477-1.208.964-.28 1.986-.419 3.065-.419Zm-.417 11.24c.768 0 1.446-.173 2.035-.518a2.923 2.923 0 0 0 1.275-1.528v-1.528h-3.163c-1.766 0-2.648.583-2.648 1.75 0 .558.22 1.002.662 1.33.441.33 1.054.494 1.839.494ZM87.6 2.769v18.289h-2.942v-1.7a4.726 4.726 0 0 1-1.888 1.404c-.735.313-1.553.469-2.452.469-1.258 0-2.394-.28-3.408-.839a6.05 6.05 0 0 1-2.354-2.366c-.572-1.035-.858-2.218-.858-3.549s.286-2.506.858-3.525a6.05 6.05 0 0 1 2.354-2.366c1.014-.559 2.15-.838 3.408-.838.867 0 1.66.148 2.379.444.719.295 1.332.74 1.839 1.33V2.77H87.6Zm-6.914 15.824c.736 0 1.398-.164 1.986-.493a3.731 3.731 0 0 0 1.398-1.454c.343-.624.515-1.347.515-2.169 0-.822-.172-1.545-.515-2.17a3.559 3.559 0 0 0-1.398-1.429c-.588-.345-1.25-.517-1.986-.517-.735 0-1.397.172-1.986.517a3.558 3.558 0 0 0-1.398 1.43c-.343.624-.514 1.347-.514 2.169 0 .822.171 1.545.514 2.169A3.73 3.73 0 0 0 78.7 18.1c.589.329 1.25.493 1.986.493ZM103.919 14.55c0 .214-.016.518-.049.913H93.596c.18.97.646 1.742 1.398 2.317.768.558 1.716.838 2.844.838 1.439 0 2.624-.477 3.555-1.43l1.643 1.898a5.532 5.532 0 0 1-2.231 1.602c-.9.362-1.913.543-3.04.543-1.439 0-2.706-.288-3.801-.863-1.095-.575-1.945-1.372-2.55-2.391-.588-1.035-.883-2.202-.883-3.5 0-1.282.286-2.432.858-3.45a6.252 6.252 0 0 1 2.428-2.416c1.03-.575 2.19-.863 3.482-.863 1.275 0 2.41.288 3.408.863a5.81 5.81 0 0 1 2.354 2.39c.572 1.02.858 2.203.858 3.55Zm-6.62-4.337c-.981 0-1.815.296-2.501.887-.67.575-1.08 1.348-1.226 2.317H101c-.131-.953-.531-1.725-1.201-2.317-.67-.591-1.504-.887-2.501-.887ZM122.923 21.058l-.024-11.437-5.64 9.465h-1.422l-5.639-9.317v11.289h-3.041V3.804h2.624l6.816 11.437 6.694-11.437h2.624l.024 17.254h-3.016ZM136.166 21.23c-1.324 0-2.518-.287-3.58-.862a6.382 6.382 0 0 1-2.501-2.391c-.589-1.035-.883-2.202-.883-3.5s.294-2.457.883-3.475a6.382 6.382 0 0 1 2.501-2.391c1.062-.575 2.256-.863 3.58-.863 1.34 0 2.542.288 3.604.863a6.214 6.214 0 0 1 2.477 2.39c.604 1.02.907 2.178.907 3.476s-.303 2.465-.907 3.5a6.214 6.214 0 0 1-2.477 2.39c-1.062.576-2.264.864-3.604.864Zm0-2.637c1.128 0 2.059-.378 2.795-1.134.736-.756 1.103-1.75 1.103-2.982 0-1.232-.367-2.227-1.103-2.982-.736-.756-1.667-1.134-2.795-1.134s-2.06.378-2.795 1.133c-.72.756-1.079 1.75-1.079 2.983 0 1.232.359 2.226 1.079 2.982.735.756 1.667 1.134 2.795 1.134Z" fill="#0052FF"></path><defs _ngcontent-ng-c1210880631=""><linearGradient _ngcontent-ng-c1210880631="" id="logo-accent_svg__a" x1="0.922" y1="11.539" x2="25.08" y2="11.578" gradientUnits="userSpaceOnUse"><stop _ngcontent-ng-c1210880631="" stop-color="#fb6c6c"></stop><stop _ngcontent-ng-c1210880631="" offset="1" stop-color="#0036A7"></stop></linearGradient></defs></svg>
               </p>
@@ -299,16 +347,19 @@ const BankProfile = () => {
 
       <p className={`${inter.className} text-[18px] text-[#8091B5] font-semibold mb-5`} >Реквизиты </p>
 
-      <div className='md:flex block items-center gap-8 mb-32'>
-        <div className='h-[154px] min-w-[280px] lg:min-w-[370px] py-4 px-5 rounded-[16px] bg-[#F9FAFB] mb-5 border border-[#eef2f9]'>
-          <div className='flex items-center justify-between mb-3'>
-            <p className={`${inter.className} text-sm text-[#0052FF]`}>Не в работе</p>
-            <svg _ngcontent-ng-c1210880631="" className='w-5 h-5' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1210880631="" d="M9.937.008c2.279-.023 4.429.01 6.637.022a.9.9 0 0 1 .4.076c.393.199.53.743.276 1.1a9.032 9.032 0 0 1-.382.387 4629.905 4629.905 0 0 0-3.427 3.365 2.973 2.973 0 0 1-.591.475c-.876.49-1.846.3-2.52-.44-.932-1.023-1.442-2.23-1.53-3.622C8.745.491 9.03.018 9.937.008ZM8.082 1.129c-.005 1.683-.042 3.367-.043 5.05 0 .863-.533 1.666-1.363 1.936-.275.09-.622.116-1.043.08a5.747 5.747 0 0 1-3.439-1.487c-.623-.56-.757-1.124-.133-1.745L6.808.238a.746.746 0 0 1 .995-.052c.327.256.28.557.28.943ZM19.107 2.168a842.697 842.697 0 0 1 4.53 4.57c.269.273.402.545.253.9-.134.321-.39.48-.765.474-1.697-.023-3.394-.044-5.091-.063-.396-.004-.689-.035-.877-.092a1.968 1.968 0 0 1-1.391-1.952c.036-1.427.517-2.677 1.442-3.748.362-.42.796-.76 1.369-.51.129.055.305.196.53.421ZM.003 13.981c-.012-2.225.014-4.45.015-6.675 0-.482.502-.808.951-.686.293.08.548.417.791.664a839.24 839.24 0 0 1 3.368 3.438c.846.871.71 2.178-.188 2.966-1.078.947-2.322 1.444-3.734 1.494-.505.018-.917-.107-1.116-.574-.056-.132-.085-.341-.087-.627ZM23.964 10.058c.017 2.249-.013 4.388-.017 6.58 0 .273-.107.48-.317.623-.561.38-.953-.044-1.351-.453a1964.78 1964.78 0 0 0-3.316-3.4 2.645 2.645 0 0 1-.433-.547c-.46-.841-.31-1.809.398-2.47 1.064-.994 2.332-1.52 3.804-1.581.517-.022.943.107 1.143.59.057.136.087.356.089.658ZM21.817 19.117c-1.495 1.511-3.017 3.004-4.531 4.498-.181.179-.33.287-.446.326-.478.159-.966-.208-.961-.724l.041-5.323c.01-1.257.857-2.143 2.13-2.11a5.803 5.803 0 0 1 3.605 1.402c.47.403.819.812.566 1.402-.06.14-.195.316-.404.529ZM1.847 15.905c1.951.005 3.437.02 4.457.044.793.018 1.55.594 1.797 1.356.082.253.11.566.086.94a5.737 5.737 0 0 1-1.422 3.467c-.674.777-1.215.826-1.932.1-1.491-1.51-2.983-3.02-4.476-4.528-.117-.118-.25-.22-.295-.386-.15-.543.152-.984.712-1.004.36-.014.786.01 1.073.01ZM14.155 23.991c-2.26.023-4.521-.005-6.782-.014-.755-.003-1.086-.854-.527-1.358l.139-.126c1.203-1.185 2.41-2.368 3.617-3.549.776-.758 1.723-.892 2.672-.287.167.106.383.33.648.67.75.962 1.165 2.074 1.245 3.337.045.702-.194 1.319-1.012 1.327Z" fill="#32A8FF"></path></svg>
+      <div className='md:flex block flex-wrap items-center gap-8 mb-32'>
+        {reqs.length ? reqs.map((req) => (
+
+          <div onClick={() => handlePreview(req)} className='h-[154px] min-w-[280px] lg:min-w-[370px] py-4 px-5 rounded-[16px] bg-[#F9FAFB] mb-5 border border-[#eef2f9]'>
+            <div className='flex items-center justify-between mb-3'>
+              <p className={`${inter.className} text-sm text-[#0052FF]`}>{req.status === "inactive" ? "Не в работе" : "в работе"} </p>
+              <svg _ngcontent-ng-c1210880631="" className='w-5 h-5' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1210880631="" d="M9.937.008c2.279-.023 4.429.01 6.637.022a.9.9 0 0 1 .4.076c.393.199.53.743.276 1.1a9.032 9.032 0 0 1-.382.387 4629.905 4629.905 0 0 0-3.427 3.365 2.973 2.973 0 0 1-.591.475c-.876.49-1.846.3-2.52-.44-.932-1.023-1.442-2.23-1.53-3.622C8.745.491 9.03.018 9.937.008ZM8.082 1.129c-.005 1.683-.042 3.367-.043 5.05 0 .863-.533 1.666-1.363 1.936-.275.09-.622.116-1.043.08a5.747 5.747 0 0 1-3.439-1.487c-.623-.56-.757-1.124-.133-1.745L6.808.238a.746.746 0 0 1 .995-.052c.327.256.28.557.28.943ZM19.107 2.168a842.697 842.697 0 0 1 4.53 4.57c.269.273.402.545.253.9-.134.321-.39.48-.765.474-1.697-.023-3.394-.044-5.091-.063-.396-.004-.689-.035-.877-.092a1.968 1.968 0 0 1-1.391-1.952c.036-1.427.517-2.677 1.442-3.748.362-.42.796-.76 1.369-.51.129.055.305.196.53.421ZM.003 13.981c-.012-2.225.014-4.45.015-6.675 0-.482.502-.808.951-.686.293.08.548.417.791.664a839.24 839.24 0 0 1 3.368 3.438c.846.871.71 2.178-.188 2.966-1.078.947-2.322 1.444-3.734 1.494-.505.018-.917-.107-1.116-.574-.056-.132-.085-.341-.087-.627ZM23.964 10.058c.017 2.249-.013 4.388-.017 6.58 0 .273-.107.48-.317.623-.561.38-.953-.044-1.351-.453a1964.78 1964.78 0 0 0-3.316-3.4 2.645 2.645 0 0 1-.433-.547c-.46-.841-.31-1.809.398-2.47 1.064-.994 2.332-1.52 3.804-1.581.517-.022.943.107 1.143.59.057.136.087.356.089.658ZM21.817 19.117c-1.495 1.511-3.017 3.004-4.531 4.498-.181.179-.33.287-.446.326-.478.159-.966-.208-.961-.724l.041-5.323c.01-1.257.857-2.143 2.13-2.11a5.803 5.803 0 0 1 3.605 1.402c.47.403.819.812.566 1.402-.06.14-.195.316-.404.529ZM1.847 15.905c1.951.005 3.437.02 4.457.044.793.018 1.55.594 1.797 1.356.082.253.11.566.086.94a5.737 5.737 0 0 1-1.422 3.467c-.674.777-1.215.826-1.932.1-1.491-1.51-2.983-3.02-4.476-4.528-.117-.118-.25-.22-.295-.386-.15-.543.152-.984.712-1.004.36-.014.786.01 1.073.01ZM14.155 23.991c-2.26.023-4.521-.005-6.782-.014-.755-.003-1.086-.854-.527-1.358l.139-.126c1.203-1.185 2.41-2.368 3.617-3.549.776-.758 1.723-.892 2.672-.287.167.106.383.33.648.67.75.962 1.165 2.074 1.245 3.337.045.702-.194 1.319-1.012 1.327Z" fill="#32A8FF"></path></svg>
+            </div>
+            <p className={`${inter.className} text-sm text-[#002269] mb-2`}>{req.name}</p>
+            <p className={`${inter.className} text-[20px] text-[#002269]`}>{req.number}</p>
+            <p className={`${inter.className} text-sm text-[#8091B5]`}>Банк: {bankProfile?.selectBank} • Россия: RUB</p>
           </div>
-          <p className={`${inter.className} text-sm text-[#002269] mb-2`}>user name</p>
-          <p className={`${inter.className} text-[20px] text-[#002269]`}>user Card Number</p>
-          <p className={`${inter.className} text-sm text-[#8091B5]`}>Банк: VTB • Россия: RUB</p>
-        </div>
+        )) : <></>}
 
 
         <label htmlFor="my_modal_7" className='btn h-[154px] min-w-[280px] lg:min-w-[370px] py-4 px-5 rounded-[16px] bg-[#F9FAFB] mb-5 border border-[#eef2f9] flex flex-col justify-center items-center'>
@@ -320,78 +371,29 @@ const BankProfile = () => {
 
 
       <input type="checkbox" id="my_modal_7" className="modal-toggle" />
-      <div className="modal" role="dialog">
-        <div className='min-w-[330px] md:min-w-[400px] bg-white p-4 px-5 rounded-md top-0 absolute'>
-          <p className={`${inter.className} font-semibold text-[18px] text-black text-center mb-2`}>Добавление реквизита</p>
-          <p className={`${inter.className} font-semibold text-sm text-[#8091B5] text-center mb-5`}>Заполните форму для добавления</p>
+      <AddRequisiteForm profileId={params["bank-profile-id"]} />
 
-          <span className={`${inter.className} font-semibold text-sm text-[#8091B5] text-center mb-2`}>НАЗВАНИЕ РЕКВИЗИТА *</span>
-
-          <div className="relative flex items-center border border-[#eef2f9] rounded-lg p-3 w-full bg-[#FBFCFE] shadow-sm mt-2">
-            <svg _ngcontent-ng-c1123165154="" className='w-6 h-6 ' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1123165154="" d="M3 20c2.336-2.477 5.507-4 9-4 3.493 0 6.664 1.523 9 4M16.5 7.5a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" stroke="#0022FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-            <input
-              type="text"
-              placeholder="Введите название"
-              onChange={(e) => setQuery(e.target.value)}
-              className="flex-1 bg-transparent outline-none h-8 w-full ml-2 placeholder-[#8092B5] placeholder:text-lg"
-            />
+      <dialog ref={previewModalRef} className="modal">
+        <div className="modal-box max-w-[400px]">
+          <h3 className={`${inter.className} text-black text-center text-[18px]`}>Управление реквизитом</h3>
+          <div className='h-[154px] min-w-[280px] lg:max-w-[360px] mx-auto py-4 px-5 rounded-[16px] bg-gradient-to-t bg-[#e6eeff] my-5 border border-[#eef2f9]'>
+            <div className='flex items-center justify-between mb-3'>
+              <p className={`${inter.className} text-sm text-[#0052FF]`}>{previewReq.status === "active" ? "в работе" : "Не в работе"} </p>
+              <svg _ngcontent-ng-c1210880631="" className='w-5 h-5' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1210880631="" d="M9.937.008c2.279-.023 4.429.01 6.637.022a.9.9 0 0 1 .4.076c.393.199.53.743.276 1.1a9.032 9.032 0 0 1-.382.387 4629.905 4629.905 0 0 0-3.427 3.365 2.973 2.973 0 0 1-.591.475c-.876.49-1.846.3-2.52-.44-.932-1.023-1.442-2.23-1.53-3.622C8.745.491 9.03.018 9.937.008ZM8.082 1.129c-.005 1.683-.042 3.367-.043 5.05 0 .863-.533 1.666-1.363 1.936-.275.09-.622.116-1.043.08a5.747 5.747 0 0 1-3.439-1.487c-.623-.56-.757-1.124-.133-1.745L6.808.238a.746.746 0 0 1 .995-.052c.327.256.28.557.28.943ZM19.107 2.168a842.697 842.697 0 0 1 4.53 4.57c.269.273.402.545.253.9-.134.321-.39.48-.765.474-1.697-.023-3.394-.044-5.091-.063-.396-.004-.689-.035-.877-.092a1.968 1.968 0 0 1-1.391-1.952c.036-1.427.517-2.677 1.442-3.748.362-.42.796-.76 1.369-.51.129.055.305.196.53.421ZM.003 13.981c-.012-2.225.014-4.45.015-6.675 0-.482.502-.808.951-.686.293.08.548.417.791.664a839.24 839.24 0 0 1 3.368 3.438c.846.871.71 2.178-.188 2.966-1.078.947-2.322 1.444-3.734 1.494-.505.018-.917-.107-1.116-.574-.056-.132-.085-.341-.087-.627ZM23.964 10.058c.017 2.249-.013 4.388-.017 6.58 0 .273-.107.48-.317.623-.561.38-.953-.044-1.351-.453a1964.78 1964.78 0 0 0-3.316-3.4 2.645 2.645 0 0 1-.433-.547c-.46-.841-.31-1.809.398-2.47 1.064-.994 2.332-1.52 3.804-1.581.517-.022.943.107 1.143.59.057.136.087.356.089.658ZM21.817 19.117c-1.495 1.511-3.017 3.004-4.531 4.498-.181.179-.33.287-.446.326-.478.159-.966-.208-.961-.724l.041-5.323c.01-1.257.857-2.143 2.13-2.11a5.803 5.803 0 0 1 3.605 1.402c.47.403.819.812.566 1.402-.06.14-.195.316-.404.529ZM1.847 15.905c1.951.005 3.437.02 4.457.044.793.018 1.55.594 1.797 1.356.082.253.11.566.086.94a5.737 5.737 0 0 1-1.422 3.467c-.674.777-1.215.826-1.932.1-1.491-1.51-2.983-3.02-4.476-4.528-.117-.118-.25-.22-.295-.386-.15-.543.152-.984.712-1.004.36-.014.786.01 1.073.01ZM14.155 23.991c-2.26.023-4.521-.005-6.782-.014-.755-.003-1.086-.854-.527-1.358l.139-.126c1.203-1.185 2.41-2.368 3.617-3.549.776-.758 1.723-.892 2.672-.287.167.106.383.33.648.67.75.962 1.165 2.074 1.245 3.337.045.702-.194 1.319-1.012 1.327Z" fill="#32A8FF"></path></svg>
+            </div>
+            <p className={`${inter.className} text-sm text-[#002269] mb-2`}>{previewReq.name}</p>
+            <p className={`${inter.className} text-[20px] text-[#002269]`}>{previewReq.number}</p>
+            <p className={`${inter.className} text-sm text-[#8091B5]`}>Банк: {bankProfile?.selectBank} • Россия: RUB</p>
           </div>
-
-
-          <p className={`${inter.className} text-[16px] my-3 text-[#FB6C6C]`}>Поле не заполнено</p>
-          <span className={`${inter.className} font-semibold text-sm uppercase text-[#8091B5] text-center mb-2`}>Выберите необходимое</span>
-
-          <div className="relative flex items-center border border-[#eef2f9] rounded-lg p-3 w-full bg-[#FBFCFE] shadow-sm mt-2">
-            <input
-              type="checkbox"
-              onChange={(prev) => setIsCheckeds(!checkeds)}
-              name="" id="" />
-            <input
-              type="text"
-              placeholder={checkeds ? 'Будет сохранен счёт' : 'Будет сохранена карта'}
-              onChange={(e) => setQuery(e.target.value)}
-              className="flex-1 bg-transparent outline-none h-8 w-full ml-3 placeholder-[#0022FF] placeholder:text-lg"
-            />
-          </div>
-          {checkeds && <p className={`${inter.className} mt-4 font-semibold text-sm uppercase text-[#8091B5] mb-2`}>номер счёта*</p>}
-          {!checkeds && <p className={`${inter.className} mt-4 font-semibold text-sm uppercase text-[#8091B5] mb-2`}>карта*</p>}
-
-          <div className="relative flex items-center border border-[#eef2f9] rounded-lg p-3 w-full bg-[#FBFCFE] shadow-sm mt-2">
-            <svg _ngcontent-ng-c1123165154="" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1123165154="" d="M18.333 8.333H1.667m7.5 3.333H5M1.667 6.833v6.333c0 .934 0 1.4.181 1.757.16.314.415.569.729.729.356.181.823.181 1.756.181h11.334c.933 0 1.4 0 1.756-.181.314-.16.569-.415.729-.729.181-.356.181-.823.181-1.757V6.833c0-.933 0-1.4-.181-1.756a1.666 1.666 0 0 0-.729-.729c-.356-.181-.823-.181-1.756-.181H4.333c-.933 0-1.4 0-1.756.181-.314.16-.569.415-.729.729-.181.356-.181.823-.181 1.756Z" stroke="#0052FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
-            <input
-              type="text"
-              placeholder={checkeds ? 'XXXXXXXXXXXXXXXX' : '0000000000000000'}
-              onChange={(e) => setQuery(e.target.value)}
-              className="flex-1 bg-transparent outline-none h-8 w-full ml-3 placeholder-[#8091B5] placeholder:text-lg"
-            />
-          </div>
-
-          <p className={`${inter.className} mt-4 font-semibold text-[16px]  text-[#FB6C6C] mb-2`}> {checkeds ? 'Номер счёта:' : 'Номер карты:'} Поле не заполнено</p>
-
-          <span className={`${inter.className} font-semibold text-sm uppercase text-[#8091B5] text-center mb-2`}>ДЕРЖАТЕЛЬ КАРТЫ *</span>
-
-          <div className="relative flex items-center border border-[#eef2f9] rounded-lg p-3 w-full bg-[#FBFCFE] shadow-sm mt-2">
-            <svg _ngcontent-ng-c1123165154="" className='w-6 h-6 ' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1123165154="" d="M3 20c2.336-2.477 5.507-4 9-4 3.493 0 6.664 1.523 9 4M16.5 7.5a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" stroke="#0022FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-            <input
-              type="text"
-              placeholder="CARD HOLDER"
-              onChange={(e) => setQuery(e.target.value)}
-              className="flex-1 bg-transparent outline-none h-8 w-full ml-3 placeholder-[#8092B5] placeholder:text-lg"
-            />
-          </div>
-          <p className={`${inter.className} text-[16px] my-3 text-[#FB6C6C]`}>Поле не заполнено</p>
-
-          <div className='flex gap-1 items-center'>
-            <input type="checkbox" className='cursor-pointer ' name="" id="" />
-            <span className={`${inter.className} font-semibold cursor-pointer text-sm text-[#8091B5] text-center`}>Запустить реквизит в работу</span>
-          </div>
-
-          <button className={`w-full bg-[#E6EEFF] h-[40px] ${inter.className} text-[16px] text-[#0052FF] my-4 rounded-lg py-2`}>Добавить реквизит</button>
+          <button onClick={handleDeteleReq} className='flex justify-center gap-2 w-full mx-auto rounded-lg items-center border h-12 p-2 mt-5'>
+            <svg _ngcontent-ng-c1955464453="" className='w-4 h-4' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1955464453="" d="M12 4.5v-.6c0-.84 0-1.26-.164-1.581a1.5 1.5 0 0 0-.655-.656c-.32-.163-.74-.163-1.581-.163H8.4c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656C6 2.639 6 3.059 6 3.9v.6m1.5 4.125v3.75m3-3.75v3.75M2.25 4.5h13.5m-1.5 0v8.4c0 1.26 0 1.89-.245 2.371-.216.424-.56.768-.984.984-.48.245-1.11.245-2.371.245h-3.3c-1.26 0-1.89 0-2.371-.245a2.25 2.25 0 0 1-.984-.983C3.75 14.79 3.75 14.16 3.75 12.9V4.5" stroke="#FB6C6C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <p>Удалить реквизит</p>
+          </button>
         </div>
-
-
-        <label className="modal-backdrop" htmlFor="my_modal_7">Close</label>
-      </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
 
     </div>
   )

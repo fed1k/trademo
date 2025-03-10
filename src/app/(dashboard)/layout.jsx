@@ -23,6 +23,8 @@ import LogoComp from "@/components/LogoComp";
 import { RefreshCcw } from "lucide-react";
 import { TbUpload } from "react-icons/tb";
 import CurrencyRate from "@/components/Currency";
+import PriceDisplay from "@/components/Currency";
+import useTetherRub from "@/components/Currency";
 const mont = Montserrat({
   weight: ["600"],
   subsets: ["latin"],
@@ -33,6 +35,8 @@ const DashboardLayout = ({ children }) => {
   const [query, setQuery] = useState("");
   const router = useRouter()
   const { user, logout } = useAuth()
+
+  const tetherPrice = useTetherRub()
 
   const isAdmin = user?.isAdmin
   useEffect(() => {
@@ -257,18 +261,19 @@ const DashboardLayout = ({ children }) => {
             </p>
           </div>
 
-          <div className="w-full flex-shrink-0 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+          <div className="w-full flex-shrink-0 flex mb-3 items-center  flex-col justify-start bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
             <p
               className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
             >
               Курс Tether TRC-20
             </p>
-            <p
+            <div
               className={`font-sans text-[#002269] text-[16px] font-semibold mb-16`}
             >
-               <CurrencyRate />
+               {/* <PriceDisplay /> */}
+               <p className={`font-semibold ${inter}`}>{tetherPrice}</p>
                <span className="text-[#0052F9]">RUB</span>
-            </p>
+            </div>
           </div>
 
 
@@ -400,7 +405,7 @@ const DashboardLayout = ({ children }) => {
               >
                 Курс Tether TRC-20
               </p>
-              <div className="w-full flex justify-center gap-1">
+              <div className="w-full flex items-center justify-start gap-1">
                 <svg
                   _ngcontent-ng-c394174421=""
                   width="18"
@@ -425,7 +430,8 @@ const DashboardLayout = ({ children }) => {
                     fill="#fff"
                   ></path>
                 </svg>
-                <CurrencyRate />
+                {/* <PriceDisplay /> */}
+                <p className="font-semibold">{tetherPrice}</p>
                 <span className="text-[#0052F9] text-[12px] font-medium mt-[1px]">
                   RUB
                 </span>

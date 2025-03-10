@@ -7,6 +7,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  increment,
   orderBy,
   query,
   serverTimestamp,
@@ -86,7 +87,7 @@ export const addDeviceData = async (userToken, title) => {
     // Add data to the devices collection
     const docRef = await addDoc(devicesRef, deviceData);
 
-    console.log("Document written with ID: ", docRef.id);
+    // console.log("Document written with ID: ", docRef.id);
     return docRef.id; // Return the document ID in case you need it
   } catch (error) {
     console.error("Error adding document: ", error);
@@ -202,13 +203,13 @@ export const updateDeposit = async (doc_id, data, docu) => {
           await updateDoc(userDocRef, {
             balance: increment(Number(docu.amount)), // Add the new amount to the existing balance
           });
-          console.log(`Balance updated successfully! New balance: ${Number(currentBalance) + Number(docu.amount)}`);
+          // console.log(`Balance updated successfully! New balance: ${Number(currentBalance) + Number(docu.amount)}`);
         } else {
           // If 'balance' doesn't exist, set it with the provided amount
           await updateDoc(userDocRef, {
             balance: Number(docu.amount), // Set the initial balance to the provided amount
           });
-          console.log(`Balance added successfully! Initial balance: ${Number(docu.amount)}`);
+          // console.log(`Balance added successfully! Initial balance: ${Number(docu.amount)}`);
         }
       }
       return data.status
@@ -267,16 +268,16 @@ export const getDocumentById = async (docId, colName = "devices") => {
 
     if (docSnap.exists()) {
       const data = docSnap.data()
-      console.log(data)
+      // console.log(data)
 
-      const formattedDate = colName !== "bank-profiles" ?  new Intl.DateTimeFormat('ru-RU', {
+      const formattedDate = colName !== "bank-profiles" ? new Intl.DateTimeFormat('ru-RU', {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
       }).format(data.timestamp.toDate()) : "2002";
-      console.log(data)
+      // console.log(data)
       return { ...data, date: formattedDate }  // Document exists
     } else {
       console.log("No such document!");  // Document doesn't exist
@@ -288,7 +289,6 @@ export const getDocumentById = async (docId, colName = "devices") => {
 
 export const deleteDocument = async (docId, colName) => {
   try {
-    // await collection(db, colName).doc(docId).delete();
     await deleteDoc(doc(db, colName, docId));
     return 200
   } catch (error) {
@@ -299,8 +299,6 @@ export const deleteDocument = async (docId, colName) => {
 export const updateDocument = async (data, colName, docId) => {
 
   try {
-
-
     const docRef = doc(db, colName, docId);
 
     // Set the "capital" field of the city 'DC'
@@ -324,13 +322,13 @@ export const addBankProfile = async (data) => {
     // Add data to the devices collection
     const docRef = await addDoc(bankProfiles, data);
 
-    return  {status: 200, id: docRef.id}; // Return the document ID in case you need it
+    return { status: 200, id: docRef.id }; // Return the document ID in case you need it
   } catch (error) {
     return error
   }
 }
 
-export const getUserBankProfiles = async(token) => {
+export const getUserBankProfiles = async (token) => {
   try {
     const bankProfilesRef = collection(db, "bank-profiles");
 
@@ -354,8 +352,74 @@ export const getUserBankProfiles = async(token) => {
     }));
 
     return bankProfiles;
-  } catch(error) {
+  } catch (error) {
     return error
   }
+}
+
+export const addRequisite = async (data) => {
+  try {
+
+    const requisitesRef = collection(db, "requisites");
+
+    // Add data to the collection
+    const docRef = await addDoc(requisitesRef, data);
+    return 200
+  } catch (error) {
+    return error
+  }
+}
+
+export const getRequisites = async (token) => {
+  try {
+    const requisitesRef = collection(db, "requisites");
+
+    // Query to find devices where user_token equals the specified value
+    const reqsQuery = query(requisitesRef, where("bankProfileId", "==", token));
+
+    // Execute the query
+    const querySnapshot = await getDocs(reqsQuery);
+
+    // Check if any devices were found and return them
+    if (querySnapshot.empty) {
+      console.log("No requisites found with the given bank profile id.");
+      return [];
+    }
+
+    // Map the documents to an array of data
+    const reqs = querySnapshot.docs.map(doc => ({
+
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return reqs;
+  } catch (err) {
+    return err
+  }
+}
+
+export const changeAllRequisites = async (token, status) => {
+  const q = query(collection(db, "requisites"), where("bankProfileId", "==", token));
+
+  getDocs(q)
+    .then((querySnapshot) => {
+      querySnapshot.forEach((docSnapshot) => {
+        // Update the document (you can add the fields you want to update here)
+        const docRef = doc(db, "requisites", docSnapshot.id);
+        updateDoc(docRef, {
+          status, // Replace with your update logic
+        })
+          .then(() => {
+            console.log(`Document ${docSnapshot.id} updated successfully`);
+          })
+          .catch((error) => {
+            console.error("Error updating document:", error);
+          });
+      });
+    })
+    .catch((error) => {
+      console.error("Error getting documents:", error);
+    });
 }
 

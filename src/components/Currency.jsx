@@ -1,48 +1,43 @@
-"use client";
+"use client"
+// components/PriceDisplay.js
 
-import { useEffect, useState } from "react";
-import { inter } from "./DateDropdown";
+import { useEffect, useState } from 'react';
+// import axios from 'axios';
 
-const CurrencyRate = () => {
+const useTetherRub = () => {
+  const [price, setPrice] = useState(null);
+  const [rubPrice, setRubPrice] = useState(null);
 
-    const [rate, setRate] = useState(90)
+  useEffect(() => {
+    const fetchPrice = async () => {
+      try {
+        // Fetch USDT price in USD from CoinGecko
+        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether&vs_currencies=usd,rub');
+        const response = await res.json()
+        console.log(response)
+        const priceInUsd = response.tether.usd;
+        const priceInRub = response.tether.rub;
 
+        setPrice(priceInUsd);
+        setRubPrice(priceInRub);
+      } catch (error) {
+        console.error('Error fetching the price:', error);
+      }
+    };
 
-    // useEffect(() => {
-    //     // Initialize the WebSocket connection
-    //     let socket = new WebSocket('wss://stream.binance.com:9443/ws/usdttrc20rub@trade');
+    // Fetch price initially
+    fetchPrice();
 
-    //     // When receiving data from the WebSocket
-    //     socket.onmessage = (event) => {
-    //         const data = JSON.parse(event.data);
-    //         const price = data.p;  // 'p' contains the price in RUB
-    //         console.log(data)
-    //         setRate(price);
-    //     };
+    // Fetch the price every 10 seconds
+    const interval = setInterval(() => {
+      fetchPrice();
+    }, 5000);
 
-    //     // Handle WebSocket errors
-    //     socket.onerror = (error) => {
-    //         console.error('WebSocket Error:', error);
-    //     };
+    // Cleanup interval when the component is unmounted
+    return () => clearInterval(interval);
+  }, []);
 
-    //     // Handle WebSocket close
-    //     socket.onclose = () => {
-    //         console.log('WebSocket connection closed. Reconnecting...');
-    //         // setTimeout(() => {
-    //         //     socket = new WebSocket('wss://stream.binance.com:9443/ws/usdttrc20rub@trade');
-    //         // }, 1000); // Retry after 1 second
-    //     };
+  return rubPrice?.toFixed(2)
+};
 
-    //     // Clean up when the component unmounts
-    //     return () => {
-    //         socket.close();
-    //     };
-    // }, []);
-
-
-    return (
-        <p className={`${inter.className} text-[#002269] text-[14px] font-bold mb-1`}>{rate}</p>
-    )
-}
-
-export default CurrencyRate
+export default useTetherRub;
