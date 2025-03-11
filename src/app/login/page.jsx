@@ -5,6 +5,7 @@ import { checkUserByToken } from '@/utils/firebase_utils';
 import { Montserrat, Inter } from 'next/font/google';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 const mont = Montserrat({
     weight: ['600'],
@@ -19,12 +20,15 @@ const LoginPage = () => {
     const router = useRouter()
     const [token, setToken] = useState("")
     const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(false)
     const { login } = useAuth()
 
-    
+
 
     const handleAuth = async () => {
+        setLoading(true)
         const response = await checkUserByToken(token)
+        setLoading(false)
         if (!response) {
             setError("Ошибка: проверьте правильность введённых данных")
             return
@@ -56,8 +60,14 @@ const LoginPage = () => {
                         />
                     </div>
                     {error ? <p className={`text-[#fb6c6c] ${inter.className} pt-5`}>{error}</p> : <></>}
-                    <button type='button' disabled={!token} onClick={handleAuth} className={`w-full disabled:cursor-not-allowed py-2 ${token ? "opacity-100" : "opacity-50"} rounded-[8px]  bg-[#e6eeff] text-[#0052ff] text-center mt-5`}>
-                        Авторизоваться
+                    <button type='button' disabled={!token || loading} onClick={handleAuth} className={`w-full disabled:opacity-50 disabled:cursor-not-allowed py-2 rounded-[8px]  bg-[#e6eeff] text-[#0052ff] text-center mt-5`}>
+                        {loading ?
+                            <div className='flex items-center justify-center gap-2'>
+
+                                <AiOutlineLoading3Quarters className=' animate-spin' />
+                                <p>Авторизоваться</p>
+                            </div>
+                            : "Авторизоваться"}
                     </button>
                 </div>
             </div>

@@ -22,6 +22,7 @@ const BankProfile = () => {
   const [profileActive, setProfileActive] = useState(false)
   const [reqs, setReqs] = useState([])
   const [loading, setLoading] = useState(false)
+  const [isRefetch, setIsRefetch] = useState(false)
 
   const [previewReq, setPreviewReq] = useState({status: "", name: "", number: "", id: ""})
 
@@ -67,7 +68,9 @@ const BankProfile = () => {
   }
 
   const handleDeteleReq = async () => {
+    setLoading(true)
     await deleteDocument(previewReq.id, "requisites")
+    setLoading(false)
     setReqs((prev) => ([...prev].filter((el) => el.id !== previewReq.id)))
     previewModalRef.current.close()
   }
@@ -81,7 +84,7 @@ const BankProfile = () => {
       const isActive = res.some((el) => el.status === "active");
       isActive && setProfileActive(true)
     })
-  }, [params["bank-profile-id"]])
+  }, [params["bank-profile-id"], isRefetch])
 
   return (
     <div>
@@ -371,7 +374,7 @@ const BankProfile = () => {
 
 
       <input type="checkbox" id="my_modal_7" className="modal-toggle" />
-      <AddRequisiteForm profileId={params["bank-profile-id"]} />
+      <AddRequisiteForm setRefetch={setIsRefetch} profileId={params["bank-profile-id"]} />
 
       <dialog ref={previewModalRef} className="modal">
         <div className="modal-box max-w-[400px]">
@@ -385,9 +388,18 @@ const BankProfile = () => {
             <p className={`${inter.className} text-[20px] text-[#002269]`}>{previewReq.number}</p>
             <p className={`${inter.className} text-sm text-[#8091B5]`}>Банк: {bankProfile?.selectBank} • Россия: RUB</p>
           </div>
-          <button onClick={handleDeteleReq} className='flex justify-center gap-2 w-full mx-auto rounded-lg items-center border h-12 p-2 mt-5'>
-            <svg _ngcontent-ng-c1955464453="" className='w-4 h-4' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1955464453="" d="M12 4.5v-.6c0-.84 0-1.26-.164-1.581a1.5 1.5 0 0 0-.655-.656c-.32-.163-.74-.163-1.581-.163H8.4c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656C6 2.639 6 3.059 6 3.9v.6m1.5 4.125v3.75m3-3.75v3.75M2.25 4.5h13.5m-1.5 0v8.4c0 1.26 0 1.89-.245 2.371-.216.424-.56.768-.984.984-.48.245-1.11.245-2.371.245h-3.3c-1.26 0-1.89 0-2.371-.245a2.25 2.25 0 0 1-.984-.983C3.75 14.79 3.75 14.16 3.75 12.9V4.5" stroke="#FB6C6C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-            <p>Удалить реквизит</p>
+          <button disabled={loading} onClick={handleDeteleReq} className='flex disabled:opacity-50 disabled:cursor-not-allowed justify-center gap-2 w-full mx-auto rounded-lg items-center border h-12 p-2 mt-5'>
+          {loading ?
+              <>
+                <AiOutlineLoading3Quarters className=' animate-spin' />
+                <svg _ngcontent-ng-c1955464453="" className='w-4 h-4' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1955464453="" d="M12 4.5v-.6c0-.84 0-1.26-.164-1.581a1.5 1.5 0 0 0-.655-.656c-.32-.163-.74-.163-1.581-.163H8.4c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656C6 2.639 6 3.059 6 3.9v.6m1.5 4.125v3.75m3-3.75v3.75M2.25 4.5h13.5m-1.5 0v8.4c0 1.26 0 1.89-.245 2.371-.216.424-.56.768-.984.984-.48.245-1.11.245-2.371.245h-3.3c-1.26 0-1.89 0-2.371-.245a2.25 2.25 0 0 1-.984-.983C3.75 14.79 3.75 14.16 3.75 12.9V4.5" stroke="#FB6C6C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <p>Удалить реквизит</p>
+              </>
+              :
+              <>
+                <svg _ngcontent-ng-c1955464453="" className='w-4 h-4' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c1955464453="" d="M12 4.5v-.6c0-.84 0-1.26-.164-1.581a1.5 1.5 0 0 0-.655-.656c-.32-.163-.74-.163-1.581-.163H8.4c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656C6 2.639 6 3.059 6 3.9v.6m1.5 4.125v3.75m3-3.75v3.75M2.25 4.5h13.5m-1.5 0v8.4c0 1.26 0 1.89-.245 2.371-.216.424-.56.768-.984.984-.48.245-1.11.245-2.371.245h-3.3c-1.26 0-1.89 0-2.371-.245a2.25 2.25 0 0 1-.984-.983C3.75 14.79 3.75 14.16 3.75 12.9V4.5" stroke="#FB6C6C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <p>Удалить реквизит</p>
+              </>}
           </button>
         </div>
         <form method="dialog" className="modal-backdrop">

@@ -10,6 +10,8 @@ import { useEffect, useRef, useState } from 'react';
 import { BsBank } from 'react-icons/bs';
 import { FaCreditCard, FaExchangeAlt, FaAngleDown, FaSort, FaSearch } from "react-icons/fa";
 import { MdNoAdultContent } from 'react-icons/md';
+import { BiSolidWallet } from 'react-icons/bi';
+import useTetherRub from '@/components/Currency';
 export const inter = Inter({
   weight: ['400'],
   subsets: ['latin'],
@@ -28,9 +30,16 @@ const FinancesPage = () => {
 
   const { user } = useAuth()
 
+  const currencyPrice = useTetherRub();
+
   const [depositStep, setDepositStep] = useState(1)
+  const [rubEquivalent, setRubEquivalent] = useState(0)
 
   const modalRef = useRef(null)
+
+  const handleCurrencyCalculation = (value) => {
+    setRubEquivalent(Math.round(+value * currencyPrice))
+  }
 
   const openDepositModal = () => {
     modalRef.current.showModal();
@@ -176,7 +185,8 @@ const FinancesPage = () => {
               <span className={`${inter.className} text-[#8091b5] text-[12px]`}>0</span>
             </button>
             <button onClick={openDepositModal} className='flex bg-[#EEF2F9] items-center py-1 gap-2 px-3 rounded-md '>
-              <p className='text-[12px]'>1</p>
+              {/* <p className='text-[12px]'>1</p> */}
+              <BiSolidWallet className="text-[#0052ff]" />
               <span className={`${inter.className} text-[#002269] text-[12px] font-medium`}>Пополнить</span>
             </button>
           </div>
@@ -202,7 +212,7 @@ const FinancesPage = () => {
               <span className={`${inter.className} text-[#8091b5] text-[12px]`}>0</span>
             </button>
             <button className='flex bg-[#EEF2F9] items-center py-1 gap-2 px-3 rounded-md '>
-              <p className='text-[12px]'>1</p>
+            <BiSolidWallet className="text-[#0052ff]" />
               <label htmlFor="my_modal_7"  className={`${inter.className} text-[#002269] text-[12px] font-medium cursor-pointer`}> Вывод средств</label>
             </button>
           </div>
@@ -218,7 +228,7 @@ const FinancesPage = () => {
               <span className={`${inter.className} text-[#8091b5] text-[12px]`}>0</span>
             </button>
             <button className='flex bg-[#EEF2F9] cursor-pointer items-center py-1 gap-2 px-3 rounded-md '>
-              <p className='text-[12px]'>1</p>
+            <BiSolidWallet className="text-[#0052ff]" />
               <label htmlFor="my_modal_7"  className={`${inter.className} text-[#002269] text-[12px] font-medium cursor-pointer`}> Вывод средств</label>
             </button>
           </div>
@@ -242,10 +252,10 @@ const FinancesPage = () => {
                </div>
                <div className='flex justify-between items-center mt-6'>
                   <p className={`${inter.className} text-sm text-[#8091B5] `}>КОШЕЛЕК ДЛЯ ВЫВОДА</p>
-                  <p className='flex items-center gap-1'>
+                  <p onClick={()=>{setModal(!modal)}} className='flex items-center gap-1'>
                     <span className={`${inter.className} cursor-pointer text-sm text-[#0052FF] uppercase`}>Выбрать</span>
-                    {!modal && <IoIosArrowDown onClick={()=>{setModal(!modal)}} className='text-[#0052FF] cursor-pointer transition-all duration-500'/>}
-                    {modal && <IoIosArrowUp onClick={()=>{setModal(!modal)}} className='text-[#0052FF] cursor-pointer transition-all duration-500'/>}
+                    {!modal && <IoIosArrowDown  className='text-[#0052FF] cursor-pointer transition-all duration-500'/>}
+                    {modal && <IoIosArrowUp className='text-[#0052FF] cursor-pointer transition-all duration-500'/>}
                   </p>
                </div>
                <div className='flex gap-5 items-center h-[60px] p-4 w-full rounded-[16px] bg-[#F9FAFB] my-2 border border-[#eef2f9]'>
@@ -293,7 +303,7 @@ const FinancesPage = () => {
                   <div className='flex items-center gap-20 h-[60px] p-4 w-full rounded-[16px] bg-[#F9FAFB] my-2 border border-[#eef2f9]'>
                   <p className={`${inter.className} text-[20px] text-black text-center my-2`}>USDT</p>
                    <div className='flex gap-1 items-center'>
-                    <input type="text" placeholder='СУММА В' className='bg-transparent border-none focus:border-none focus:outline-none focus:ring-0 h-full placeholder:text-[#C2CDE2] placeholder:text-[20px] text-black text-[20px] w-full text-right mb-1'/>
+                    <input onChange={(e) => handleCurrencyCalculation(e.target.value)} type="text" placeholder='СУММА В' className='bg-transparent border-none focus:border-none focus:outline-none focus:ring-0 h-full placeholder:text-[#C2CDE2] placeholder:text-[20px] text-black text-[20px] w-full text-right mb-1'/>
                      <p className={`${inter.className} text-[20px] mr-2  text-[#C2CDE2]`}>USDT</p>
                    </div>
                </div>
@@ -305,7 +315,7 @@ const FinancesPage = () => {
                   </div>
     
                    <div className='flex gap-1 items-center'>
-                    <input type="text" placeholder='0' className='bg-transparent border-none focus:border-none focus:outline-none focus:ring-0 h-full placeholder:text-[#C2CDE2] placeholder:text-[20px] text-black text-[20px] w-full text-right mb-1' disabled/>
+                    <input type="text" placeholder={rubEquivalent} className='bg-transparent border-none focus:border-none focus:outline-none focus:ring-0 h-full placeholder:text-[#C2CDE2] placeholder:text-[20px] text-black text-[20px] w-full text-right mb-1' disabled/>
                      <p className={`${inter.className} text-[20px] mr-2  text-[#C2CDE2]`}>₽</p>
                    </div>
                </div>
@@ -331,7 +341,7 @@ const FinancesPage = () => {
               <span className={`${inter.className} text-[#8091b5] text-[12px]`}>0</span>
             </button>
             <button className='flex bg-[#EEF2F9] items-center py-1 gap-2 px-3 rounded-md '>
-              <p className='text-[12px]'>1</p>
+            <BiSolidWallet className="text-[#0052ff]" />
               <label htmlFor="my_modal_7"  className={`${inter.className} text-[#002269] text-[12px] font-medium cursor-pointer`}> Вывод средств</label>
             </button>
           </div>

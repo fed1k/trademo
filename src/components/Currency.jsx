@@ -14,12 +14,12 @@ const useTetherRub = () => {
         // Fetch USDT price in USD from CoinGecko
         const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether&vs_currencies=usd,rub');
         const response = await res.json()
-        console.log(response)
+        // console.log(response)
         const priceInUsd = response.tether.usd;
         const priceInRub = response.tether.rub;
 
         setPrice(priceInUsd);
-        setRubPrice(priceInRub);
+        setRubPrice(priceInRub + 10);
       } catch (error) {
         console.error('Error fetching the price:', error);
       }

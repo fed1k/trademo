@@ -3,8 +3,9 @@
 import { useRef, useState } from "react";
 import { inter } from "./DateDropdown";
 import { addRequisite } from "@/utils/firebase_utils";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-const AddRequisiteForm = ({ profileId }) => {
+const AddRequisiteForm = ({ profileId, setRefetch }) => {
 
     const [requisiteInfo, setRequisiteInfo] = useState({
         status: "inactive",
@@ -14,6 +15,8 @@ const AddRequisiteForm = ({ profileId }) => {
         cardHolder: "",
         bankProfileId: profileId
     })
+
+    const [loading, setLoading] = useState(false)
 
     const closeRef = useRef(null)
 
@@ -27,10 +30,14 @@ const AddRequisiteForm = ({ profileId }) => {
             return
         }
 
+        
+        setLoading(true)
         const response = await addRequisite(requisiteInfo)
+        setLoading(false)
         if (response === 200) {
             // for closing purpose
-            closeRef.current.click()
+            setRefetch((prev) => (!prev))
+            closeRef.current?.click()
         }
     }
 
@@ -105,7 +112,7 @@ const AddRequisiteForm = ({ profileId }) => {
                     <label htmlFor="activate" className={`${inter.className} font-semibold cursor-pointer text-sm text-[#8091B5] text-center`}>Запустить реквизит в работу</label>
                 </div>
 
-                <button onClick={handleAdd} className={`w-full bg-[#E6EEFF] h-[40px] ${inter.className} text-[16px] text-[#0052FF] my-4 rounded-lg py-2`}>Добавить реквизит</button>
+                <button disabled={loading} onClick={handleAdd} className={`w-full disabled:opacity-50 disabled:cursor-not-allowed bg-[#E6EEFF] h-[40px] ${inter.className} text-[16px] text-[#0052FF] my-4 flex items-center justify-center gap-2 rounded-lg py-2`}>{loading ? <AiOutlineLoading3Quarters className=' animate-spin' /> : ""} Добавить реквизит</button>
             </div>
 
 
