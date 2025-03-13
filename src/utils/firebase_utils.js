@@ -191,32 +191,31 @@ export const updateDeposit = async (doc_id, data, docu) => {
       const userDocRef = doc(db, 'users', userDoc.id); // Reference to the user document
 
       // Check if 'balance' field exists
-      const currentBalance = userDoc.data().balance;
+      // const currentBalance = userDoc.data().balance;
 
       // if rejection, dont deposit the money to the balance
       if (data.status === "approved") {
 
 
 
-        if (currentBalance !== undefined) {
-          // If the 'balance' field exists, increment it by the amount
-          await updateDoc(userDocRef, {
-            balance: increment(Number(docu.amount)), // Add the new amount to the existing balance
-          });
-          // console.log(`Balance updated successfully! New balance: ${Number(currentBalance) + Number(docu.amount)}`);
-        } else {
-          // If 'balance' doesn't exist, set it with the provided amount
-          await updateDoc(userDocRef, {
-            balance: Number(docu.amount), // Set the initial balance to the provided amount
-          });
-          // console.log(`Balance added successfully! Initial balance: ${Number(docu.amount)}`);
-        }
+        await updateDoc(userDocRef, {
+          balance: data.balance, // Add the new amount to the existing 
+          balance_trust: data.balance_trust
+        })
+        // if (currentBalance !== undefined) {
+        //   // If the 'balance' field exists, increment it by the amount
+        //   // console.log(`Balance updated successfully! New balance: ${Number(currentBalance) + Number(docu.amount)}`);
+        // } else {
+        //   // If 'balance' doesn't exist, set it with the provided amount
+        //   await updateDoc(userDocRef, {
+        //     balance: Number(docu.amount), // Set the initial balance to the provided amount
+        //   });
+        //   // console.log(`Balance added successfully! Initial balance: ${Number(docu.amount)}`);
       }
-      return data.status
-
-    } else {
-      console.log('No user found with the given token.');
     }
+    return data.status
+
+
 
   } catch (error) {
     console.error('Error updating document: ', error);

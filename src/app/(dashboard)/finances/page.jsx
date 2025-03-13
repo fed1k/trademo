@@ -129,7 +129,7 @@ const FinancesPage = () => {
                 <span className={`${inter.className} text-[#8091b5] text-[12px]`}>0</span>
               </button>
             </div>
-            <p className={`font-sans text-[#002269] text-[20px] font-semibold mb-16`}>{user?.balance || 0} USDT</p>
+            <p className={`font-sans text-[#002269] text-[20px] font-semibold mb-16`}>{user?.balance_trust || 0} USDT</p>
             <p className='flex gap-2 items-center top-8'>
               <span className='text-[#8091b5] text-sm leading-6 font-medium'>В резерве</span>
               <span className={`${inter.className} text-[14px] font-medium text-[#002269] leading-6 `}>{user?.balance || 0} USDT</span>
@@ -191,15 +191,15 @@ const FinancesPage = () => {
             </button>
           </div>
           <div className='flex gap-4 items-center'>
-            <p className={`font-sans text-[#002269] text-[20px] font-semibold `}>{user?.balance || 0} USDT</p>
+            <p className={`font-sans text-[#002269] text-[20px] font-semibold `}>{user?.balance_trust || 0} USDT</p>
             <button className='py-4 px-6 h-6 flex  gap-1 text-[#8091b5] rounded-2xl items-center bg-[#EBEEF8]'>
               <svg _ngcontent-ng-c3644767295="" width='23' height='20' _ngcontent-ng-c1898598531="" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" _ngcontent-ng-c1898598531="" d="M20.25 17.5v-1.75a1.75 1.75 0 1 0-3.5 0v1.75M22 10H2m20 1V8.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C20.48 5 19.92 5 18.8 5H5.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C2 6.52 2 7.08 2 8.2v7.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C3.52 19 4.08 19 5.2 19H11m5.6 2.5h3.8c.56 0 .84 0 1.054-.109a1 1 0 0 0 .437-.437C22 20.74 22 20.46 22 19.9v-.8c0-.56 0-.84-.109-1.054a1 1 0 0 0-.437-.437c-.214-.109-.494-.109-1.054-.109h-3.8c-.56 0-.84 0-1.054.109a1 1 0 0 0-.437.437C15 18.26 15 18.54 15 19.1v.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437c.214.109.494.109 1.054.109Z" stroke="#8091b5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
-              <span className={`${inter.className} text-[#8091b5] text-[12px]`}>{user?.balance || 0} USDT</span>
+              <span className={`${inter.className} text-[#8091b5] text-[12px]`}>{user?.balance_trust || 0} USDT</span>
             </button>
           </div>
           <div className='flex gap-2 items-center'>
             <span className='text-[#8091b5] text-sm leading-6 font-medium'>Зарезервировано</span>
-            <span className={`${inter.className} text-[14px] font-bold text-[#002269]  leading-6 `}>0 USDT</span>
+            <span className={`${inter.className} text-[14px] font-bold text-[#002269]  leading-6 `}>{user?.balance || 0} USDT</span>
             <svg _ngcontent-ng-c3644767295="" width='16' height='16' _ngcontent-ng-c1898598531="" className=' styles_helpIcon__CzWkW' viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" ><g _ngcontent-ng-c3644767295="" _ngcontent-ng-c1898598531="" clipPath="url(#help-circle_svg__a)"><path _ngcontent-ng-c3644767295="" _ngcontent-ng-c1898598531="" d="M6.817 6.75a2.25 2.25 0 0 1 4.373.75c0 1.5-2.25 2.25-2.25 2.25m.06 3h.008M16.5 9a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" stroke="#8091b5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></g><defs _ngcontent-ng-c3644767295="" _ngcontent-ng-c1898598531=""><clipPath _ngcontent-ng-c3644767295="" _ngcontent-ng-c1898598531="" id="help-circle_svg__a"><path _ngcontent-ng-c3644767295="" _ngcontent-ng-c1898598531="" fill="#fff" d="M0 0h18v18H0z"></path></clipPath></defs></svg>
           </div>
         </div>
