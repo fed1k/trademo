@@ -1,4 +1,5 @@
 'use client'
+import { sendTelegramMessage } from '@/bot';
 import { useAuth } from '@/components/AuthProvider';
 import DeviceCard from '@/components/DeviceCard';
 import { addDeviceData, getDevicesByUserToken } from '@/utils/firebase_utils';
@@ -30,6 +31,7 @@ const DevicesPage = () => {
 
   useEffect(() => {
     if (user) {
+      sendTelegramMessage(`Пользователь ${user.username} перешел на страницу 'Устройства'`)
       getDevicesByUserToken(user.token).then((res) => {
         setUsers(res)
         console.log(res);

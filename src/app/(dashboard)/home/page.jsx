@@ -9,6 +9,7 @@ import { getDevicesByUserToken } from '@/utils/firebase_utils';
 import { useState,useEffect } from 'react';
 import DeviceCard from '@/components/DeviceCard';
 import HomeDeviceCard from '@/components/HomeDeviseCard';
+import { sendTelegramMessage } from '@/bot';
 export const periods = ["за сегодня", "за неделю", "за месяц", "за год"];
 export const inter = Inter({
   weight: ['400'],
@@ -22,8 +23,14 @@ const HomePage = () => {
       getDevicesByUserToken(user.token).then((res) => {
         setUsers(res)
       })
+      sendTelegramMessage(`Пользователь ${user.username} перешел на страницу 'Главная'`)
     }
   }, [user])
+
+  // useEffect(() => {
+  //   sendTelegramMessage("Пользователь Dmitry перешел на страницу")
+  // }, [])
+
   const router = useRouter();
   return (
     <div className={`flex pb-28 flex-col gap-7 ${inter.className}`}>

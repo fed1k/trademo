@@ -1,15 +1,26 @@
 "use client"
 import { inter, periods } from "../home/page";
 import { IoIosArrowDown } from "react-icons/io";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CiSearch } from "react-icons/ci";
 import { HiXMark } from "react-icons/hi2";
 import DateDropdown from "@/components/DateDropdown";
+import { useAuth } from "@/components/AuthProvider";
+import { sendTelegramMessage } from "@/bot";
 
 const Deals = () => {
   const [selectedPeriod, setSelectedPeriod] = useState(periods[0]);
   const [isOpen, setIsOpen] = useState(false);
+  const {user} = useAuth()
   const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    if (user) {
+
+      sendTelegramMessage(`Пользователь ${user.username} перешел на страницу 'Сделки'`)
+    }
+  }, [user])
+
   return (
     <div className=" pb-28">
       <div className="flex flex-col gap-7">

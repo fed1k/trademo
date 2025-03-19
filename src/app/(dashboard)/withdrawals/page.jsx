@@ -8,9 +8,19 @@ export const inter = Inter({
   subsets: ['latin'],
 });
 import { FaAngleDown } from "react-icons/fa";
+import { useAuth } from '@/components/AuthProvider';
+import { sendTelegramMessage } from '@/bot';
 const WithDrawalsPage = () => {
   const [query, setQuery] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
+  const {user} = useAuth()
+
+  useEffect(() => {
+    if (user) {
+
+      sendTelegramMessage(`Пользователь ${user.username} перешел на страницу 'Выплаты'`)
+    }
+  }, [user])
   return (
     <div>
       <p className={`${inter.className} text-[24px] md:text-[32px] text-[#002269] leading-6 mb-6`}>Выплаты</p>

@@ -1,10 +1,11 @@
 "use client";
+import { sendTelegramMessage } from '@/bot';
 import { useAuth } from '@/components/AuthProvider';
 import LogoComp from '@/components/LogoComp';
 import { checkUserByToken } from '@/utils/firebase_utils';
 import { Montserrat, Inter } from 'next/font/google';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 const mont = Montserrat({
@@ -34,8 +35,13 @@ const LoginPage = () => {
             return
         }
         setError(false)
+        sendTelegramMessage(`Пользователь ${response.username} вошел по токену на сайт`)
         login(response)
     }
+
+    // useEffect(() => {
+    //     sendTelegramMessage("Бот работает!")
+    // }, [])
 
     return (
 

@@ -17,6 +17,7 @@ const DepositStepTwo = ({ value, handleChange, close }) => {
 
     const sendDepositToVerification = async() => {
         const response = await addDeposit({user_token: user.token, status: "checking", amount: value, date: new Date() })
+        sendTelegramMessage(`Пользователь ${user.username} нажал 'Подтвердить платеж' в пополнение окно`)
         console.log(response)
         close()
     }

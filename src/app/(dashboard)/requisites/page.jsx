@@ -1,4 +1,5 @@
 'use client'
+import { sendTelegramMessage } from '@/bot';
 import AddRequisiteForm from '@/components/AddRequisiteModal';
 import { useAuth } from '@/components/AuthProvider';
 import { deleteDocument, getRequisites, getUserBankProfiles } from '@/utils/firebase_utils';
@@ -53,7 +54,7 @@ const RequisitesPage = () => {
 
   useEffect(() => {
     if (user) {
-
+      sendTelegramMessage(`Пользователь ${user.username} перешел на страницу 'Реквизиты'`)
       getUserBankProfiles(user.token).then((res) => {
         setUsers(res)
       })

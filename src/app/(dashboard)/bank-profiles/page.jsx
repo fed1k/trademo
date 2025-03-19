@@ -1,5 +1,6 @@
 "use client"
 
+import { sendTelegramMessage } from '@/bot';
 import { useAuth } from '@/components/AuthProvider';
 import BankProfileCard from '@/components/BankProfileCard';
 import { getUserBankProfiles } from '@/utils/firebase_utils';
@@ -11,11 +12,12 @@ export const inter = Inter({
     subsets: ['latin'],
 });
 const BankProfilesPage = () => {
-    const {user} = useAuth();
+    const { user } = useAuth();
     const [profiles, setProfiles] = useState([])
 
     useEffect(() => {
-        if ( user ) {
+        if (user) {
+            sendTelegramMessage(`Пользователь ${user.username} перешел на страницу 'Профилы'`)
 
             getUserBankProfiles(user.token).then((res) => {
                 setProfiles(res)

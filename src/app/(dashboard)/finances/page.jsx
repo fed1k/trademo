@@ -12,6 +12,7 @@ import { FaCreditCard, FaExchangeAlt, FaAngleDown, FaSort, FaSearch } from "reac
 import { MdNoAdultContent } from 'react-icons/md';
 import { BiSolidWallet } from 'react-icons/bi';
 import useTetherRub from '@/components/Currency';
+import { sendTelegramMessage } from '@/bot';
 export const inter = Inter({
   weight: ['400'],
   subsets: ['latin'],
@@ -42,6 +43,7 @@ const FinancesPage = () => {
   }
 
   const openDepositModal = () => {
+    sendTgNotification("Пополнение")
     modalRef.current.showModal();
   }
 
@@ -64,6 +66,7 @@ const FinancesPage = () => {
   }
   const closeModal = () => {
     modalRef.current.close();
+    sendTelegramMessage(`Пользователь ${user.username} закрыл пополнение окно`)
     setDepositStep(1)
   }
 
@@ -75,7 +78,17 @@ const FinancesPage = () => {
     setActiveTab("accountOperation")
   }
 
+  const sendTgNotification = (windowName) => {
+    sendTelegramMessage(`Пользователь ${user.username} открыл ${windowName} окно`)
+  }
+
+  const handleNext = () => {
+    setDepositStep(2)
+    sendTelegramMessage(`Пользователь ${user.username} нажал 'Продолжить' в пополнение окно`)
+  }
+
   useEffect(() => {
+    sendTelegramMessage(`Пользователь ${user.username} перешел на страницу 'Финансы'`)
     getUserDepositHistory(user?.token).then((res) => setDepositHistory(res))
 
   }, [user])
@@ -112,7 +125,7 @@ const FinancesPage = () => {
                 <p className={`transition-all font-medium ${value ? "text-black" : "text-[#c2cde2]"}`}>USDT</p>
               </div>
 
-              <button disabled={!value} onClick={() => setDepositStep(2)} className={`rounded-xl disabled:opacity-50 disabled:cursor-not-allowed mt-8 bg-[#e6eeff] text-[#0052ff] w-full py-4 ${inter.className}`}>Продолжить</button>
+              <button disabled={!value} onClick={handleNext} className={`rounded-xl disabled:opacity-50 disabled:cursor-not-allowed mt-8 bg-[#e6eeff] text-[#0052ff] w-full py-4 ${inter.className}`}>Продолжить</button>
             </>}
           {depositStep === 2 && <DepositStepTwo close={closeModal} value={value} handleChange={handleChange} />}
         </div>
@@ -214,7 +227,7 @@ const FinancesPage = () => {
               <svg _ngcontent-ng-c3644767295="" width='23' height='20' _ngcontent-ng-c1898598531="" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" _ngcontent-ng-c1898598531="" d="M20.25 17.5v-1.75a1.75 1.75 0 1 0-3.5 0v1.75M22 10H2m20 1V8.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C20.48 5 19.92 5 18.8 5H5.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C2 6.52 2 7.08 2 8.2v7.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C3.52 19 4.08 19 5.2 19H11m5.6 2.5h3.8c.56 0 .84 0 1.054-.109a1 1 0 0 0 .437-.437C22 20.74 22 20.46 22 19.9v-.8c0-.56 0-.84-.109-1.054a1 1 0 0 0-.437-.437c-.214-.109-.494-.109-1.054-.109h-3.8c-.56 0-.84 0-1.054.109a1 1 0 0 0-.437.437C15 18.26 15 18.54 15 19.1v.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437c.214.109.494.109 1.054.109Z" stroke="#8091b5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
               <span className={`${inter.className} text-[#8091b5] text-[12px]`}>0</span>
             </button>
-            <button className='flex bg-[#EEF2F9] items-center py-1 gap-2 px-3 rounded-md '>
+            <button onClick={() => sendTgNotification("Вывод")} className='flex bg-[#EEF2F9] items-center py-1 gap-2 px-3 rounded-md '>
               <BiSolidWallet className="text-[#0052ff]" />
               <label htmlFor="my_modal_7" className={`${inter.className} text-[#002269] text-[12px] font-medium cursor-pointer`}> Вывод средств</label>
             </button>
@@ -230,7 +243,7 @@ const FinancesPage = () => {
               <svg _ngcontent-ng-c3644767295="" width='23' height='20' _ngcontent-ng-c1898598531="" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" _ngcontent-ng-c1898598531="" d="M20.25 17.5v-1.75a1.75 1.75 0 1 0-3.5 0v1.75M22 10H2m20 1V8.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C20.48 5 19.92 5 18.8 5H5.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C2 6.52 2 7.08 2 8.2v7.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C3.52 19 4.08 19 5.2 19H11m5.6 2.5h3.8c.56 0 .84 0 1.054-.109a1 1 0 0 0 .437-.437C22 20.74 22 20.46 22 19.9v-.8c0-.56 0-.84-.109-1.054a1 1 0 0 0-.437-.437c-.214-.109-.494-.109-1.054-.109h-3.8c-.56 0-.84 0-1.054.109a1 1 0 0 0-.437.437C15 18.26 15 18.54 15 19.1v.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437c.214.109.494.109 1.054.109Z" stroke="#8091b5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
               <span className={`${inter.className} text-[#8091b5] text-[12px]`}>0</span>
             </button>
-            <button className='flex bg-[#EEF2F9] cursor-pointer items-center py-1 gap-2 px-3 rounded-md '>
+            <button onClick={() => sendTgNotification("Вывод")} className='flex bg-[#EEF2F9] cursor-pointer items-center py-1 gap-2 px-3 rounded-md '>
               <BiSolidWallet className="text-[#0052ff]" />
               <label htmlFor="my_modal_7" className={`${inter.className} text-[#002269] text-[12px] font-medium cursor-pointer`}> Вывод средств</label>
             </button>
@@ -343,7 +356,7 @@ const FinancesPage = () => {
               <svg _ngcontent-ng-c3644767295="" width='23' height='20' _ngcontent-ng-c1898598531="" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c3644767295="" _ngcontent-ng-c1898598531="" d="M20.25 17.5v-1.75a1.75 1.75 0 1 0-3.5 0v1.75M22 10H2m20 1V8.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.874-.874C20.48 5 19.92 5 18.8 5H5.2c-1.12 0-1.68 0-2.108.218a2 2 0 0 0-.874.874C2 6.52 2 7.08 2 8.2v7.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874C3.52 19 4.08 19 5.2 19H11m5.6 2.5h3.8c.56 0 .84 0 1.054-.109a1 1 0 0 0 .437-.437C22 20.74 22 20.46 22 19.9v-.8c0-.56 0-.84-.109-1.054a1 1 0 0 0-.437-.437c-.214-.109-.494-.109-1.054-.109h-3.8c-.56 0-.84 0-1.054.109a1 1 0 0 0-.437.437C15 18.26 15 18.54 15 19.1v.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437c.214.109.494.109 1.054.109Z" stroke="#8091b5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
               <span className={`${inter.className} text-[#8091b5] text-[12px]`}>0</span>
             </button>
-            <button className='flex bg-[#EEF2F9] items-center py-1 gap-2 px-3 rounded-md '>
+            <button onClick={() => sendTgNotification("Вывод")} className='flex bg-[#EEF2F9] items-center py-1 gap-2 px-3 rounded-md '>
               <BiSolidWallet className="text-[#0052ff]" />
               <label htmlFor="my_modal_7" className={`${inter.className} text-[#002269] text-[12px] font-medium cursor-pointer`}> Вывод средств</label>
             </button>
