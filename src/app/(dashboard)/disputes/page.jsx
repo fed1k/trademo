@@ -2,7 +2,7 @@
 import { sendTelegramMessage } from '@/bot';
 import { useAuth } from '@/components/AuthProvider';
 import { Inter } from 'next/font/google';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CiSearch } from "react-icons/ci";
 import { HiXMark } from "react-icons/hi2";
 export const inter = Inter({
