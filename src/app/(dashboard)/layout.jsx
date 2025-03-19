@@ -294,7 +294,7 @@ const DashboardLayout = ({ children }) => {
             </p>
           </a>
 
-          <a target="_blank" href="https://rumbling-bosworth-7a7.notion.site/TradeMO-MassMO-4cb7876f310a4f15aa9a54f8ffe555ce" className="w-full flex-shrink-0 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+          <a target="_blank" href="https://ash-tamarillo-197.notion.site/TradeMO-MassMO-1bbc018f3938808588bfdc6e49f9ed9f" className="w-full flex-shrink-0 flex mb-3  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
             <p
               className={`${inter.className} text-[#8091B5] text-[12px] font-medium mb-2`}
             >
@@ -502,7 +502,7 @@ const DashboardLayout = ({ children }) => {
               </div>
             </a>
 
-            <a target="_blank" href="https://rumbling-bosworth-7a7.notion.site/TradeMO-MassMO-4cb7876f310a4f15aa9a54f8ffe555ce" className="w-full flex-shrink-0 flex mb-6  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
+            <a target="_blank" href="https://ash-tamarillo-197.notion.site/TradeMO-MassMO-1bbc018f3938808588bfdc6e49f9ed9f" className="w-full flex-shrink-0 flex mb-6  flex-col justify-center bg-[#fbfcfe] rounded-lg space-y-0 border border-[#eef2f9] p-3">
               <p
                 className={`${inter.className} text-[#8091B5] text-[12px] font-semibold  mb-2`}
               >
