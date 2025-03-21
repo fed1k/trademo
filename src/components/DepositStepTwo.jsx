@@ -6,9 +6,11 @@ import { addDeposit, getWalletAddress } from "@/utils/firebase_utils"
 import { BiSolidWallet } from "react-icons/bi"
 import { inter } from "./DateDropdown"
 import { useAuth } from "./AuthProvider"
+import { sendTelegramMessage } from "@/bot"
 
 const DepositStepTwo = ({ value, handleChange, close }) => {
     const [depositAddress, setDepositAddress] = useState()
+    const [depositId, setDepositId] = useState(null)
     const {user} = useAuth()
 
     const copyToClipboard = (value) => {
@@ -23,6 +25,7 @@ const DepositStepTwo = ({ value, handleChange, close }) => {
     }
 
     useEffect(() => {
+        setDepositId(Math.floor(Math.random() * (99999 - 10764 + 1)) + 10764)
         getWalletAddress().then((data) => {
             setDepositAddress(data[0].address)
         })
@@ -38,8 +41,8 @@ const DepositStepTwo = ({ value, handleChange, close }) => {
                 <p className='self-start mt-8 text-[#8091b5] pb-2.5 font-medium'>ID ОПЕРАЦИИ</p>
                 <div className='border flex gap-3 p-3 items-center text-xl rounded-xl w-full border-[#eef2f9]'>
                     <p className='text-xl font-medium text-[#0052ff] pl-2'>#</p>
-                    <p className="flex-1 text-sm font-medium pl-2">10764</p>
-                    <PiCopySimple title="Copy" onClick={(e) => copyToClipboard(10764)} className="text-gray-300 w-6 h-6 cursor-pointer" />
+                    <p className="flex-1 text-sm font-medium pl-2">{depositId}</p>
+                    <PiCopySimple title="Copy" onClick={(e) => copyToClipboard(depositId)} className="text-gray-300 w-6 h-6 cursor-pointer" />
                 </div>
 
 
